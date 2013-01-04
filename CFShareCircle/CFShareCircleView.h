@@ -30,5 +30,7 @@
 
 @property (assign) id <CFShareCircleViewDelegate> delegate;
 - (id)initWithImageFileNames: (NSArray*)imageFileNames;
+- (void)animateIn;
+- (void)animateOut;
 
 @end

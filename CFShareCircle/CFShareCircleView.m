@@ -12,23 +12,6 @@
 
 @synthesize delegate;
 
-- (id)initWithFrame:(CGRect)frame
-{
-    self = [super initWithFrame:frame];
-    if (self) {
-        [self initialize];
-    }
-    return self;
-}
-
--(id)initWithCoder:(NSCoder *)aDecoder{
-    self = [super initWithCoder:aDecoder];
-    if (self) {
-        [self initialize];
-    }
-    return self;
-}
-
 -(id)init{
     self = [super init];
     if (self) {
@@ -60,6 +43,9 @@
     
     closeButtonImage = [UIImage imageNamed:@"close_button.png"];
     touchImage = [UIImage imageNamed:@"touch.png"];
+    
+    [self setFrame:CGRectMake(320, 0, 320, 480)];
+    [self setBounds:CGRectMake(0, 0, 320, 480)];
 }
 
 // Only override drawRect: if you perform custom drawing.
@@ -216,6 +202,27 @@
     // End image context.
     UIGraphicsPopContext();
     UIGraphicsEndImageContext();
+}
+
+/**
+ ANIMATION METHODS
+ **/
+- (void) animateIn{    
+    self.hidden = NO;
+    
+    [UIView beginAnimations:nil context:NULL];
+    [UIView setAnimationDuration:0.3];
+    [UIView setAnimationDelegate:self];
+    [self setFrame:CGRectMake(0, 0, 320, 480)];
+    [UIView commitAnimations];
+}
+
+- (void) animateOut{
+    [UIView beginAnimations:nil context:NULL];
+    [UIView setAnimationDuration:0.3];
+    [UIView setAnimationDelegate:self];
+    [self setFrame:CGRectMake(320, 0, 320, 480)];
+    [UIView commitAnimations];
 }
 
 /**
