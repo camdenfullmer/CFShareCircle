@@ -54,7 +54,7 @@
     _smallRectSize = 50;
     _pathRectSize = 180;
     _tempRectSize = 50;
-
+    
     self.hidden = YES;
     self.backgroundColor = [UIColor colorWithWhite:0 alpha:0.8];
     
@@ -94,13 +94,16 @@
     CGPoint point = [touch locationInView:self];
     
     // Make sure the user starts with touch inside the circle.
-    if([self circleEnclosesPoint: point]){
+    if([self closeButtonEnclosesPoint: point]){
+        _currentPosition = _origin;
+        [self setHidden:YES];
+    }
+    else if([self circleEnclosesPoint: point]){
         _currentPosition = [self translatePoint:[touch locationInView:self]];
         _dragging = YES;
     }
     else{
         _currentPosition = _origin;
-        [self setHidden:YES];
     }
     
     [self setNeedsDisplay];
@@ -182,7 +185,7 @@
     float x = _origin.x - closeButtonImage.size.width/2.0 + cosf(M_PI/4)*_largeRectSize/2.0;
     float y = _origin.y - closeButtonImage.size.height/2.0 - sinf(M_PI/4)*_largeRectSize/2.0;
     
-    CGRect tempRect = CGRectMake(x,y,40,40);
+    CGRect tempRect = CGRectMake(x,y,closeButtonImage.size.width,closeButtonImage.size.height);
     
     // Start image context.
     UIGraphicsBeginImageContext(closeButtonImage.size);
@@ -197,7 +200,7 @@
 }
 
 /* Draw touch region. */
-- (void) drawTouchRegionWithContext: (CGContextRef) context{    
+- (void) drawTouchRegionWithContext: (CGContextRef) context{
     // Create the rect and the point to draw the image.
     CGRect smallCircleRect = CGRectMake(_currentPosition.x - touchImage.size.width/2.0,_currentPosition.y - touchImage.size.height/2.0,touchImage.size.width,touchImage.size.height);
     
@@ -267,10 +270,23 @@
         return YES;
 }
 
-/* Override setter method for imageFileNames so that when they are set the images can be preloaded. 
+/* Helper method to determine if a specified point is inside the close button. */
+- (BOOL) closeButtonEnclosesPoint: (CGPoint) point{
+    float x = _origin.x - closeButtonImage.size.width/2.0 + cosf(M_PI/4)*_largeRectSize/2.0;
+    float y = _origin.y - closeButtonImage.size.height/2.0 - sinf(M_PI/4)*_largeRectSize/2.0;
+    
+    CGRect tempRect = CGRectMake(x,y,closeButtonImage.size.width,closeButtonImage.size.height);    
+    
+    if(CGRectContainsPoint(tempRect, point))
+        return YES;
+    else
+        return NO;
+}
+
+/* Override setter method for imageFileNames so that when they are set the images can be preloaded.
  * This is important so that the images aren't loaded everytime drawRect is called.
  */
-- (void) setImages:(NSArray *)imageFileNames{   
+- (void) setImages:(NSArray *)imageFileNames{
     images = [[NSMutableArray alloc] init];
     // Preload all the images.
     for (int i = 0; i < [imageFileNames count]; i++) {
