@@ -45,8 +45,7 @@
     _smallRectSize = 50;
     _pathRectSize = 180;
     _tempRectSize = 50;
-    // Construct a temp array
-    _items = [[NSMutableArray alloc] initWithObjects:@"evernote.png", @"googleplus.png", @"facebook.png", @"twitter.png", @"email.png", nil];
+    [self setItems:[[NSMutableArray alloc] initWithObjects:@"evernote.png", @"googleplus.png", @"facebook.png", @"twitter.png", @"email.png", nil]];
     self.hidden = YES;
     self.backgroundColor = [UIColor colorWithWhite:0 alpha:0.8];
 }
@@ -110,8 +109,10 @@
             CGPoint point = [self pointAtIndex:i];
             
             // Determine if point is inside rect.
-            if(CGRectContainsPoint(CGRectMake(point.x, point.y, _tempRectSize, _tempRectSize), _currentPosition))
+            if(CGRectContainsPoint(CGRectMake(point.x, point.y, _tempRectSize, _tempRectSize), _currentPosition)){
                 [self.delegate shareCircleView:self didSelectIndex:i];
+                [self setHidden:YES];
+            }
         }
         
         _currentPosition = _origin;
@@ -208,7 +209,7 @@
     UIGraphicsBeginImageContext(image.size);
     UIGraphicsPushContext(context);
     
-    
+    // Determine alpha based on if the user is dragging.
     float alpha;
     if(_dragging)
         alpha = 1.0;
@@ -237,12 +238,13 @@
 }
 
 /* Helper method to determine if a specified point is inside the circle. */
-
 - (BOOL) circleEnclosesPoint: (CGPoint) point{
     if(pow(_largeRectSize/2.0,2) < (pow(point.x - _origin.x,2) + pow(point.y - _origin.y,2)))
         return NO;
     else
         return YES;
 }
+
+
 
 @end
