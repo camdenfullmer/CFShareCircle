@@ -1,674 +1,0 @@
-TCFShareCircle
-v5
-r1
-cCheck dependencies
-cProcessInfoPlistFile /Users/camdenfullmer/Dropbox/Workspace/iOS/CFShareCircle/Build/Products/Debug-iphonesimulator/CFShareCircle.app/Info.plist CFShareCircle/CFShareCircle-Info.plist
-cProcessPCH /Users/camdenfullmer/Dropbox/Workspace/iOS/CFShareCircle/Build/Intermediates/PrecompiledHeaders/CFShareCircle-Prefix-bknzvodceruzqybxebiggvbrqwcg/CFShareCircle-Prefix.pch.pth CFShareCircle/CFShareCircle-Prefix.pch normal i386 objective-c com.apple.compilers.llvm.clang.1_0.compiler
-cCompileC Build/Intermediates/CFShareCircle.build/Debug-iphonesimulator/CFShareCircle.build/Objects-normal/i386/AppDelegate.o /Users/camdenfullmer/Dropbox/Workspace/iOS/CFShareCircle/CFShareCircle/AppDelegate.m normal i386 objective-c com.apple.compilers.llvm.clang.1_0.compiler
-cCompileC Build/Intermediates/CFShareCircle.build/Debug-iphonesimulator/CFShareCircle.build/Objects-normal/i386/CFShareCircleView.o /Users/camdenfullmer/Dropbox/Workspace/iOS/CFShareCircle/CFShareCircle/CFShareCircleView.m normal i386 objective-c com.apple.compilers.llvm.clang.1_0.compiler
-cCompileC Build/Intermediates/CFShareCircle.build/Debug-iphonesimulator/CFShareCircle.build/Objects-normal/i386/ViewController.o /Users/camdenfullmer/Dropbox/Workspace/iOS/CFShareCircle/CFShareCircle/ViewController.m normal i386 objective-c com.apple.compilers.llvm.clang.1_0.compiler
-cCompileC Build/Intermediates/CFShareCircle.build/Debug-iphonesimulator/CFShareCircle.build/Objects-normal/i386/main.o /Users/camdenfullmer/Dropbox/Workspace/iOS/CFShareCircle/CFShareCircle/main.m normal i386 objective-c com.apple.compilers.llvm.clang.1_0.compiler
-cLd /Users/camdenfullmer/Dropbox/Workspace/iOS/CFShareCircle/Build/Products/Debug-iphonesimulator/CFShareCircle.app/CFShareCircle normal i386
-cGenerateDSYMFile /Users/camdenfullmer/Dropbox/Workspace/iOS/CFShareCircle/Build/Products/Debug-iphonesimulator/CFShareCircle.app.dSYM /Users/camdenfullmer/Dropbox/Workspace/iOS/CFShareCircle/Build/Products/Debug-iphonesimulator/CFShareCircle.app/CFShareCircle
-cCopyStringsFile /Users/camdenfullmer/Dropbox/Workspace/iOS/CFShareCircle/Build/Products/Debug-iphonesimulator/CFShareCircle.app/en.lproj/InfoPlist.strings CFShareCircle/en.lproj/InfoPlist.strings
-cCpResource CFShareCircle/Default.png Build/Products/Debug-iphonesimulator/CFShareCircle.app/Default.png
-cCpResource CFShareCircle/Default@2x.png Build/Products/Debug-iphonesimulator/CFShareCircle.app/Default@2x.png
-cCpResource CFShareCircle/Default-568h@2x.png Build/Products/Debug-iphonesimulator/CFShareCircle.app/Default-568h@2x.png
-cCompileStoryboard /Users/camdenfullmer/Dropbox/Workspace/iOS/CFShareCircle/CFShareCircle/en.lproj/MainStoryboard_iPhone.storyboard
-cCompileStoryboard /Users/camdenfullmer/Dropbox/Workspace/iOS/CFShareCircle/CFShareCircle/en.lproj/MainStoryboard_iPad.storyboard
-cCpResource CFShareCircle/evernote@2x.png Build/Products/Debug-iphonesimulator/CFShareCircle.app/evernote@2x.png
-cCpResource CFShareCircle/evernote.png Build/Products/Debug-iphonesimulator/CFShareCircle.app/evernote.png
-cCpResource CFShareCircle/facebook.png Build/Products/Debug-iphonesimulator/CFShareCircle.app/facebook.png
-cCpResource CFShareCircle/facebook@2x.png Build/Products/Debug-iphonesimulator/CFShareCircle.app/facebook@2x.png
-cCpResource CFShareCircle/twitter.png Build/Products/Debug-iphonesimulator/CFShareCircle.app/twitter.png
-cCpResource CFShareCircle/twitter@2x.png Build/Products/Debug-iphonesimulator/CFShareCircle.app/twitter@2x.png
-cCpResource CFShareCircle/googleplus.png Build/Products/Debug-iphonesimulator/CFShareCircle.app/googleplus.png
-cCpResource CFShareCircle/googleplus@2x.png Build/Products/Debug-iphonesimulator/CFShareCircle.app/googleplus@2x.png
-cCpResource CFShareCircle/email.png Build/Products/Debug-iphonesimulator/CFShareCircle.app/email.png
-cCpResource CFShareCircle/email@2x.png Build/Products/Debug-iphonesimulator/CFShareCircle.app/email@2x.png
-cCpResource CFShareCircle/touch.png Build/Products/Debug-iphonesimulator/CFShareCircle.app/touch.png
-cCpResource CFShareCircle/touch@2x.png Build/Products/Debug-iphonesimulator/CFShareCircle.app/touch@2x.png
-cTouch /Users/camdenfullmer/Dropbox/Workspace/iOS/CFShareCircle/Build/Products/Debug-iphonesimulator/CFShareCircle.app
-
-N/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator6.0.sdk
-c00000000504916AD0000000000000110
-t1346967213
-s272
-
-N/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator6.0.sdk/System/Library/Frameworks/CoreGraphics.framework/CoreGraphics
-c000000005092F9F60000000000228FD0
-t1351809526
-s2265040
-
-N/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator6.0.sdk/System/Library/Frameworks/Foundation.framework/Foundation
-c000000005092F9F800000000003DCEF0
-t1351809528
-s4050672
-
-N/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator6.0.sdk/System/Library/Frameworks/Foundation.framework/Headers/Foundation.h
-c000000005092F9F700000000000015F7
-t1351809527
-s5623
-
-N/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator6.0.sdk/System/Library/Frameworks/UIKit.framework/Headers/UIKit.h
-c000000005092F9FC0000000000000E8D
-t1351809532
-s3725
-
-N/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator6.0.sdk/System/Library/Frameworks/UIKit.framework/UIKit
-c000000005092F9FD0000000000AB3D60
-t1351809533
-s11222368
-
-N/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator6.0.sdk/usr/include/Availability.h
-c000000005092FA0E0000000000001B54
-t1351809550
-s6996
-
-N/Users/camdenfullmer/Dropbox/Workspace/iOS/CFShareCircle/Build/Intermediates/CFShareCircle.build/Debug-iphonesimulator/CFShareCircle.build/Objects-normal/i386/AppDelegate.o
-t1357314248
-s86424
-
-N/Users/camdenfullmer/Dropbox/Workspace/iOS/CFShareCircle/Build/Intermediates/CFShareCircle.build/Debug-iphonesimulator/CFShareCircle.build/Objects-normal/i386/CFShareCircle.LinkFileList
-c0000000050E6F8C700000000000002B6
-t1357314247
-s694
-
-N/Users/camdenfullmer/Dropbox/Workspace/iOS/CFShareCircle/Build/Intermediates/CFShareCircle.build/Debug-iphonesimulator/CFShareCircle.build/Objects-normal/i386/CFShareCircleView.o
-t1357317478
-s94240
-
-N/Users/camdenfullmer/Dropbox/Workspace/iOS/CFShareCircle/Build/Intermediates/CFShareCircle.build/Debug-iphonesimulator/CFShareCircle.build/Objects-normal/i386/ViewController.o
-t1357314248
-s73092
-
-N/Users/camdenfullmer/Dropbox/Workspace/iOS/CFShareCircle/Build/Intermediates/CFShareCircle.build/Debug-iphonesimulator/CFShareCircle.build/Objects-normal/i386/main.o
-t1357314248
-s3364
-
-N/Users/camdenfullmer/Dropbox/Workspace/iOS/CFShareCircle/Build/Intermediates/PrecompiledHeaders/CFShareCircle-Prefix-bknzvodceruzqybxebiggvbrqwcg/CFShareCircle-Prefix.pch.pth
-t1357314248
-s4840772
-
-N/Users/camdenfullmer/Dropbox/Workspace/iOS/CFShareCircle/Build/Products/Debug-iphonesimulator/CFShareCircle.app
-t1357317478
-s850
-
-N/Users/camdenfullmer/Dropbox/Workspace/iOS/CFShareCircle/Build/Products/Debug-iphonesimulator/CFShareCircle.app.dSYM
-t1357317478
-s102
-
-N/Users/camdenfullmer/Dropbox/Workspace/iOS/CFShareCircle/Build/Products/Debug-iphonesimulator/CFShareCircle.app/CFShareCircle
-t1357317478
-s36996
-
-N/Users/camdenfullmer/Dropbox/Workspace/iOS/CFShareCircle/Build/Products/Debug-iphonesimulator/CFShareCircle.app/Default-568h@2x.png
-t1357314248
-s18594
-
-N/Users/camdenfullmer/Dropbox/Workspace/iOS/CFShareCircle/Build/Products/Debug-iphonesimulator/CFShareCircle.app/Default.png
-t1357314248
-s6540
-
-N/Users/camdenfullmer/Dropbox/Workspace/iOS/CFShareCircle/Build/Products/Debug-iphonesimulator/CFShareCircle.app/Default@2x.png
-t1357314248
-s16107
-
-N/Users/camdenfullmer/Dropbox/Workspace/iOS/CFShareCircle/Build/Products/Debug-iphonesimulator/CFShareCircle.app/Info.plist
-t1357314247
-s1027
-
-N/Users/camdenfullmer/Dropbox/Workspace/iOS/CFShareCircle/Build/Products/Debug-iphonesimulator/CFShareCircle.app/PkgInfo
-t1357314247
-s8
-
-N/Users/camdenfullmer/Dropbox/Workspace/iOS/CFShareCircle/Build/Products/Debug-iphonesimulator/CFShareCircle.app/dropbox.png
-t1357314248
-s3661
-
-N/Users/camdenfullmer/Dropbox/Workspace/iOS/CFShareCircle/Build/Products/Debug-iphonesimulator/CFShareCircle.app/dropbox@2x.png
-t1357314248
-s4502
-
-N/Users/camdenfullmer/Dropbox/Workspace/iOS/CFShareCircle/Build/Products/Debug-iphonesimulator/CFShareCircle.app/email.png
-t1357314458
-s4415
-
-N/Users/camdenfullmer/Dropbox/Workspace/iOS/CFShareCircle/Build/Products/Debug-iphonesimulator/CFShareCircle.app/email@2x.png
-t1357314458
-s6123
-
-N/Users/camdenfullmer/Dropbox/Workspace/iOS/CFShareCircle/Build/Products/Debug-iphonesimulator/CFShareCircle.app/en.lproj/InfoPlist.strings
-t1357314248
-s42
-
-N/Users/camdenfullmer/Dropbox/Workspace/iOS/CFShareCircle/Build/Products/Debug-iphonesimulator/CFShareCircle.app/en.lproj/MainStoryboard_iPad.storyboardc
-t1357314249
-s170
-
-N/Users/camdenfullmer/Dropbox/Workspace/iOS/CFShareCircle/Build/Products/Debug-iphonesimulator/CFShareCircle.app/en.lproj/MainStoryboard_iPhone.storyboardc
-t1357314249
-s170
-
-N/Users/camdenfullmer/Dropbox/Workspace/iOS/CFShareCircle/Build/Products/Debug-iphonesimulator/CFShareCircle.app/evernote.png
-t1357314798
-s4388
-
-N/Users/camdenfullmer/Dropbox/Workspace/iOS/CFShareCircle/Build/Products/Debug-iphonesimulator/CFShareCircle.app/evernote@2x.png
-t1357314798
-s5823
-
-N/Users/camdenfullmer/Dropbox/Workspace/iOS/CFShareCircle/Build/Products/Debug-iphonesimulator/CFShareCircle.app/facebook.png
-t1357314248
-s4110
-
-N/Users/camdenfullmer/Dropbox/Workspace/iOS/CFShareCircle/Build/Products/Debug-iphonesimulator/CFShareCircle.app/facebook@2x.png
-t1357314248
-s5109
-
-N/Users/camdenfullmer/Dropbox/Workspace/iOS/CFShareCircle/Build/Products/Debug-iphonesimulator/CFShareCircle.app/googleplus.png
-t1357314369
-s5019
-
-N/Users/camdenfullmer/Dropbox/Workspace/iOS/CFShareCircle/Build/Products/Debug-iphonesimulator/CFShareCircle.app/googleplus@2x.png
-t1357314369
-s6996
-
-N/Users/camdenfullmer/Dropbox/Workspace/iOS/CFShareCircle/Build/Products/Debug-iphonesimulator/CFShareCircle.app/message.png
-t1357314248
-s3048
-
-N/Users/camdenfullmer/Dropbox/Workspace/iOS/CFShareCircle/Build/Products/Debug-iphonesimulator/CFShareCircle.app/message@2x.png
-t1357314248
-s3275
-
-N/Users/camdenfullmer/Dropbox/Workspace/iOS/CFShareCircle/Build/Products/Debug-iphonesimulator/CFShareCircle.app/touch.png
-t1357317013
-s7470
-
-N/Users/camdenfullmer/Dropbox/Workspace/iOS/CFShareCircle/Build/Products/Debug-iphonesimulator/CFShareCircle.app/touch@2x.png
-t1357317013
-s8812
-
-N/Users/camdenfullmer/Dropbox/Workspace/iOS/CFShareCircle/Build/Products/Debug-iphonesimulator/CFShareCircle.app/twitter.png
-t1357314291
-s6495
-
-N/Users/camdenfullmer/Dropbox/Workspace/iOS/CFShareCircle/Build/Products/Debug-iphonesimulator/CFShareCircle.app/twitter@2x.png
-t1357314248
-s6495
-
-N/Users/camdenfullmer/Dropbox/Workspace/iOS/CFShareCircle/CFShareCircle/AppDelegate.h
-c0000000050D0A8740000000000000112
-t1355851892
-s274
-
-N/Users/camdenfullmer/Dropbox/Workspace/iOS/CFShareCircle/CFShareCircle/AppDelegate.m
-c0000000050D0A87400000000000007D4
-t1355851892
-s2004
-
-N/Users/camdenfullmer/Dropbox/Workspace/iOS/CFShareCircle/CFShareCircle/CFShareCircle-Prefix.pch
-c0000000050D0A8740000000000000149
-t1355851892
-s329
-i<Availability.h>
-i<UIKit/UIKit.h>
-i<Foundation/Foundation.h>
-
-N/Users/camdenfullmer/Dropbox/Workspace/iOS/CFShareCircle/CFShareCircle/CFShareCircleView.h
-c0000000050E6E0D80000000000000287
-t1357308120
-s647
-
-N/Users/camdenfullmer/Dropbox/Workspace/iOS/CFShareCircle/CFShareCircle/CFShareCircleView.m
-c0000000050E705B80000000000001DC9
-t1357317560
-s7625
-
-N/Users/camdenfullmer/Dropbox/Workspace/iOS/CFShareCircle/CFShareCircle/Default-568h@2x.png
-c0000000050748B2300000000000048A2
-t1349815075
-s18594
-
-N/Users/camdenfullmer/Dropbox/Workspace/iOS/CFShareCircle/CFShareCircle/Default.png
-c0000000050748B23000000000000198C
-t1349815075
-s6540
-
-N/Users/camdenfullmer/Dropbox/Workspace/iOS/CFShareCircle/CFShareCircle/Default@2x.png
-c0000000050748B230000000000003EEB
-t1349815075
-s16107
-
-N/Users/camdenfullmer/Dropbox/Workspace/iOS/CFShareCircle/CFShareCircle/ViewController.h
-c0000000050DCAA3A0000000000000165
-t1356638778
-s357
-
-N/Users/camdenfullmer/Dropbox/Workspace/iOS/CFShareCircle/CFShareCircle/ViewController.m
-c0000000050E6EDFF00000000000003C9
-t1357311487
-s969
-
-N/Users/camdenfullmer/Dropbox/Workspace/iOS/CFShareCircle/CFShareCircle/dropbox.png
-c0000000050D8F7450000000000000E4D
-t1356396357
-s3661
-
-N/Users/camdenfullmer/Dropbox/Workspace/iOS/CFShareCircle/CFShareCircle/dropbox@2x.png
-c0000000050D8F6D80000000000001196
-t1356396248
-s4502
-
-N/Users/camdenfullmer/Dropbox/Workspace/iOS/CFShareCircle/CFShareCircle/email.png
-c0000000050E6F97F000000000000113F
-t1357314431
-s4415
-
-N/Users/camdenfullmer/Dropbox/Workspace/iOS/CFShareCircle/CFShareCircle/email@2x.png
-c0000000050E6F96900000000000017EB
-t1357314409
-s6123
-
-N/Users/camdenfullmer/Dropbox/Workspace/iOS/CFShareCircle/CFShareCircle/en.lproj/InfoPlist.strings
-c0000000050D0A874000000000000002D
-t1355851892
-s45
-
-N/Users/camdenfullmer/Dropbox/Workspace/iOS/CFShareCircle/CFShareCircle/en.lproj/MainStoryboard_iPad.storyboard
-c0000000050D0A874000000000000061D
-t1355851892
-s1565
-
-N/Users/camdenfullmer/Dropbox/Workspace/iOS/CFShareCircle/CFShareCircle/en.lproj/MainStoryboard_iPhone.storyboard
-c0000000050DCAA3A0000000000001055
-t1356638778
-s4181
-
-N/Users/camdenfullmer/Dropbox/Workspace/iOS/CFShareCircle/CFShareCircle/evernote.png
-c0000000050E6FAE90000000000001124
-t1357314793
-s4388
-
-N/Users/camdenfullmer/Dropbox/Workspace/iOS/CFShareCircle/CFShareCircle/evernote@2x.png
-c0000000050E6FAB100000000000016BF
-t1357314737
-s5823
-
-N/Users/camdenfullmer/Dropbox/Workspace/iOS/CFShareCircle/CFShareCircle/facebook.png
-c0000000050E6F80A000000000000100E
-t1357314058
-s4110
-
-N/Users/camdenfullmer/Dropbox/Workspace/iOS/CFShareCircle/CFShareCircle/facebook@2x.png
-c0000000050E6F7F500000000000013F5
-t1357314037
-s5109
-
-N/Users/camdenfullmer/Dropbox/Workspace/iOS/CFShareCircle/CFShareCircle/googleplus.png
-c0000000050E6F887000000000000139B
-t1357314183
-s5019
-
-N/Users/camdenfullmer/Dropbox/Workspace/iOS/CFShareCircle/CFShareCircle/googleplus@2x.png
-c0000000050E6F8700000000000001B54
-t1357314160
-s6996
-
-N/Users/camdenfullmer/Dropbox/Workspace/iOS/CFShareCircle/CFShareCircle/main.m
-c0000000050D0A874000000000000014D
-t1355851892
-s333
-
-N/Users/camdenfullmer/Dropbox/Workspace/iOS/CFShareCircle/CFShareCircle/message.png
-c0000000050E6E3E80000000000000BE8
-t1357308904
-s3048
-
-N/Users/camdenfullmer/Dropbox/Workspace/iOS/CFShareCircle/CFShareCircle/message@2x.png
-c0000000050E6E6670000000000000CCB
-t1357309543
-s3275
-
-N/Users/camdenfullmer/Dropbox/Workspace/iOS/CFShareCircle/CFShareCircle/touch.png
-c0000000050E7037D0000000000001D2E
-t1357316989
-s7470
-
-N/Users/camdenfullmer/Dropbox/Workspace/iOS/CFShareCircle/CFShareCircle/touch@2x.png
-c0000000050E7036D000000000000226C
-t1357316973
-s8812
-
-N/Users/camdenfullmer/Dropbox/Workspace/iOS/CFShareCircle/CFShareCircle/twitter.png
-c0000000050E6F8EF000000000000195F
-t1357314287
-s6495
-
-N/Users/camdenfullmer/Dropbox/Workspace/iOS/CFShareCircle/CFShareCircle/twitter@2x.png
-c0000000050E6F8BC000000000000195F
-t1357314236
-s6495
-
-NCFShareCircle/CFShareCircle-Info.plist
-c0000000050D0A8740000000000000648
-t1355851892
-s1608
-
-CBuild AST from /Users/camdenfullmer/Dropbox/Workspace/iOS/CFShareCircle/CFShareCircle/AppDelegate.m
-r0
-
-CBuild AST from /Users/camdenfullmer/Dropbox/Workspace/iOS/CFShareCircle/CFShareCircle/CFShareCircleView.m
-r0
-
-CBuild AST from /Users/camdenfullmer/Dropbox/Workspace/iOS/CFShareCircle/CFShareCircle/ViewController.m
-r0
-
-CBuild AST from /Users/camdenfullmer/Dropbox/Workspace/iOS/CFShareCircle/CFShareCircle/main.m
-r0
-
-CCheck dependencies
-r0
-lSLF05#21%IDEActivityLogSection1@2#32"com.apple.dt.IDE.BuildLogSection18"Check dependenciesf4dcc63a3d97b641^a452c83a3d97b641^---0#1#0#--18"Check dependencies36"D9CF57FD-A7EA-4439-B606-DD7436CD8FB2-
-
-CCompileC Build/Intermediates/CFShareCircle.build/Debug-iphonesimulator/CFShareCircle.build/Objects-normal/i386/AppDelegate.o /Users/camdenfullmer/Dropbox/Workspace/iOS/CFShareCircle/CFShareCircle/AppDelegate.m normal i386 objective-c com.apple.compilers.llvm.clang.1_0.compiler
-s379007048.098371
-e379007048.251789
-r1
-xCompileC
-xBuild/Intermediates/CFShareCircle.build/Debug-iphonesimulator/CFShareCircle.build/Objects-normal/i386/AppDelegate.o
-x/Users/camdenfullmer/Dropbox/Workspace/iOS/CFShareCircle/CFShareCircle/AppDelegate.m
-xnormal
-xi386
-xobjective-c
-xcom.apple.compilers.llvm.clang.1_0.compiler
-lSLF05#21%IDEActivityLogSection1@2#32"com.apple.dt.IDE.BuildLogSection92"Compile /Users/camdenfullmer/Dropbox/Workspace/iOS/CFShareCircle/CFShareCircle/AppDelegate.m956019483097b641^598640483097b641^---0#0#0#-19%DVTDocumentLocation2@100"file://localhost/Users/camdenfullmer/Dropbox/Workspace/iOS/CFShareCircle/CFShareCircle/AppDelegate.m0000000000000000^4083"CompileC Build/Intermediates/CFShareCircle.build/Debug-iphonesimulator/CFShareCircle.build/Objects-normal/i386/AppDelegate.o CFShareCircle/AppDelegate.m normal i386 objective-c com.apple.compilers.llvm.clang.1_0.compiler    cd /Users/camdenfullmer/Dropbox/Workspace/iOS/CFShareCircle    setenv LANG en_US.US-ASCII    setenv PATH "/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/usr/bin:/Applications/Xcode.app/Contents/Developer/usr/bin:/usr/bin:/bin:/usr/sbin:/sbin"    /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/clang -x objective-c -arch i386 -fmessage-length=0 -std=gnu99 -fobjc-arc -Wno-trigraphs -fpascal-strings -O0 -Wno-missing-field-initializers -Wno-missing-prototypes -Wreturn-type -Wno-implicit-atomic-properties -Wno-receiver-is-weak -Wduplicate-method-match -Wformat -Wno-missing-braces -Wparentheses -Wswitch -Wno-unused-function -Wno-unused-label -Wno-unused-parameter -Wunused-variable -Wunused-value -Wempty-body -Wuninitialized -Wno-unknown-pragmas -Wno-shadow -Wno-four-char-constants -Wno-conversion -Wno-shorten-64-to-32 -Wpointer-sign -Wno-newline-eof -Wno-selector -Wno-strict-selector-match -Wno-undeclared-selector -Wno-deprecated-implementations -DDEBUG=1 -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator6.0.sdk -fexceptions -fasm-blocks -Wprotocol -Wdeprecated-declarations -g -Wno-sign-conversion -fobjc-abi-version=2 -fobjc-legacy-dispatch "-DIBOutlet=__attribute__((iboutlet))" "-DIBOutletCollection(ClassName)=__attribute__((iboutletcollection(ClassName)))" "-DIBAction=void)__attribute__((ibaction)" -mios-simulator-version-min=6.0 -iquote /Users/camdenfullmer/Dropbox/Workspace/iOS/CFShareCircle/Build/Intermediates/CFShareCircle.build/Debug-iphonesimulator/CFShareCircle.build/CFShareCircle-generated-files.hmap -I/Users/camdenfullmer/Dropbox/Workspace/iOS/CFShareCircle/Build/Intermediates/CFShareCircle.build/Debug-iphonesimulator/CFShareCircle.build/CFShareCircle-own-target-headers.hmap -I/Users/camdenfullmer/Dropbox/Workspace/iOS/CFShareCircle/Build/Intermediates/CFShareCircle.build/Debug-iphonesimulator/CFShareCircle.build/CFShareCircle-all-target-headers.hmap -iquote /Users/camdenfullmer/Dropbox/Workspace/iOS/CFShareCircle/Build/Intermediates/CFShareCircle.build/Debug-iphonesimulator/CFShareCircle.build/CFShareCircle-project-headers.hmap -I/Users/camdenfullmer/Dropbox/Workspace/iOS/CFShareCircle/Build/Products/Debug-iphonesimulator/include -I/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include -I/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include -I/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include -I/Users/camdenfullmer/Dropbox/Workspace/iOS/CFShareCircle/Build/Intermediates/CFShareCircle.build/Debug-iphonesimulator/CFShareCircle.build/DerivedSources/i386 -I/Users/camdenfullmer/Dropbox/Workspace/iOS/CFShareCircle/Build/Intermediates/CFShareCircle.build/Debug-iphonesimulator/CFShareCircle.build/DerivedSources -F/Users/camdenfullmer/Dropbox/Workspace/iOS/CFShareCircle/Build/Products/Debug-iphonesimulator -include /Users/camdenfullmer/Dropbox/Workspace/iOS/CFShareCircle/Build/Intermediates/PrecompiledHeaders/CFShareCircle-Prefix-bknzvodceruzqybxebiggvbrqwcg/CFShareCircle-Prefix.pch -MMD -MT dependencies -MF /Users/camdenfullmer/Dropbox/Workspace/iOS/CFShareCircle/Build/Intermediates/CFShareCircle.build/Debug-iphonesimulator/CFShareCircle.build/Objects-normal/i386/AppDelegate.d --serialize-diagnostics /Users/camdenfullmer/Dropbox/Workspace/iOS/CFShareCircle/Build/Intermediates/CFShareCircle.build/Debug-iphonesimulator/CFShareCircle.build/Objects-normal/i386/AppDelegate.dia -c /Users/camdenfullmer/Dropbox/Workspace/iOS/CFShareCircle/CFShareCircle/AppDelegate.m -o /Users/camdenfullmer/Dropbox/Workspace/iOS/CFShareCircle/Build/Intermediates/CFShareCircle.build/Debug-iphonesimulator/CFShareCircle.build/Objects-normal/i386/AppDelegate.o36"56AAFFCA-10B7-4DDC-8873-FDB2D6BACB9A-
-
-CCompileC Build/Intermediates/CFShareCircle.build/Debug-iphonesimulator/CFShareCircle.build/Objects-normal/i386/CFShareCircleView.o /Users/camdenfullmer/Dropbox/Workspace/iOS/CFShareCircle/CFShareCircle/CFShareCircleView.m normal i386 objective-c com.apple.compilers.llvm.clang.1_0.compiler
-s379010362.822338
-e379010362.956956
-r1
-xCompileC
-xBuild/Intermediates/CFShareCircle.build/Debug-iphonesimulator/CFShareCircle.build/Objects-normal/i386/CFShareCircleView.o
-x/Users/camdenfullmer/Dropbox/Workspace/iOS/CFShareCircle/CFShareCircle/CFShareCircleView.m
-xnormal
-xi386
-xobjective-c
-xcom.apple.compilers.llvm.clang.1_0.compiler
-lSLF05#21%IDEActivityLogSection1@2#32"com.apple.dt.IDE.BuildLogSection98"Compile /Users/camdenfullmer/Dropbox/Workspace/iOS/CFShareCircle/CFShareCircle/CFShareCircleView.mbbb7d23a3d97b641^240af53a3d97b641^---0#0#0#-19%DVTDocumentLocation2@106"file://localhost/Users/camdenfullmer/Dropbox/Workspace/iOS/CFShareCircle/CFShareCircle/CFShareCircleView.m0000000000000000^4119"CompileC Build/Intermediates/CFShareCircle.build/Debug-iphonesimulator/CFShareCircle.build/Objects-normal/i386/CFShareCircleView.o CFShareCircle/CFShareCircleView.m normal i386 objective-c com.apple.compilers.llvm.clang.1_0.compiler    cd /Users/camdenfullmer/Dropbox/Workspace/iOS/CFShareCircle    setenv LANG en_US.US-ASCII    setenv PATH "/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/usr/bin:/Applications/Xcode.app/Contents/Developer/usr/bin:/usr/bin:/bin:/usr/sbin:/sbin"    /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/clang -x objective-c -arch i386 -fmessage-length=0 -std=gnu99 -fobjc-arc -Wno-trigraphs -fpascal-strings -O0 -Wno-missing-field-initializers -Wno-missing-prototypes -Wreturn-type -Wno-implicit-atomic-properties -Wno-receiver-is-weak -Wduplicate-method-match -Wformat -Wno-missing-braces -Wparentheses -Wswitch -Wno-unused-function -Wno-unused-label -Wno-unused-parameter -Wunused-variable -Wunused-value -Wempty-body -Wuninitialized -Wno-unknown-pragmas -Wno-shadow -Wno-four-char-constants -Wno-conversion -Wno-shorten-64-to-32 -Wpointer-sign -Wno-newline-eof -Wno-selector -Wno-strict-selector-match -Wno-undeclared-selector -Wno-deprecated-implementations -DDEBUG=1 -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator6.0.sdk -fexceptions -fasm-blocks -Wprotocol -Wdeprecated-declarations -g -Wno-sign-conversion -fobjc-abi-version=2 -fobjc-legacy-dispatch "-DIBOutlet=__attribute__((iboutlet))" "-DIBOutletCollection(ClassName)=__attribute__((iboutletcollection(ClassName)))" "-DIBAction=void)__attribute__((ibaction)" -mios-simulator-version-min=6.0 -iquote /Users/camdenfullmer/Dropbox/Workspace/iOS/CFShareCircle/Build/Intermediates/CFShareCircle.build/Debug-iphonesimulator/CFShareCircle.build/CFShareCircle-generated-files.hmap -I/Users/camdenfullmer/Dropbox/Workspace/iOS/CFShareCircle/Build/Intermediates/CFShareCircle.build/Debug-iphonesimulator/CFShareCircle.build/CFShareCircle-own-target-headers.hmap -I/Users/camdenfullmer/Dropbox/Workspace/iOS/CFShareCircle/Build/Intermediates/CFShareCircle.build/Debug-iphonesimulator/CFShareCircle.build/CFShareCircle-all-target-headers.hmap -iquote /Users/camdenfullmer/Dropbox/Workspace/iOS/CFShareCircle/Build/Intermediates/CFShareCircle.build/Debug-iphonesimulator/CFShareCircle.build/CFShareCircle-project-headers.hmap -I/Users/camdenfullmer/Dropbox/Workspace/iOS/CFShareCircle/Build/Products/Debug-iphonesimulator/include -I/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include -I/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include -I/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include -I/Users/camdenfullmer/Dropbox/Workspace/iOS/CFShareCircle/Build/Intermediates/CFShareCircle.build/Debug-iphonesimulator/CFShareCircle.build/DerivedSources/i386 -I/Users/camdenfullmer/Dropbox/Workspace/iOS/CFShareCircle/Build/Intermediates/CFShareCircle.build/Debug-iphonesimulator/CFShareCircle.build/DerivedSources -F/Users/camdenfullmer/Dropbox/Workspace/iOS/CFShareCircle/Build/Products/Debug-iphonesimulator -include /Users/camdenfullmer/Dropbox/Workspace/iOS/CFShareCircle/Build/Intermediates/PrecompiledHeaders/CFShareCircle-Prefix-bknzvodceruzqybxebiggvbrqwcg/CFShareCircle-Prefix.pch -MMD -MT dependencies -MF /Users/camdenfullmer/Dropbox/Workspace/iOS/CFShareCircle/Build/Intermediates/CFShareCircle.build/Debug-iphonesimulator/CFShareCircle.build/Objects-normal/i386/CFShareCircleView.d --serialize-diagnostics /Users/camdenfullmer/Dropbox/Workspace/iOS/CFShareCircle/Build/Intermediates/CFShareCircle.build/Debug-iphonesimulator/CFShareCircle.build/Objects-normal/i386/CFShareCircleView.dia -c /Users/camdenfullmer/Dropbox/Workspace/iOS/CFShareCircle/CFShareCircle/CFShareCircleView.m -o /Users/camdenfullmer/Dropbox/Workspace/iOS/CFShareCircle/Build/Intermediates/CFShareCircle.build/Debug-iphonesimulator/CFShareCircle.build/Objects-normal/i386/CFShareCircleView.o36"90E8143C-E68B-4E32-9BBC-D36915A614D4-
-
-CCompileC Build/Intermediates/CFShareCircle.build/Debug-iphonesimulator/CFShareCircle.build/Objects-normal/i386/ViewController.o /Users/camdenfullmer/Dropbox/Workspace/iOS/CFShareCircle/CFShareCircle/ViewController.m normal i386 objective-c com.apple.compilers.llvm.clang.1_0.compiler
-s379007048.098913
-e379007048.251761
-r1
-xCompileC
-xBuild/Intermediates/CFShareCircle.build/Debug-iphonesimulator/CFShareCircle.build/Objects-normal/i386/ViewController.o
-x/Users/camdenfullmer/Dropbox/Workspace/iOS/CFShareCircle/CFShareCircle/ViewController.m
-xnormal
-xi386
-xobjective-c
-xcom.apple.compilers.llvm.clang.1_0.compiler
-lSLF05#21%IDEActivityLogSection1@2#32"com.apple.dt.IDE.BuildLogSection95"Compile /Users/camdenfullmer/Dropbox/Workspace/iOS/CFShareCircle/CFShareCircle/ViewController.mba8219483097b641^528040483097b641^---0#0#0#-19%DVTDocumentLocation2@103"file://localhost/Users/camdenfullmer/Dropbox/Workspace/iOS/CFShareCircle/CFShareCircle/ViewController.m0000000000000000^4101"CompileC Build/Intermediates/CFShareCircle.build/Debug-iphonesimulator/CFShareCircle.build/Objects-normal/i386/ViewController.o CFShareCircle/ViewController.m normal i386 objective-c com.apple.compilers.llvm.clang.1_0.compiler    cd /Users/camdenfullmer/Dropbox/Workspace/iOS/CFShareCircle    setenv LANG en_US.US-ASCII    setenv PATH "/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/usr/bin:/Applications/Xcode.app/Contents/Developer/usr/bin:/usr/bin:/bin:/usr/sbin:/sbin"    /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/clang -x objective-c -arch i386 -fmessage-length=0 -std=gnu99 -fobjc-arc -Wno-trigraphs -fpascal-strings -O0 -Wno-missing-field-initializers -Wno-missing-prototypes -Wreturn-type -Wno-implicit-atomic-properties -Wno-receiver-is-weak -Wduplicate-method-match -Wformat -Wno-missing-braces -Wparentheses -Wswitch -Wno-unused-function -Wno-unused-label -Wno-unused-parameter -Wunused-variable -Wunused-value -Wempty-body -Wuninitialized -Wno-unknown-pragmas -Wno-shadow -Wno-four-char-constants -Wno-conversion -Wno-shorten-64-to-32 -Wpointer-sign -Wno-newline-eof -Wno-selector -Wno-strict-selector-match -Wno-undeclared-selector -Wno-deprecated-implementations -DDEBUG=1 -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator6.0.sdk -fexceptions -fasm-blocks -Wprotocol -Wdeprecated-declarations -g -Wno-sign-conversion -fobjc-abi-version=2 -fobjc-legacy-dispatch "-DIBOutlet=__attribute__((iboutlet))" "-DIBOutletCollection(ClassName)=__attribute__((iboutletcollection(ClassName)))" "-DIBAction=void)__attribute__((ibaction)" -mios-simulator-version-min=6.0 -iquote /Users/camdenfullmer/Dropbox/Workspace/iOS/CFShareCircle/Build/Intermediates/CFShareCircle.build/Debug-iphonesimulator/CFShareCircle.build/CFShareCircle-generated-files.hmap -I/Users/camdenfullmer/Dropbox/Workspace/iOS/CFShareCircle/Build/Intermediates/CFShareCircle.build/Debug-iphonesimulator/CFShareCircle.build/CFShareCircle-own-target-headers.hmap -I/Users/camdenfullmer/Dropbox/Workspace/iOS/CFShareCircle/Build/Intermediates/CFShareCircle.build/Debug-iphonesimulator/CFShareCircle.build/CFShareCircle-all-target-headers.hmap -iquote /Users/camdenfullmer/Dropbox/Workspace/iOS/CFShareCircle/Build/Intermediates/CFShareCircle.build/Debug-iphonesimulator/CFShareCircle.build/CFShareCircle-project-headers.hmap -I/Users/camdenfullmer/Dropbox/Workspace/iOS/CFShareCircle/Build/Products/Debug-iphonesimulator/include -I/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include -I/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include -I/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include -I/Users/camdenfullmer/Dropbox/Workspace/iOS/CFShareCircle/Build/Intermediates/CFShareCircle.build/Debug-iphonesimulator/CFShareCircle.build/DerivedSources/i386 -I/Users/camdenfullmer/Dropbox/Workspace/iOS/CFShareCircle/Build/Intermediates/CFShareCircle.build/Debug-iphonesimulator/CFShareCircle.build/DerivedSources -F/Users/camdenfullmer/Dropbox/Workspace/iOS/CFShareCircle/Build/Products/Debug-iphonesimulator -include /Users/camdenfullmer/Dropbox/Workspace/iOS/CFShareCircle/Build/Intermediates/PrecompiledHeaders/CFShareCircle-Prefix-bknzvodceruzqybxebiggvbrqwcg/CFShareCircle-Prefix.pch -MMD -MT dependencies -MF /Users/camdenfullmer/Dropbox/Workspace/iOS/CFShareCircle/Build/Intermediates/CFShareCircle.build/Debug-iphonesimulator/CFShareCircle.build/Objects-normal/i386/ViewController.d --serialize-diagnostics /Users/camdenfullmer/Dropbox/Workspace/iOS/CFShareCircle/Build/Intermediates/CFShareCircle.build/Debug-iphonesimulator/CFShareCircle.build/Objects-normal/i386/ViewController.dia -c /Users/camdenfullmer/Dropbox/Workspace/iOS/CFShareCircle/CFShareCircle/ViewController.m -o /Users/camdenfullmer/Dropbox/Workspace/iOS/CFShareCircle/Build/Intermediates/CFShareCircle.build/Debug-iphonesimulator/CFShareCircle.build/Objects-normal/i386/ViewController.o36"C3934819-EF09-4290-B7D7-061E768331C0-
-
-CCompileC Build/Intermediates/CFShareCircle.build/Debug-iphonesimulator/CFShareCircle.build/Objects-normal/i386/main.o /Users/camdenfullmer/Dropbox/Workspace/iOS/CFShareCircle/CFShareCircle/main.m normal i386 objective-c com.apple.compilers.llvm.clang.1_0.compiler
-s379007048.097801
-e379007048.182748
-r1
-xCompileC
-xBuild/Intermediates/CFShareCircle.build/Debug-iphonesimulator/CFShareCircle.build/Objects-normal/i386/main.o
-x/Users/camdenfullmer/Dropbox/Workspace/iOS/CFShareCircle/CFShareCircle/main.m
-xnormal
-xi386
-xobjective-c
-xcom.apple.compilers.llvm.clang.1_0.compiler
-lSLF05#21%IDEActivityLogSection1@2#32"com.apple.dt.IDE.BuildLogSection85"Compile /Users/camdenfullmer/Dropbox/Workspace/iOS/CFShareCircle/CFShareCircle/main.mdd4019483097b641^21752f483097b641^---0#0#0#-19%DVTDocumentLocation2@93"file://localhost/Users/camdenfullmer/Dropbox/Workspace/iOS/CFShareCircle/CFShareCircle/main.m0000000000000000^4041"CompileC Build/Intermediates/CFShareCircle.build/Debug-iphonesimulator/CFShareCircle.build/Objects-normal/i386/main.o CFShareCircle/main.m normal i386 objective-c com.apple.compilers.llvm.clang.1_0.compiler    cd /Users/camdenfullmer/Dropbox/Workspace/iOS/CFShareCircle    setenv LANG en_US.US-ASCII    setenv PATH "/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/usr/bin:/Applications/Xcode.app/Contents/Developer/usr/bin:/usr/bin:/bin:/usr/sbin:/sbin"    /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/clang -x objective-c -arch i386 -fmessage-length=0 -std=gnu99 -fobjc-arc -Wno-trigraphs -fpascal-strings -O0 -Wno-missing-field-initializers -Wno-missing-prototypes -Wreturn-type -Wno-implicit-atomic-properties -Wno-receiver-is-weak -Wduplicate-method-match -Wformat -Wno-missing-braces -Wparentheses -Wswitch -Wno-unused-function -Wno-unused-label -Wno-unused-parameter -Wunused-variable -Wunused-value -Wempty-body -Wuninitialized -Wno-unknown-pragmas -Wno-shadow -Wno-four-char-constants -Wno-conversion -Wno-shorten-64-to-32 -Wpointer-sign -Wno-newline-eof -Wno-selector -Wno-strict-selector-match -Wno-undeclared-selector -Wno-deprecated-implementations -DDEBUG=1 -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator6.0.sdk -fexceptions -fasm-blocks -Wprotocol -Wdeprecated-declarations -g -Wno-sign-conversion -fobjc-abi-version=2 -fobjc-legacy-dispatch "-DIBOutlet=__attribute__((iboutlet))" "-DIBOutletCollection(ClassName)=__attribute__((iboutletcollection(ClassName)))" "-DIBAction=void)__attribute__((ibaction)" -mios-simulator-version-min=6.0 -iquote /Users/camdenfullmer/Dropbox/Workspace/iOS/CFShareCircle/Build/Intermediates/CFShareCircle.build/Debug-iphonesimulator/CFShareCircle.build/CFShareCircle-generated-files.hmap -I/Users/camdenfullmer/Dropbox/Workspace/iOS/CFShareCircle/Build/Intermediates/CFShareCircle.build/Debug-iphonesimulator/CFShareCircle.build/CFShareCircle-own-target-headers.hmap -I/Users/camdenfullmer/Dropbox/Workspace/iOS/CFShareCircle/Build/Intermediates/CFShareCircle.build/Debug-iphonesimulator/CFShareCircle.build/CFShareCircle-all-target-headers.hmap -iquote /Users/camdenfullmer/Dropbox/Workspace/iOS/CFShareCircle/Build/Intermediates/CFShareCircle.build/Debug-iphonesimulator/CFShareCircle.build/CFShareCircle-project-headers.hmap -I/Users/camdenfullmer/Dropbox/Workspace/iOS/CFShareCircle/Build/Products/Debug-iphonesimulator/include -I/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include -I/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include -I/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include -I/Users/camdenfullmer/Dropbox/Workspace/iOS/CFShareCircle/Build/Intermediates/CFShareCircle.build/Debug-iphonesimulator/CFShareCircle.build/DerivedSources/i386 -I/Users/camdenfullmer/Dropbox/Workspace/iOS/CFShareCircle/Build/Intermediates/CFShareCircle.build/Debug-iphonesimulator/CFShareCircle.build/DerivedSources -F/Users/camdenfullmer/Dropbox/Workspace/iOS/CFShareCircle/Build/Products/Debug-iphonesimulator -include /Users/camdenfullmer/Dropbox/Workspace/iOS/CFShareCircle/Build/Intermediates/PrecompiledHeaders/CFShareCircle-Prefix-bknzvodceruzqybxebiggvbrqwcg/CFShareCircle-Prefix.pch -MMD -MT dependencies -MF /Users/camdenfullmer/Dropbox/Workspace/iOS/CFShareCircle/Build/Intermediates/CFShareCircle.build/Debug-iphonesimulator/CFShareCircle.build/Objects-normal/i386/main.d --serialize-diagnostics /Users/camdenfullmer/Dropbox/Workspace/iOS/CFShareCircle/Build/Intermediates/CFShareCircle.build/Debug-iphonesimulator/CFShareCircle.build/Objects-normal/i386/main.dia -c /Users/camdenfullmer/Dropbox/Workspace/iOS/CFShareCircle/CFShareCircle/main.m -o /Users/camdenfullmer/Dropbox/Workspace/iOS/CFShareCircle/Build/Intermediates/CFShareCircle.build/Debug-iphonesimulator/CFShareCircle.build/Objects-normal/i386/main.o36"FBD5258D-F3DF-4198-95A6-0580B0B5581B-
-
-CCompileStoryboard /Users/camdenfullmer/Dropbox/Workspace/iOS/CFShareCircle/CFShareCircle/en.lproj/MainStoryboard_iPad.storyboard
-s379007048.388813
-e379007049.570399
-r1
-xCompileStoryboard
-x/Users/camdenfullmer/Dropbox/Workspace/iOS/CFShareCircle/CFShareCircle/en.lproj/MainStoryboard_iPad.storyboard
-lSLF05#21%IDEActivityLogSection1@2#32"com.apple.dt.IDE.BuildLogSection71"CompileStoryboard CFShareCircle/en.lproj/MainStoryboard_iPad.storyboarda8ab63483097b641^b60e92493097b641^---0#0#0#-19%DVTDocumentLocation2@126"file://localhost/Users/camdenfullmer/Dropbox/Workspace/iOS/CFShareCircle/CFShareCircle/en.lproj/MainStoryboard_iPad.storyboard0000000000000000^1040"CompileStoryboard CFShareCircle/en.lproj/MainStoryboard_iPad.storyboard    cd /Users/camdenfullmer/Dropbox/Workspace/iOS/CFShareCircle    setenv IBSC_MINIMUM_COMPATIBILITY_VERSION 6.0    setenv PATH "/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/usr/bin:/Applications/Xcode.app/Contents/Developer/usr/bin:/usr/bin:/bin:/usr/sbin:/sbin"    setenv XCODE_DEVELOPER_USR_PATH /Applications/Xcode.app/Contents/Developer/usr/bin/..    /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/usr/bin/ibtool --errors --warnings --notices --output-format human-readable-text --compile /Users/camdenfullmer/Dropbox/Workspace/iOS/CFShareCircle/Build/Products/Debug-iphonesimulator/CFShareCircle.app/en.lproj/MainStoryboard_iPad.storyboardc /Users/camdenfullmer/Dropbox/Workspace/iOS/CFShareCircle/CFShareCircle/en.lproj/MainStoryboard_iPad.storyboard --sdk /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator6.0.sdk36"2A4E97AB-47DD-4317-B859-76474C7CA8A6-
-
-CCompileStoryboard /Users/camdenfullmer/Dropbox/Workspace/iOS/CFShareCircle/CFShareCircle/en.lproj/MainStoryboard_iPhone.storyboard
-s379007048.387046
-e379007049.635773
-r1
-xCompileStoryboard
-x/Users/camdenfullmer/Dropbox/Workspace/iOS/CFShareCircle/CFShareCircle/en.lproj/MainStoryboard_iPhone.storyboard
-lSLF05#21%IDEActivityLogSection1@2#32"com.apple.dt.IDE.BuildLogSection73"CompileStoryboard CFShareCircle/en.lproj/MainStoryboard_iPhone.storyboardcd3a63483097b641^11c3a2493097b641^---0#0#0#-19%DVTDocumentLocation2@128"file://localhost/Users/camdenfullmer/Dropbox/Workspace/iOS/CFShareCircle/CFShareCircle/en.lproj/MainStoryboard_iPhone.storyboard0000000000000000^1046"CompileStoryboard CFShareCircle/en.lproj/MainStoryboard_iPhone.storyboard    cd /Users/camdenfullmer/Dropbox/Workspace/iOS/CFShareCircle    setenv IBSC_MINIMUM_COMPATIBILITY_VERSION 6.0    setenv PATH "/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/usr/bin:/Applications/Xcode.app/Contents/Developer/usr/bin:/usr/bin:/bin:/usr/sbin:/sbin"    setenv XCODE_DEVELOPER_USR_PATH /Applications/Xcode.app/Contents/Developer/usr/bin/..    /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/usr/bin/ibtool --errors --warnings --notices --output-format human-readable-text --compile /Users/camdenfullmer/Dropbox/Workspace/iOS/CFShareCircle/Build/Products/Debug-iphonesimulator/CFShareCircle.app/en.lproj/MainStoryboard_iPhone.storyboardc /Users/camdenfullmer/Dropbox/Workspace/iOS/CFShareCircle/CFShareCircle/en.lproj/MainStoryboard_iPhone.storyboard --sdk /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator6.0.sdk36"4F8B384A-E8D0-4BD3-82F3-607F4D8ED355-
-
-CCopyStringsFile /Users/camdenfullmer/Dropbox/Workspace/iOS/CFShareCircle/Build/Products/Debug-iphonesimulator/CFShareCircle.app/en.lproj/InfoPlist.strings CFShareCircle/en.lproj/InfoPlist.strings
-s379007048.382646
-e379007048.385732
-r1
-xCopyStringsFile
-x/Users/camdenfullmer/Dropbox/Workspace/iOS/CFShareCircle/Build/Products/Debug-iphonesimulator/CFShareCircle.app/en.lproj/InfoPlist.strings
-xCFShareCircle/en.lproj/InfoPlist.strings
-lSLF05#21%IDEActivityLogSection1@2#32"com.apple.dt.IDE.BuildLogSection45"Copy CFShareCircle/en.lproj/InfoPlist.stringsca1562483097b641^1ac162483097b641^---0#0#0#-19%DVTDocumentLocation2@113"file://localhost/Users/camdenfullmer/Dropbox/Workspace/iOS/CFShareCircle/CFShareCircle/en.lproj/InfoPlist.strings0000000000000000^653"CopyStringsFile Build/Products/Debug-iphonesimulator/CFShareCircle.app/en.lproj/InfoPlist.strings CFShareCircle/en.lproj/InfoPlist.strings    cd /Users/camdenfullmer/Dropbox/Workspace/iOS/CFShareCircle    setenv PATH "/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/usr/bin:/Applications/Xcode.app/Contents/Developer/usr/bin:/usr/bin:/bin:/usr/sbin:/sbin"    builtin-copyStrings --validate --inputencoding utf-8 --outputencoding binary --outdir /Users/camdenfullmer/Dropbox/Workspace/iOS/CFShareCircle/Build/Products/Debug-iphonesimulator/CFShareCircle.app/en.lproj -- CFShareCircle/en.lproj/InfoPlist.strings36"5BBD6F37-7EDF-42C7-B645-9C23B4833208-
-
-CCpResource CFShareCircle/Default-568h@2x.png Build/Products/Debug-iphonesimulator/CFShareCircle.app/Default-568h@2x.png
-s379007048.383401
-e379007048.388523
-r1
-xCpResource
-xCFShareCircle/Default-568h@2x.png
-xBuild/Products/Debug-iphonesimulator/CFShareCircle.app/Default-568h@2x.png
-lSLF05#21%IDEActivityLogSection1@2#32"com.apple.dt.IDE.BuildLogSection79"Copy Build/Products/Debug-iphonesimulator/CFShareCircle.app/Default-568h@2x.pngb43d62483097b641^41b763483097b641^---0#0#0#-19%DVTDocumentLocation2@147"file://localhost/Users/camdenfullmer/Dropbox/Workspace/iOS/CFShareCircle/Build/Products/Debug-iphonesimulator/CFShareCircle.app/Default-568h@2x.png000000000080d041^700"CpResource "CFShareCircle/Default-568h@2x.png" "Build/Products/Debug-iphonesimulator/CFShareCircle.app/Default-568h@2x.png"    cd /Users/camdenfullmer/Dropbox/Workspace/iOS/CFShareCircle    setenv PATH "/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/usr/bin:/Applications/Xcode.app/Contents/Developer/usr/bin:/usr/bin:/bin:/usr/sbin:/sbin"    builtin-copy -exclude .DS_Store -exclude CVS -exclude .svn -exclude .git -exclude .hg -resolve-src-symlinks "/Users/camdenfullmer/Dropbox/Workspace/iOS/CFShareCircle/CFShareCircle/Default-568h@2x.png" /Users/camdenfullmer/Dropbox/Workspace/iOS/CFShareCircle/Build/Products/Debug-iphonesimulator/CFShareCircle.app36"16EAC33E-3599-4C2A-8814-C6A80337EEAD-
-
-CCpResource CFShareCircle/Default.png Build/Products/Debug-iphonesimulator/CFShareCircle.app/Default.png
-s379007048.382813
-e379007048.387411
-r1
-xCpResource
-xCFShareCircle/Default.png
-xBuild/Products/Debug-iphonesimulator/CFShareCircle.app/Default.png
-lSLF05#21%IDEActivityLogSection1@2#32"com.apple.dt.IDE.BuildLogSection71"Copy Build/Products/Debug-iphonesimulator/CFShareCircle.app/Default.png261862483097b641^7e3963483097b641^---0#0#0#-19%DVTDocumentLocation2@139"file://localhost/Users/camdenfullmer/Dropbox/Workspace/iOS/CFShareCircle/Build/Products/Debug-iphonesimulator/CFShareCircle.app/Default.png000000000080d041^670"CpResource CFShareCircle/Default.png Build/Products/Debug-iphonesimulator/CFShareCircle.app/Default.png    cd /Users/camdenfullmer/Dropbox/Workspace/iOS/CFShareCircle    setenv PATH "/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/usr/bin:/Applications/Xcode.app/Contents/Developer/usr/bin:/usr/bin:/bin:/usr/sbin:/sbin"    builtin-copy -exclude .DS_Store -exclude CVS -exclude .svn -exclude .git -exclude .hg -resolve-src-symlinks /Users/camdenfullmer/Dropbox/Workspace/iOS/CFShareCircle/CFShareCircle/Default.png /Users/camdenfullmer/Dropbox/Workspace/iOS/CFShareCircle/Build/Products/Debug-iphonesimulator/CFShareCircle.app36"685FEF03-7360-4EC3-BCD7-023F9DCD816E-
-
-CCpResource CFShareCircle/Default@2x.png Build/Products/Debug-iphonesimulator/CFShareCircle.app/Default@2x.png
-s379007048.383384
-e379007048.389920
-r1
-xCpResource
-xCFShareCircle/Default@2x.png
-xBuild/Products/Debug-iphonesimulator/CFShareCircle.app/Default@2x.png
-lSLF05#21%IDEActivityLogSection1@2#32"com.apple.dt.IDE.BuildLogSection74"Copy Build/Products/Debug-iphonesimulator/CFShareCircle.app/Default@2x.png924162483097b641^1bd763483097b641^---0#0#0#-19%DVTDocumentLocation2@142"file://localhost/Users/camdenfullmer/Dropbox/Workspace/iOS/CFShareCircle/Build/Products/Debug-iphonesimulator/CFShareCircle.app/Default@2x.png000000000080d041^685"CpResource "CFShareCircle/Default@2x.png" "Build/Products/Debug-iphonesimulator/CFShareCircle.app/Default@2x.png"    cd /Users/camdenfullmer/Dropbox/Workspace/iOS/CFShareCircle    setenv PATH "/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/usr/bin:/Applications/Xcode.app/Contents/Developer/usr/bin:/usr/bin:/bin:/usr/sbin:/sbin"    builtin-copy -exclude .DS_Store -exclude CVS -exclude .svn -exclude .git -exclude .hg -resolve-src-symlinks "/Users/camdenfullmer/Dropbox/Workspace/iOS/CFShareCircle/CFShareCircle/Default@2x.png" /Users/camdenfullmer/Dropbox/Workspace/iOS/CFShareCircle/Build/Products/Debug-iphonesimulator/CFShareCircle.app36"13B8C744-1015-4CE0-BE68-680D4CF06FC2-
-
-CCpResource CFShareCircle/dropbox.png Build/Products/Debug-iphonesimulator/CFShareCircle.app/dropbox.png
-s379007048.396384
-e379007048.399654
-r1
-xCpResource
-xCFShareCircle/dropbox.png
-xBuild/Products/Debug-iphonesimulator/CFShareCircle.app/dropbox.png
-lSLF05#21%IDEActivityLogSection1@2#32"com.apple.dt.IDE.BuildLogSection71"Copy Build/Products/Debug-iphonesimulator/CFShareCircle.app/dropbox.png849a65483097b641^a05166483097b641^---0#0#0#-19%DVTDocumentLocation2@139"file://localhost/Users/camdenfullmer/Dropbox/Workspace/iOS/CFShareCircle/Build/Products/Debug-iphonesimulator/CFShareCircle.app/dropbox.png000000000080d041^670"CpResource CFShareCircle/dropbox.png Build/Products/Debug-iphonesimulator/CFShareCircle.app/dropbox.png    cd /Users/camdenfullmer/Dropbox/Workspace/iOS/CFShareCircle    setenv PATH "/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/usr/bin:/Applications/Xcode.app/Contents/Developer/usr/bin:/usr/bin:/bin:/usr/sbin:/sbin"    builtin-copy -exclude .DS_Store -exclude CVS -exclude .svn -exclude .git -exclude .hg -resolve-src-symlinks /Users/camdenfullmer/Dropbox/Workspace/iOS/CFShareCircle/CFShareCircle/dropbox.png /Users/camdenfullmer/Dropbox/Workspace/iOS/CFShareCircle/Build/Products/Debug-iphonesimulator/CFShareCircle.app36"28F0AC7E-A7B6-436C-9D2B-B3957341C1C8-
-
-CCpResource CFShareCircle/dropbox@2x.png Build/Products/Debug-iphonesimulator/CFShareCircle.app/dropbox@2x.png
-s379007048.398876
-e379007048.402477
-r1
-xCpResource
-xCFShareCircle/dropbox@2x.png
-xBuild/Products/Debug-iphonesimulator/CFShareCircle.app/dropbox@2x.png
-lSLF05#21%IDEActivityLogSection1@2#32"com.apple.dt.IDE.BuildLogSection74"Copy Build/Products/Debug-iphonesimulator/CFShareCircle.app/dropbox@2x.png4b3a66483097b641^f20b67483097b641^---0#0#0#-19%DVTDocumentLocation2@142"file://localhost/Users/camdenfullmer/Dropbox/Workspace/iOS/CFShareCircle/Build/Products/Debug-iphonesimulator/CFShareCircle.app/dropbox@2x.png000000000080d041^685"CpResource "CFShareCircle/dropbox@2x.png" "Build/Products/Debug-iphonesimulator/CFShareCircle.app/dropbox@2x.png"    cd /Users/camdenfullmer/Dropbox/Workspace/iOS/CFShareCircle    setenv PATH "/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/usr/bin:/Applications/Xcode.app/Contents/Developer/usr/bin:/usr/bin:/bin:/usr/sbin:/sbin"    builtin-copy -exclude .DS_Store -exclude CVS -exclude .svn -exclude .git -exclude .hg -resolve-src-symlinks "/Users/camdenfullmer/Dropbox/Workspace/iOS/CFShareCircle/CFShareCircle/dropbox@2x.png" /Users/camdenfullmer/Dropbox/Workspace/iOS/CFShareCircle/Build/Products/Debug-iphonesimulator/CFShareCircle.app36"07163F33-A0B4-46FF-B3FC-D8D04B0E3ABA-
-
-CCpResource CFShareCircle/email.png Build/Products/Debug-iphonesimulator/CFShareCircle.app/email.png
-s379007258.112137
-e379007258.115634
-r1
-xCpResource
-xCFShareCircle/email.png
-xBuild/Products/Debug-iphonesimulator/CFShareCircle.app/email.png
-lSLF05#21%IDEActivityLogSection1@2#32"com.apple.dt.IDE.BuildLogSection69"Copy Build/Products/Debug-iphonesimulator/CFShareCircle.app/email.pngb3ce1c1a3197b641^0b9b1d1a3197b641^---0#0#0#-19%DVTDocumentLocation2@137"file://localhost/Users/camdenfullmer/Dropbox/Workspace/iOS/CFShareCircle/Build/Products/Debug-iphonesimulator/CFShareCircle.app/email.png000000000080d041^664"CpResource CFShareCircle/email.png Build/Products/Debug-iphonesimulator/CFShareCircle.app/email.png    cd /Users/camdenfullmer/Dropbox/Workspace/iOS/CFShareCircle    setenv PATH "/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/usr/bin:/Applications/Xcode.app/Contents/Developer/usr/bin:/usr/bin:/bin:/usr/sbin:/sbin"    builtin-copy -exclude .DS_Store -exclude CVS -exclude .svn -exclude .git -exclude .hg -resolve-src-symlinks /Users/camdenfullmer/Dropbox/Workspace/iOS/CFShareCircle/CFShareCircle/email.png /Users/camdenfullmer/Dropbox/Workspace/iOS/CFShareCircle/Build/Products/Debug-iphonesimulator/CFShareCircle.app36"7A0256FA-ECD6-4F97-ACBD-9A1BBCC50610-
-
-CCpResource CFShareCircle/email@2x.png Build/Products/Debug-iphonesimulator/CFShareCircle.app/email@2x.png
-s379007258.112033
-e379007258.114856
-r1
-xCpResource
-xCFShareCircle/email@2x.png
-xBuild/Products/Debug-iphonesimulator/CFShareCircle.app/email@2x.png
-lSLF05#21%IDEActivityLogSection1@2#32"com.apple.dt.IDE.BuildLogSection72"Copy Build/Products/Debug-iphonesimulator/CFShareCircle.app/email@2x.png85cd1c1a3197b641^30681d1a3197b641^---0#0#0#-19%DVTDocumentLocation2@140"file://localhost/Users/camdenfullmer/Dropbox/Workspace/iOS/CFShareCircle/Build/Products/Debug-iphonesimulator/CFShareCircle.app/email@2x.png000000000080d041^679"CpResource "CFShareCircle/email@2x.png" "Build/Products/Debug-iphonesimulator/CFShareCircle.app/email@2x.png"    cd /Users/camdenfullmer/Dropbox/Workspace/iOS/CFShareCircle    setenv PATH "/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/usr/bin:/Applications/Xcode.app/Contents/Developer/usr/bin:/usr/bin:/bin:/usr/sbin:/sbin"    builtin-copy -exclude .DS_Store -exclude CVS -exclude .svn -exclude .git -exclude .hg -resolve-src-symlinks "/Users/camdenfullmer/Dropbox/Workspace/iOS/CFShareCircle/CFShareCircle/email@2x.png" /Users/camdenfullmer/Dropbox/Workspace/iOS/CFShareCircle/Build/Products/Debug-iphonesimulator/CFShareCircle.app36"9687B45A-E8BF-41FC-B810-EE599C9235CF-
-
-CCpResource CFShareCircle/evernote.png Build/Products/Debug-iphonesimulator/CFShareCircle.app/evernote.png
-s379007598.879183
-e379007598.882942
-r1
-xCpResource
-xCFShareCircle/evernote.png
-xBuild/Products/Debug-iphonesimulator/CFShareCircle.app/evernote.png
-lSLF05#21%IDEActivityLogSection1@2#32"com.apple.dt.IDE.BuildLogSection72"Copy Build/Products/Debug-iphonesimulator/CFShareCircle.app/evernote.png6a30e16e3297b641^1b0fe26e3297b641^---0#0#0#-19%DVTDocumentLocation2@140"file://localhost/Users/camdenfullmer/Dropbox/Workspace/iOS/CFShareCircle/Build/Products/Debug-iphonesimulator/CFShareCircle.app/evernote.png0000000000000000^673"CpResource CFShareCircle/evernote.png Build/Products/Debug-iphonesimulator/CFShareCircle.app/evernote.png    cd /Users/camdenfullmer/Dropbox/Workspace/iOS/CFShareCircle    setenv PATH "/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/usr/bin:/Applications/Xcode.app/Contents/Developer/usr/bin:/usr/bin:/bin:/usr/sbin:/sbin"    builtin-copy -exclude .DS_Store -exclude CVS -exclude .svn -exclude .git -exclude .hg -resolve-src-symlinks /Users/camdenfullmer/Dropbox/Workspace/iOS/CFShareCircle/CFShareCircle/evernote.png /Users/camdenfullmer/Dropbox/Workspace/iOS/CFShareCircle/Build/Products/Debug-iphonesimulator/CFShareCircle.app36"42F38FE8-EB23-46EE-B089-6DC640B7917D-
-
-CCpResource CFShareCircle/evernote@2x.png Build/Products/Debug-iphonesimulator/CFShareCircle.app/evernote@2x.png
-s379007598.879208
-e379007598.884106
-r1
-xCpResource
-xCFShareCircle/evernote@2x.png
-xBuild/Products/Debug-iphonesimulator/CFShareCircle.app/evernote@2x.png
-lSLF05#21%IDEActivityLogSection1@2#32"com.apple.dt.IDE.BuildLogSection75"Copy Build/Products/Debug-iphonesimulator/CFShareCircle.app/evernote@2x.pngdb31e16e3297b641^3656e26e3297b641^---0#0#0#-19%DVTDocumentLocation2@143"file://localhost/Users/camdenfullmer/Dropbox/Workspace/iOS/CFShareCircle/Build/Products/Debug-iphonesimulator/CFShareCircle.app/evernote@2x.png0000000000000000^688"CpResource "CFShareCircle/evernote@2x.png" "Build/Products/Debug-iphonesimulator/CFShareCircle.app/evernote@2x.png"    cd /Users/camdenfullmer/Dropbox/Workspace/iOS/CFShareCircle    setenv PATH "/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/usr/bin:/Applications/Xcode.app/Contents/Developer/usr/bin:/usr/bin:/bin:/usr/sbin:/sbin"    builtin-copy -exclude .DS_Store -exclude CVS -exclude .svn -exclude .git -exclude .hg -resolve-src-symlinks "/Users/camdenfullmer/Dropbox/Workspace/iOS/CFShareCircle/CFShareCircle/evernote@2x.png" /Users/camdenfullmer/Dropbox/Workspace/iOS/CFShareCircle/Build/Products/Debug-iphonesimulator/CFShareCircle.app36"5F4D709E-0E13-498E-B012-D7EFC0258297-
-
-CCpResource CFShareCircle/facebook.png Build/Products/Debug-iphonesimulator/CFShareCircle.app/facebook.png
-s379007048.401399
-e379007048.404617
-r1
-xCpResource
-xCFShareCircle/facebook.png
-xBuild/Products/Debug-iphonesimulator/CFShareCircle.app/facebook.png
-lSLF05#21%IDEActivityLogSection1@2#32"com.apple.dt.IDE.BuildLogSection72"Copy Build/Products/Debug-iphonesimulator/CFShareCircle.app/facebook.pngf4dc66483097b641^e19667483097b641^---0#0#0#-19%DVTDocumentLocation2@140"file://localhost/Users/camdenfullmer/Dropbox/Workspace/iOS/CFShareCircle/Build/Products/Debug-iphonesimulator/CFShareCircle.app/facebook.png000000000080d041^673"CpResource CFShareCircle/facebook.png Build/Products/Debug-iphonesimulator/CFShareCircle.app/facebook.png    cd /Users/camdenfullmer/Dropbox/Workspace/iOS/CFShareCircle    setenv PATH "/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/usr/bin:/Applications/Xcode.app/Contents/Developer/usr/bin:/usr/bin:/bin:/usr/sbin:/sbin"    builtin-copy -exclude .DS_Store -exclude CVS -exclude .svn -exclude .git -exclude .hg -resolve-src-symlinks /Users/camdenfullmer/Dropbox/Workspace/iOS/CFShareCircle/CFShareCircle/facebook.png /Users/camdenfullmer/Dropbox/Workspace/iOS/CFShareCircle/Build/Products/Debug-iphonesimulator/CFShareCircle.app36"E3DF3B1D-3F87-47F0-975B-AEDE2EC04E24-
-
-CCpResource CFShareCircle/facebook@2x.png Build/Products/Debug-iphonesimulator/CFShareCircle.app/facebook@2x.png
-s379007048.403781
-e379007048.407859
-r1
-xCpResource
-xCFShareCircle/facebook@2x.png
-xBuild/Products/Debug-iphonesimulator/CFShareCircle.app/facebook@2x.png
-lSLF05#21%IDEActivityLogSection1@2#32"com.apple.dt.IDE.BuildLogSection75"Copy Build/Products/Debug-iphonesimulator/CFShareCircle.app/facebook@2x.png4e7e67483097b641^8b6b68483097b641^---0#0#0#-19%DVTDocumentLocation2@143"file://localhost/Users/camdenfullmer/Dropbox/Workspace/iOS/CFShareCircle/Build/Products/Debug-iphonesimulator/CFShareCircle.app/facebook@2x.png000000000080d041^688"CpResource "CFShareCircle/facebook@2x.png" "Build/Products/Debug-iphonesimulator/CFShareCircle.app/facebook@2x.png"    cd /Users/camdenfullmer/Dropbox/Workspace/iOS/CFShareCircle    setenv PATH "/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/usr/bin:/Applications/Xcode.app/Contents/Developer/usr/bin:/usr/bin:/bin:/usr/sbin:/sbin"    builtin-copy -exclude .DS_Store -exclude CVS -exclude .svn -exclude .git -exclude .hg -resolve-src-symlinks "/Users/camdenfullmer/Dropbox/Workspace/iOS/CFShareCircle/CFShareCircle/facebook@2x.png" /Users/camdenfullmer/Dropbox/Workspace/iOS/CFShareCircle/Build/Products/Debug-iphonesimulator/CFShareCircle.app36"154E29C7-9ED0-4AA0-AA0F-287AC3A6F686-
-
-CCpResource CFShareCircle/googleplus.png Build/Products/Debug-iphonesimulator/CFShareCircle.app/googleplus.png
-s379007169.379602
-e379007169.382748
-r1
-xCpResource
-xCFShareCircle/googleplus.png
-xBuild/Products/Debug-iphonesimulator/CFShareCircle.app/googleplus.png
-lSLF05#21%IDEActivityLogSection1@2#32"com.apple.dt.IDE.BuildLogSection74"Copy Build/Products/Debug-iphonesimulator/CFShareCircle.app/googleplus.png124c61c13097b641^6a2f62c13097b641^---0#0#0#-19%DVTDocumentLocation2@142"file://localhost/Users/camdenfullmer/Dropbox/Workspace/iOS/CFShareCircle/Build/Products/Debug-iphonesimulator/CFShareCircle.app/googleplus.png000000000080d041^679"CpResource CFShareCircle/googleplus.png Build/Products/Debug-iphonesimulator/CFShareCircle.app/googleplus.png    cd /Users/camdenfullmer/Dropbox/Workspace/iOS/CFShareCircle    setenv PATH "/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/usr/bin:/Applications/Xcode.app/Contents/Developer/usr/bin:/usr/bin:/bin:/usr/sbin:/sbin"    builtin-copy -exclude .DS_Store -exclude CVS -exclude .svn -exclude .git -exclude .hg -resolve-src-symlinks /Users/camdenfullmer/Dropbox/Workspace/iOS/CFShareCircle/CFShareCircle/googleplus.png /Users/camdenfullmer/Dropbox/Workspace/iOS/CFShareCircle/Build/Products/Debug-iphonesimulator/CFShareCircle.app36"A3A5980A-D152-48F0-ACF9-7BF2A75AA6AC-
-
-CCpResource CFShareCircle/googleplus@2x.png Build/Products/Debug-iphonesimulator/CFShareCircle.app/googleplus@2x.png
-s379007169.379663
-e379007169.384265
-r1
-xCpResource
-xCFShareCircle/googleplus@2x.png
-xBuild/Products/Debug-iphonesimulator/CFShareCircle.app/googleplus@2x.png
-lSLF05#21%IDEActivityLogSection1@2#32"com.apple.dt.IDE.BuildLogSection77"Copy Build/Products/Debug-iphonesimulator/CFShareCircle.app/googleplus@2x.pngb14e61c13097b641^965f62c13097b641^---0#0#0#-19%DVTDocumentLocation2@145"file://localhost/Users/camdenfullmer/Dropbox/Workspace/iOS/CFShareCircle/Build/Products/Debug-iphonesimulator/CFShareCircle.app/googleplus@2x.png000000000080d041^694"CpResource "CFShareCircle/googleplus@2x.png" "Build/Products/Debug-iphonesimulator/CFShareCircle.app/googleplus@2x.png"    cd /Users/camdenfullmer/Dropbox/Workspace/iOS/CFShareCircle    setenv PATH "/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/usr/bin:/Applications/Xcode.app/Contents/Developer/usr/bin:/usr/bin:/bin:/usr/sbin:/sbin"    builtin-copy -exclude .DS_Store -exclude CVS -exclude .svn -exclude .git -exclude .hg -resolve-src-symlinks "/Users/camdenfullmer/Dropbox/Workspace/iOS/CFShareCircle/CFShareCircle/googleplus@2x.png" /Users/camdenfullmer/Dropbox/Workspace/iOS/CFShareCircle/Build/Products/Debug-iphonesimulator/CFShareCircle.app36"07E06155-4439-4243-8568-6B1E84FA5EED-
-
-CCpResource CFShareCircle/message.png Build/Products/Debug-iphonesimulator/CFShareCircle.app/message.png
-s379007048.412031
-e379007048.416111
-r1
-xCpResource
-xCFShareCircle/message.png
-xBuild/Products/Debug-iphonesimulator/CFShareCircle.app/message.png
-lSLF05#21%IDEActivityLogSection1@2#32"com.apple.dt.IDE.BuildLogSection71"Copy Build/Products/Debug-iphonesimulator/CFShareCircle.app/message.pngc79e69483097b641^3c876a483097b641^---0#0#0#-19%DVTDocumentLocation2@139"file://localhost/Users/camdenfullmer/Dropbox/Workspace/iOS/CFShareCircle/Build/Products/Debug-iphonesimulator/CFShareCircle.app/message.png000000000080d041^670"CpResource CFShareCircle/message.png Build/Products/Debug-iphonesimulator/CFShareCircle.app/message.png    cd /Users/camdenfullmer/Dropbox/Workspace/iOS/CFShareCircle    setenv PATH "/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/usr/bin:/Applications/Xcode.app/Contents/Developer/usr/bin:/usr/bin:/bin:/usr/sbin:/sbin"    builtin-copy -exclude .DS_Store -exclude CVS -exclude .svn -exclude .git -exclude .hg -resolve-src-symlinks /Users/camdenfullmer/Dropbox/Workspace/iOS/CFShareCircle/CFShareCircle/message.png /Users/camdenfullmer/Dropbox/Workspace/iOS/CFShareCircle/Build/Products/Debug-iphonesimulator/CFShareCircle.app36"7C4C08F6-29E1-4EEE-B36C-FB362F5A6C08-
-
-CCpResource CFShareCircle/message@2x.png Build/Products/Debug-iphonesimulator/CFShareCircle.app/message@2x.png
-s379007048.414787
-e379007048.418536
-r1
-xCpResource
-xCFShareCircle/message@2x.png
-xBuild/Products/Debug-iphonesimulator/CFShareCircle.app/message@2x.png
-lSLF05#21%IDEActivityLogSection1@2#32"com.apple.dt.IDE.BuildLogSection74"Copy Build/Products/Debug-iphonesimulator/CFShareCircle.app/message@2x.png764f6a483097b641^a5306b483097b641^---0#0#0#-19%DVTDocumentLocation2@142"file://localhost/Users/camdenfullmer/Dropbox/Workspace/iOS/CFShareCircle/Build/Products/Debug-iphonesimulator/CFShareCircle.app/message@2x.png000000000080d041^685"CpResource "CFShareCircle/message@2x.png" "Build/Products/Debug-iphonesimulator/CFShareCircle.app/message@2x.png"    cd /Users/camdenfullmer/Dropbox/Workspace/iOS/CFShareCircle    setenv PATH "/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/usr/bin:/Applications/Xcode.app/Contents/Developer/usr/bin:/usr/bin:/bin:/usr/sbin:/sbin"    builtin-copy -exclude .DS_Store -exclude CVS -exclude .svn -exclude .git -exclude .hg -resolve-src-symlinks "/Users/camdenfullmer/Dropbox/Workspace/iOS/CFShareCircle/CFShareCircle/message@2x.png" /Users/camdenfullmer/Dropbox/Workspace/iOS/CFShareCircle/Build/Products/Debug-iphonesimulator/CFShareCircle.app36"E864F238-1841-4827-82E2-44234458E71A-
-
-CCpResource CFShareCircle/touch.png Build/Products/Debug-iphonesimulator/CFShareCircle.app/touch.png
-s379009813.093119
-e379009813.097671
-r1
-xCpResource
-xCFShareCircle/touch.png
-xBuild/Products/Debug-iphonesimulator/CFShareCircle.app/touch.png
-lSLF05#21%IDEActivityLogSection1@2#32"com.apple.dt.IDE.BuildLogSection69"Copy Build/Products/Debug-iphonesimulator/CFShareCircle.app/touch.png45f017153b97b641^4a9819153b97b641^---0#0#0#-19%DVTDocumentLocation2@137"file://localhost/Users/camdenfullmer/Dropbox/Workspace/iOS/CFShareCircle/Build/Products/Debug-iphonesimulator/CFShareCircle.app/touch.png0000000000000000^664"CpResource CFShareCircle/touch.png Build/Products/Debug-iphonesimulator/CFShareCircle.app/touch.png    cd /Users/camdenfullmer/Dropbox/Workspace/iOS/CFShareCircle    setenv PATH "/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/usr/bin:/Applications/Xcode.app/Contents/Developer/usr/bin:/usr/bin:/bin:/usr/sbin:/sbin"    builtin-copy -exclude .DS_Store -exclude CVS -exclude .svn -exclude .git -exclude .hg -resolve-src-symlinks /Users/camdenfullmer/Dropbox/Workspace/iOS/CFShareCircle/CFShareCircle/touch.png /Users/camdenfullmer/Dropbox/Workspace/iOS/CFShareCircle/Build/Products/Debug-iphonesimulator/CFShareCircle.app36"F9274FC0-E4D8-4CB0-B4A1-AE1750F87F9C-
-
-CCpResource CFShareCircle/touch@2x.png Build/Products/Debug-iphonesimulator/CFShareCircle.app/touch@2x.png
-s379009813.093090
-e379009813.098379
-r1
-xCpResource
-xCFShareCircle/touch@2x.png
-xBuild/Products/Debug-iphonesimulator/CFShareCircle.app/touch@2x.png
-lSLF05#21%IDEActivityLogSection1@2#32"com.apple.dt.IDE.BuildLogSection72"Copy Build/Products/Debug-iphonesimulator/CFShareCircle.app/touch@2x.png99f017153b97b641^459d19153b97b641^---0#0#0#-19%DVTDocumentLocation2@140"file://localhost/Users/camdenfullmer/Dropbox/Workspace/iOS/CFShareCircle/Build/Products/Debug-iphonesimulator/CFShareCircle.app/touch@2x.png0000000000000000^679"CpResource "CFShareCircle/touch@2x.png" "Build/Products/Debug-iphonesimulator/CFShareCircle.app/touch@2x.png"    cd /Users/camdenfullmer/Dropbox/Workspace/iOS/CFShareCircle    setenv PATH "/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/usr/bin:/Applications/Xcode.app/Contents/Developer/usr/bin:/usr/bin:/bin:/usr/sbin:/sbin"    builtin-copy -exclude .DS_Store -exclude CVS -exclude .svn -exclude .git -exclude .hg -resolve-src-symlinks "/Users/camdenfullmer/Dropbox/Workspace/iOS/CFShareCircle/CFShareCircle/touch@2x.png" /Users/camdenfullmer/Dropbox/Workspace/iOS/CFShareCircle/Build/Products/Debug-iphonesimulator/CFShareCircle.app36"7365A0AC-A2A2-49F2-9F30-45C23407640A-
-
-CCpResource CFShareCircle/twitter.png Build/Products/Debug-iphonesimulator/CFShareCircle.app/twitter.png
-s379007091.398937
-e379007091.419630
-r1
-xCpResource
-xCFShareCircle/twitter.png
-xBuild/Products/Debug-iphonesimulator/CFShareCircle.app/twitter.png
-lSLF05#21%IDEActivityLogSection1@2#32"com.apple.dt.IDE.BuildLogSection71"Copy Build/Products/Debug-iphonesimulator/CFShareCircle.app/twitter.png003c66733097b641^9c6c6b733097b641^---0#0#0#-19%DVTDocumentLocation2@139"file://localhost/Users/camdenfullmer/Dropbox/Workspace/iOS/CFShareCircle/Build/Products/Debug-iphonesimulator/CFShareCircle.app/twitter.png0000000000000000^670"CpResource CFShareCircle/twitter.png Build/Products/Debug-iphonesimulator/CFShareCircle.app/twitter.png    cd /Users/camdenfullmer/Dropbox/Workspace/iOS/CFShareCircle    setenv PATH "/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/usr/bin:/Applications/Xcode.app/Contents/Developer/usr/bin:/usr/bin:/bin:/usr/sbin:/sbin"    builtin-copy -exclude .DS_Store -exclude CVS -exclude .svn -exclude .git -exclude .hg -resolve-src-symlinks /Users/camdenfullmer/Dropbox/Workspace/iOS/CFShareCircle/CFShareCircle/twitter.png /Users/camdenfullmer/Dropbox/Workspace/iOS/CFShareCircle/Build/Products/Debug-iphonesimulator/CFShareCircle.app36"2A8889FE-91A0-4C1E-8CBD-12FB3F258DF8-
-
-CCpResource CFShareCircle/twitter@2x.png Build/Products/Debug-iphonesimulator/CFShareCircle.app/twitter@2x.png
-s379007048.409686
-e379007048.413433
-r1
-xCpResource
-xCFShareCircle/twitter@2x.png
-xBuild/Products/Debug-iphonesimulator/CFShareCircle.app/twitter@2x.png
-lSLF05#21%IDEActivityLogSection1@2#32"com.apple.dt.IDE.BuildLogSection74"Copy Build/Products/Debug-iphonesimulator/CFShareCircle.app/twitter@2x.pngac0269483097b641^9fe569483097b641^---0#0#0#-19%DVTDocumentLocation2@142"file://localhost/Users/camdenfullmer/Dropbox/Workspace/iOS/CFShareCircle/Build/Products/Debug-iphonesimulator/CFShareCircle.app/twitter@2x.png000000000080d041^685"CpResource "CFShareCircle/twitter@2x.png" "Build/Products/Debug-iphonesimulator/CFShareCircle.app/twitter@2x.png"    cd /Users/camdenfullmer/Dropbox/Workspace/iOS/CFShareCircle    setenv PATH "/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/usr/bin:/Applications/Xcode.app/Contents/Developer/usr/bin:/usr/bin:/bin:/usr/sbin:/sbin"    builtin-copy -exclude .DS_Store -exclude CVS -exclude .svn -exclude .git -exclude .hg -resolve-src-symlinks "/Users/camdenfullmer/Dropbox/Workspace/iOS/CFShareCircle/CFShareCircle/twitter@2x.png" /Users/camdenfullmer/Dropbox/Workspace/iOS/CFShareCircle/Build/Products/Debug-iphonesimulator/CFShareCircle.app36"827483E3-0508-4AE8-A931-F19862FF91CD-
-
-CGenerateDSYMFile /Users/camdenfullmer/Dropbox/Workspace/iOS/CFShareCircle/Build/Products/Debug-iphonesimulator/CFShareCircle.app.dSYM /Users/camdenfullmer/Dropbox/Workspace/iOS/CFShareCircle/Build/Products/Debug-iphonesimulator/CFShareCircle.app/CFShareCircle
-s379010363.101245
-e379010363.152749
-r1
-xGenerateDSYMFile
-x/Users/camdenfullmer/Dropbox/Workspace/iOS/CFShareCircle/Build/Products/Debug-iphonesimulator/CFShareCircle.app.dSYM
-x/Users/camdenfullmer/Dropbox/Workspace/iOS/CFShareCircle/Build/Products/Debug-iphonesimulator/CFShareCircle.app/CFShareCircle
-lSLF05#21%IDEActivityLogSection1@2#32"com.apple.dt.IDE.BuildLogSection127"Generating /Users/camdenfullmer/Dropbox/Workspace/iOS/CFShareCircle/Build/Products/Debug-iphonesimulator/CFShareCircle.app.dSYMd7121a3b3d97b641^3b8a273b3d97b641^---0#0#0#-19%DVTDocumentLocation2@133"file://localhost/Users/camdenfullmer/Dropbox/Workspace/iOS/CFShareCircle/Build/Products/Debug-iphonesimulator/CFShareCircle.app.dSYM/0000000000000000^751"GenerateDSYMFile Build/Products/Debug-iphonesimulator/CFShareCircle.app.dSYM Build/Products/Debug-iphonesimulator/CFShareCircle.app/CFShareCircle    cd /Users/camdenfullmer/Dropbox/Workspace/iOS/CFShareCircle    setenv PATH "/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/usr/bin:/Applications/Xcode.app/Contents/Developer/usr/bin:/usr/bin:/bin:/usr/sbin:/sbin"    /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/dsymutil /Users/camdenfullmer/Dropbox/Workspace/iOS/CFShareCircle/Build/Products/Debug-iphonesimulator/CFShareCircle.app/CFShareCircle -o /Users/camdenfullmer/Dropbox/Workspace/iOS/CFShareCircle/Build/Products/Debug-iphonesimulator/CFShareCircle.app.dSYM36"76990B66-A05E-4E0B-AC45-F59C752E010D-
-
-CLd /Users/camdenfullmer/Dropbox/Workspace/iOS/CFShareCircle/Build/Products/Debug-iphonesimulator/CFShareCircle.app/CFShareCircle normal i386
-s379010362.976058
-e379010363.093874
-r1
-xLd
-x/Users/camdenfullmer/Dropbox/Workspace/iOS/CFShareCircle/Build/Products/Debug-iphonesimulator/CFShareCircle.app/CFShareCircle
-xnormal
-xi386
-lSLF05#21%IDEActivityLogSection1@2#32"com.apple.dt.IDE.BuildLogSection130"Link /Users/camdenfullmer/Dropbox/Workspace/iOS/CFShareCircle/Build/Products/Debug-iphonesimulator/CFShareCircle.app/CFShareCircledee5fe3a3d97b641^5726183b3d97b641^---0#0#0#--1329"Ld Build/Products/Debug-iphonesimulator/CFShareCircle.app/CFShareCircle normal i386    cd /Users/camdenfullmer/Dropbox/Workspace/iOS/CFShareCircle    setenv IPHONEOS_DEPLOYMENT_TARGET 6.0    setenv PATH "/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/usr/bin:/Applications/Xcode.app/Contents/Developer/usr/bin:/usr/bin:/bin:/usr/sbin:/sbin"    /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/clang -arch i386 -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator6.0.sdk -L/Users/camdenfullmer/Dropbox/Workspace/iOS/CFShareCircle/Build/Products/Debug-iphonesimulator -F/Users/camdenfullmer/Dropbox/Workspace/iOS/CFShareCircle/Build/Products/Debug-iphonesimulator -filelist /Users/camdenfullmer/Dropbox/Workspace/iOS/CFShareCircle/Build/Intermediates/CFShareCircle.build/Debug-iphonesimulator/CFShareCircle.build/Objects-normal/i386/CFShareCircle.LinkFileList -Xlinker -objc_abi_version -Xlinker 2 -fobjc-arc -fobjc-link-runtime -Xlinker -no_implicit_dylibs -mios-simulator-version-min=6.0 -framework UIKit -framework Foundation -framework CoreGraphics -o /Users/camdenfullmer/Dropbox/Workspace/iOS/CFShareCircle/Build/Products/Debug-iphonesimulator/CFShareCircle.app/CFShareCircle36"91F916B6-9B63-4A00-BEB6-83D26B44797E-
-
-CProcessInfoPlistFile /Users/camdenfullmer/Dropbox/Workspace/iOS/CFShareCircle/Build/Products/Debug-iphonesimulator/CFShareCircle.app/Info.plist CFShareCircle/CFShareCircle-Info.plist
-s379007047.552942
-e379007047.556909
-r1
-xProcessInfoPlistFile
-x/Users/camdenfullmer/Dropbox/Workspace/iOS/CFShareCircle/Build/Products/Debug-iphonesimulator/CFShareCircle.app/Info.plist
-xCFShareCircle/CFShareCircle-Info.plist
-lSLF05#21%IDEActivityLogSection1@2#32"com.apple.dt.IDE.BuildLogSection46"Process CFShareCircle/CFShareCircle-Info.plistcaa58d473097b641^ac908e473097b641^---0#0#0#-19%DVTDocumentLocation2@111"file://localhost/Users/camdenfullmer/Dropbox/Workspace/iOS/CFShareCircle/CFShareCircle/CFShareCircle-Info.plist0000000000000000^773"ProcessInfoPlistFile Build/Products/Debug-iphonesimulator/CFShareCircle.app/Info.plist CFShareCircle/CFShareCircle-Info.plist    cd /Users/camdenfullmer/Dropbox/Workspace/iOS/CFShareCircle    setenv PATH "/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/usr/bin:/Applications/Xcode.app/Contents/Developer/usr/bin:/usr/bin:/bin:/usr/sbin:/sbin"    builtin-infoPlistUtility CFShareCircle/CFShareCircle-Info.plist -genpkginfo /Users/camdenfullmer/Dropbox/Workspace/iOS/CFShareCircle/Build/Products/Debug-iphonesimulator/CFShareCircle.app/PkgInfo -expandbuildsettings -format binary -platform iphonesimulator -o /Users/camdenfullmer/Dropbox/Workspace/iOS/CFShareCircle/Build/Products/Debug-iphonesimulator/CFShareCircle.app/Info.plist36"02DA89F2-A615-4C01-A0B7-ECF2C3EB3F5F-
-
-CProcessPCH /Users/camdenfullmer/Dropbox/Workspace/iOS/CFShareCircle/Build/Intermediates/PrecompiledHeaders/CFShareCircle-Prefix-bknzvodceruzqybxebiggvbrqwcg/CFShareCircle-Prefix.pch.pth CFShareCircle/CFShareCircle-Prefix.pch normal i386 objective-c com.apple.compilers.llvm.clang.1_0.compiler
-s379007047.565116
-e379007048.090840
-r1
-xProcessPCH
-x/Users/camdenfullmer/Dropbox/Workspace/iOS/CFShareCircle/Build/Intermediates/PrecompiledHeaders/CFShareCircle-Prefix-bknzvodceruzqybxebiggvbrqwcg/CFShareCircle-Prefix.pch.pth
-xCFShareCircle/CFShareCircle-Prefix.pch
-xnormal
-xi386
-xobjective-c
-xcom.apple.compilers.llvm.clang.1_0.compiler
-lSLF05#21%IDEActivityLogSection1@2#32"com.apple.dt.IDE.BuildLogSection49"Precompile CFShareCircle/CFShareCircle-Prefix.pcha1d690473097b641^c44017483097b641^---0#0#0#-19%DVTDocumentLocation2@111"file://localhost/Users/camdenfullmer/Dropbox/Workspace/iOS/CFShareCircle/CFShareCircle/CFShareCircle-Prefix.pch0000000000000000^3938"ProcessPCH Build/Intermediates/PrecompiledHeaders/CFShareCircle-Prefix-bknzvodceruzqybxebiggvbrqwcg/CFShareCircle-Prefix.pch.pth CFShareCircle/CFShareCircle-Prefix.pch normal i386 objective-c com.apple.compilers.llvm.clang.1_0.compiler    cd /Users/camdenfullmer/Dropbox/Workspace/iOS/CFShareCircle    setenv LANG en_US.US-ASCII    setenv PATH "/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/usr/bin:/Applications/Xcode.app/Contents/Developer/usr/bin:/usr/bin:/bin:/usr/sbin:/sbin"    /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/clang -x objective-c-header -arch i386 -fmessage-length=0 -std=gnu99 -fobjc-arc -Wno-trigraphs -fpascal-strings -O0 -Wno-missing-field-initializers -Wno-missing-prototypes -Wreturn-type -Wno-implicit-atomic-properties -Wno-receiver-is-weak -Wduplicate-method-match -Wformat -Wno-missing-braces -Wparentheses -Wswitch -Wno-unused-function -Wno-unused-label -Wno-unused-parameter -Wunused-variable -Wunused-value -Wempty-body -Wuninitialized -Wno-unknown-pragmas -Wno-shadow -Wno-four-char-constants -Wno-conversion -Wno-shorten-64-to-32 -Wpointer-sign -Wno-newline-eof -Wno-selector -Wno-strict-selector-match -Wno-undeclared-selector -Wno-deprecated-implementations -DDEBUG=1 -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator6.0.sdk -fexceptions -fasm-blocks -Wprotocol -Wdeprecated-declarations -g -Wno-sign-conversion -fobjc-abi-version=2 -fobjc-legacy-dispatch "-DIBOutlet=__attribute__((iboutlet))" "-DIBOutletCollection(ClassName)=__attribute__((iboutletcollection(ClassName)))" "-DIBAction=void)__attribute__((ibaction)" -mios-simulator-version-min=6.0 -iquote /Users/camdenfullmer/Dropbox/Workspace/iOS/CFShareCircle/Build/Intermediates/CFShareCircle.build/Debug-iphonesimulator/CFShareCircle.build/CFShareCircle-generated-files.hmap -I/Users/camdenfullmer/Dropbox/Workspace/iOS/CFShareCircle/Build/Intermediates/CFShareCircle.build/Debug-iphonesimulator/CFShareCircle.build/CFShareCircle-own-target-headers.hmap -I/Users/camdenfullmer/Dropbox/Workspace/iOS/CFShareCircle/Build/Intermediates/CFShareCircle.build/Debug-iphonesimulator/CFShareCircle.build/CFShareCircle-all-target-headers.hmap -iquote /Users/camdenfullmer/Dropbox/Workspace/iOS/CFShareCircle/Build/Intermediates/CFShareCircle.build/Debug-iphonesimulator/CFShareCircle.build/CFShareCircle-project-headers.hmap -I/Users/camdenfullmer/Dropbox/Workspace/iOS/CFShareCircle/Build/Products/Debug-iphonesimulator/include -I/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include -I/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include -I/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include -I/Users/camdenfullmer/Dropbox/Workspace/iOS/CFShareCircle/Build/Intermediates/CFShareCircle.build/Debug-iphonesimulator/CFShareCircle.build/DerivedSources/i386 -I/Users/camdenfullmer/Dropbox/Workspace/iOS/CFShareCircle/Build/Intermediates/CFShareCircle.build/Debug-iphonesimulator/CFShareCircle.build/DerivedSources -F/Users/camdenfullmer/Dropbox/Workspace/iOS/CFShareCircle/Build/Products/Debug-iphonesimulator --serialize-diagnostics /Users/camdenfullmer/Dropbox/Workspace/iOS/CFShareCircle/Build/Intermediates/PrecompiledHeaders/CFShareCircle-Prefix-bknzvodceruzqybxebiggvbrqwcg/CFShareCircle-Prefix.pch.dia -c /Users/camdenfullmer/Dropbox/Workspace/iOS/CFShareCircle/CFShareCircle/CFShareCircle-Prefix.pch -o /Users/camdenfullmer/Dropbox/Workspace/iOS/CFShareCircle/Build/Intermediates/PrecompiledHeaders/CFShareCircle-Prefix-bknzvodceruzqybxebiggvbrqwcg/CFShareCircle-Prefix.pch.pth -MMD -MT dependencies -MF /Users/camdenfullmer/Dropbox/Workspace/iOS/CFShareCircle/Build/Intermediates/PrecompiledHeaders/CFShareCircle-Prefix-bknzvodceruzqybxebiggvbrqwcg/CFShareCircle-Prefix.pch.d36"B5FBE70E-2F01-4048-9DD1-27D1EC3F38CD-
-
-CProcessPCH /Users/camdenfullmer/Library/Developer/Xcode/DerivedData/CFShareCircle-boxgtkcmvgtbpjgkkxbjxqfuprmm/Index/PrecompiledHeaders/CFShareCircle-Prefix-czaostphsiyykddztrbcvdjgvsor_ast/CFShareCircle-Prefix.pch.pth CFShareCircle/CFShareCircle-Prefix.pch normal i386 objective-c com.apple.compilers.llvm.clang.1_0.astbuilder
-r0
-
-CTouch /Users/camdenfullmer/Dropbox/Workspace/iOS/CFShareCircle/Build/Products/Debug-iphonesimulator/CFShareCircle.app
-s379010363.176092
-e379010363.182704
-r1
-xTouch
-x/Users/camdenfullmer/Dropbox/Workspace/iOS/CFShareCircle/Build/Products/Debug-iphonesimulator/CFShareCircle.app
-lSLF05#21%IDEActivityLogSection1@2#32"com.apple.dt.IDE.BuildLogSection117"Touch /Users/camdenfullmer/Dropbox/Workspace/iOS/CFShareCircle/Build/Products/Debug-iphonesimulator/CFShareCircle.app452d2d3b3d97b641^b0c92e3b3d97b641^---0#0#0#--454"Touch Build/Products/Debug-iphonesimulator/CFShareCircle.app    cd /Users/camdenfullmer/Dropbox/Workspace/iOS/CFShareCircle    setenv PATH "/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/usr/bin:/Applications/Xcode.app/Contents/Developer/usr/bin:/usr/bin:/bin:/usr/sbin:/sbin"    /usr/bin/touch -c /Users/camdenfullmer/Dropbox/Workspace/iOS/CFShareCircle/Build/Products/Debug-iphonesimulator/CFShareCircle.app36"9A4D41B5-5679-4219-A27E-89DB11C4BBAD-
-
