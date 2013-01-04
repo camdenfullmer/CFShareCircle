@@ -33,7 +33,7 @@
     self = [super init];
     if (self) {
         [self initialize];
-        [self setImages:[[NSArray alloc] initWithObjects:@"evernote.png", @"googleplus.png", @"facebook.png", @"twitter.png", @"email.png", nil]];
+        [self setImages:[[NSArray alloc] initWithObjects:@"evernote.png", @"facebook.png", @"twitter.png", @"message.png", @"email.png", nil]];
     }
     return self;
 }

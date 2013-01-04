@@ -18,8 +18,7 @@
 {
     [super viewDidLoad];
 	// Do any additional setup after loading the view, typically from a nib.
-    //shareCircleView = [[CFShareCircleView alloc] init];
-    shareCircleView = [[CFShareCircleView alloc] initWithImageFileNames:[[NSArray alloc] initWithObjects:@"evernote.png", @"googleplus.png", @"facebook.png", @"twitter.png", @"email.png", nil]];
+    shareCircleView = [[CFShareCircleView alloc] init];
     shareCircleView.delegate = self;
     [self.navigationController.view addSubview:shareCircleView];
 }
