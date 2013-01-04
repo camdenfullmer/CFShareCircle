@@ -22,9 +22,10 @@
     int _pathRectSize;
     int _tempRectSize;
     BOOL _dragging;
+    NSMutableArray *images;
 }
 
-@property (strong, nonatomic) NSMutableArray *items;
 @property (assign) id <CFShareCircleViewDelegate> delegate;
+- (id)initWithImageFileNames: (NSArray*)imageFileNames;
 
 @end

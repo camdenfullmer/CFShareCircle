@@ -11,7 +11,6 @@
 @implementation CFShareCircleView
 
 @synthesize delegate;
-@synthesize items = _items;
 
 - (id)initWithFrame:(CGRect)frame
 {
@@ -34,6 +33,16 @@
     self = [super init];
     if (self) {
         [self initialize];
+        [self setImages:[[NSArray alloc] initWithObjects:@"evernote.png", @"googleplus.png", @"facebook.png", @"twitter.png", @"email.png", nil]];
+    }
+    return self;
+}
+
+- (id)initWithImageFileNames: (NSArray*)imageFileNames{
+    self = [super init];
+    if (self) {
+        [self initialize];
+        [self setImages:imageFileNames];
     }
     return self;
 }
@@ -45,7 +54,7 @@
     _smallRectSize = 50;
     _pathRectSize = 180;
     _tempRectSize = 50;
-    [self setItems:[[NSMutableArray alloc] initWithObjects:@"evernote.png", @"googleplus.png", @"facebook.png", @"twitter.png", @"email.png", nil]];
+    
     self.hidden = YES;
     self.backgroundColor = [UIColor colorWithWhite:0 alpha:0.8];
 }
@@ -71,6 +80,10 @@
     [self drawImagesWithContext:context];
     [self drawTouchRegionWithContext:context];
 }
+
+/**
+ TOUCH METHODS
+ **/
 
 - (void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event{
     UITouch *touch = (UITouch *)[[touches allObjects] objectAtIndex:0];
@@ -105,7 +118,7 @@
         _currentPosition = [self translatePoint:[touch locationInView:self]];
         
         // Loop through all the rects to see if the user selected one.
-        for(int i = 0; i < [_items count]; i++){
+        for(int i = 0; i < [images count]; i++){
             CGPoint point = [self pointAtIndex:i];
             
             // Determine if point is inside rect.
@@ -128,31 +141,15 @@
     [self setNeedsDisplay];
 }
 
-/* Method makes sure that the generated point won't be outside of the larger circle. */
-- (CGPoint) translatePoint:(CGPoint)point{
-    
-    if(pow(_largeRectSize/2.0 - _smallRectSize/2.0,2) < (pow(point.x - _origin.x,2) + pow(point.y - _origin.y,2))){
-            // Translate the x point.
-            if(point.x > _origin.x + _largeRectSize/2.0 - _smallRectSize/2.0)
-                point.x = _origin.x + _largeRectSize/2.0 - _smallRectSize/2.0;
-            else if(point.x < _origin.x - _largeRectSize/2.0 + _smallRectSize/2.0)
-                point.x = _origin.x - _largeRectSize/2.0 + _smallRectSize/2.0;
-            
-            // Translate the y point.
-            if(point.y > _origin.y)
-                point.y = sqrt(pow(_largeRectSize/2.0 - _smallRectSize/2.0,2) - pow(point.x - _origin.x,2)) + _origin.y;
-            else
-                point.y = -sqrt(pow(_largeRectSize/2.0 - _smallRectSize/2.0,2) - pow(point.x - _origin.x,2)) + _origin.y;
-    }
-        
-    return point;
-}
+/**
+ DRAWING METHODS
+ **/
 
 /* Draws all the images from the list. */
 - (void) drawImagesWithContext:(CGContextRef) context{
     
-    for (int i = 0; i < [_items count]; i++) {
-        UIImage *image = [UIImage imageNamed:[_items objectAtIndex:i]];
+    for (int i = 0; i < [images count]; i++) {
+        UIImage *image = [images objectAtIndex:i];
         
         // Create the rect and the point to draw the image.
         CGPoint point = [self pointAtIndex:i];
@@ -175,7 +172,7 @@
 }
 
 /* Draw the close button. */
-- (void) drawCloseButtonWithContext:(CGContextRef) context{   
+- (void) drawCloseButtonWithContext:(CGContextRef) context{
     
     UIImage *image = [UIImage imageNamed:@"close_button.png"];
     
@@ -224,10 +221,34 @@
     UIGraphicsEndImageContext();
 }
 
+/**
+ HELPER METHODS
+ **/
+
+/* Method makes sure that the generated point won't be outside of the larger circle. */
+- (CGPoint) translatePoint:(CGPoint)point{
+    
+    if(pow(_largeRectSize/2.0 - _smallRectSize/2.0,2) < (pow(point.x - _origin.x,2) + pow(point.y - _origin.y,2))){
+        // Translate the x point.
+        if(point.x > _origin.x + _largeRectSize/2.0 - _smallRectSize/2.0)
+            point.x = _origin.x + _largeRectSize/2.0 - _smallRectSize/2.0;
+        else if(point.x < _origin.x - _largeRectSize/2.0 + _smallRectSize/2.0)
+            point.x = _origin.x - _largeRectSize/2.0 + _smallRectSize/2.0;
+        
+        // Translate the y point.
+        if(point.y > _origin.y)
+            point.y = sqrt(pow(_largeRectSize/2.0 - _smallRectSize/2.0,2) - pow(point.x - _origin.x,2)) + _origin.y;
+        else
+            point.y = -sqrt(pow(_largeRectSize/2.0 - _smallRectSize/2.0,2) - pow(point.x - _origin.x,2)) + _origin.y;
+    }
+    
+    return point;
+}
+
 /* Get the point at the specified index. */
 - (CGPoint) pointAtIndex:(int) index{
     // Number for trig.
-    float trig = index/([_items count]/2.0)*M_PI;
+    float trig = index/([images count]/2.0)*M_PI;
     
     // Calculate the x and y coordinate.
     // Points go around the unit circle starting at pi = 0.
@@ -245,6 +266,15 @@
         return YES;
 }
 
-
+/* Override setter method for imageFileNames so that when they are set the images can be preloaded. 
+ * This is important so that the images aren't loaded everytime drawRect is called.
+ */
+- (void) setImages:(NSArray *)imageFileNames{   
+    images = [[NSMutableArray alloc] init];
+    // Preload all the images.
+    for (int i = 0; i < [imageFileNames count]; i++) {
+        [images addObject:[UIImage imageNamed:[imageFileNames objectAtIndex:i]]];
+    }
+}
 
 @end
