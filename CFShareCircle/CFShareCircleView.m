@@ -54,9 +54,12 @@
     _smallRectSize = 50;
     _pathRectSize = 180;
     _tempRectSize = 50;
-    
+
     self.hidden = YES;
     self.backgroundColor = [UIColor colorWithWhite:0 alpha:0.8];
+    
+    closeButtonImage = [UIImage imageNamed:@"close_button.png"];
+    touchImage = [UIImage imageNamed:@"touch.png"];
 }
 
 // Only override drawRect: if you perform custom drawing.
@@ -174,21 +177,19 @@
 /* Draw the close button. */
 - (void) drawCloseButtonWithContext:(CGContextRef) context{
     
-    UIImage *image = [UIImage imageNamed:@"close_button.png"];
-    
     // Create the rect and the point to draw the image.
     // Calculate the x and y coordinate at pi/4.
-    float x = _origin.x - 40/2.0 + cosf(M_PI/4)*_largeRectSize/2.0;
-    float y = _origin.y - 40/2.0 - sinf(M_PI/4)*_largeRectSize/2.0;
+    float x = _origin.x - closeButtonImage.size.width/2.0 + cosf(M_PI/4)*_largeRectSize/2.0;
+    float y = _origin.y - closeButtonImage.size.height/2.0 - sinf(M_PI/4)*_largeRectSize/2.0;
     
     CGRect tempRect = CGRectMake(x,y,40,40);
     
     // Start image context.
-    UIGraphicsBeginImageContext(image.size);
+    UIGraphicsBeginImageContext(closeButtonImage.size);
     UIGraphicsPushContext(context);
     
     // Draw the image.
-    [image drawInRect:tempRect];
+    [closeButtonImage drawInRect:tempRect];
     
     // End image context.
     UIGraphicsPopContext();
@@ -196,14 +197,12 @@
 }
 
 /* Draw touch region. */
-- (void) drawTouchRegionWithContext: (CGContextRef) context{
-    UIImage *image = [UIImage imageNamed:@"touch.png"];
-    
+- (void) drawTouchRegionWithContext: (CGContextRef) context{    
     // Create the rect and the point to draw the image.
-    CGRect smallCircleRect = CGRectMake(_currentPosition.x - image.size.width/2.0,_currentPosition.y - image.size.height/2.0,image.size.width,image.size.height);
+    CGRect smallCircleRect = CGRectMake(_currentPosition.x - touchImage.size.width/2.0,_currentPosition.y - touchImage.size.height/2.0,touchImage.size.width,touchImage.size.height);
     
     // Start image context.
-    UIGraphicsBeginImageContext(image.size);
+    UIGraphicsBeginImageContext(touchImage.size);
     UIGraphicsPushContext(context);
     
     // Determine alpha based on if the user is dragging.
@@ -214,7 +213,7 @@
         alpha = 0.3;
     
     // Draw the image.
-    [image drawInRect:smallCircleRect blendMode:kCGBlendModeNormal alpha:alpha];
+    [touchImage drawInRect:smallCircleRect blendMode:kCGBlendModeNormal alpha:alpha];
     
     // End image context.
     UIGraphicsPopContext();
@@ -228,18 +227,20 @@
 /* Method makes sure that the generated point won't be outside of the larger circle. */
 - (CGPoint) translatePoint:(CGPoint)point{
     
-    if(pow(_largeRectSize/2.0 - _smallRectSize/2.0,2) < (pow(point.x - _origin.x,2) + pow(point.y - _origin.y,2))){
+    float touchImageSize = touchImage.size.height;
+    
+    if(pow(_largeRectSize/2.0 - touchImageSize/2.0,2) < (pow(point.x - _origin.x,2) + pow(point.y - _origin.y,2))){
         // Translate the x point.
-        if(point.x > _origin.x + _largeRectSize/2.0 - _smallRectSize/2.0)
-            point.x = _origin.x + _largeRectSize/2.0 - _smallRectSize/2.0;
-        else if(point.x < _origin.x - _largeRectSize/2.0 + _smallRectSize/2.0)
-            point.x = _origin.x - _largeRectSize/2.0 + _smallRectSize/2.0;
+        if(point.x > _origin.x + _largeRectSize/2.0 - touchImageSize/2.0)
+            point.x = _origin.x + _largeRectSize/2.0 - touchImageSize/2.0;
+        else if(point.x < _origin.x - _largeRectSize/2.0 + touchImageSize/2.0)
+            point.x = _origin.x - _largeRectSize/2.0 + touchImageSize/2.0;
         
         // Translate the y point.
         if(point.y > _origin.y)
-            point.y = sqrt(pow(_largeRectSize/2.0 - _smallRectSize/2.0,2) - pow(point.x - _origin.x,2)) + _origin.y;
+            point.y = sqrt(pow(_largeRectSize/2.0 - touchImageSize/2.0,2) - pow(point.x - _origin.x,2)) + _origin.y;
         else
-            point.y = -sqrt(pow(_largeRectSize/2.0 - _smallRectSize/2.0,2) - pow(point.x - _origin.x,2)) + _origin.y;
+            point.y = -sqrt(pow(_largeRectSize/2.0 - touchImageSize/2.0,2) - pow(point.x - _origin.x,2)) + _origin.y;
     }
     
     return point;

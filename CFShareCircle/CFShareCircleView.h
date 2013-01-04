@@ -23,6 +23,8 @@
     int _tempRectSize;
     BOOL _dragging;
     NSMutableArray *images;
+    UIImage *touchImage;
+    UIImage *closeButtonImage;
 }
 
 @property (assign) id <CFShareCircleViewDelegate> delegate;
