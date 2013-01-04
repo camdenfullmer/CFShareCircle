@@ -22,7 +22,7 @@
                                 </items>
                             </toolbar>
                         </subviews>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+                        <color key="backgroundColor" cocoaTouchSystemColor="scrollViewTexturedBackgroundColor"/>
                         <constraints>
                             <constraint firstItem="tm6-Qg-mNj" firstAttribute="leading" secondItem="3" secondAttribute="leading" type="default" id="A5u-ph-Nqj"/>
                             <constraint firstItem="tm6-Qg-mNj" firstAttribute="bottom" secondItem="3" secondAttribute="bottom" type="default" id="hzB-Ts-FMh"/>

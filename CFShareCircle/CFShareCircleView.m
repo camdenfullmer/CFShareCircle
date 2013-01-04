@@ -69,7 +69,7 @@
     CGContextFillPath(context);
     
     [self drawTouchRegionWithContext:context];
-    //[self drawCloseButtonWithContext:context];
+    [self drawCloseButtonWithContext:context];
     [self drawImagesWithContext:context];
 }
 
@@ -171,16 +171,27 @@
 }
 
 /* Draw the close button. */
-- (void) drawCloseButtonWithContext:(CGContextRef) context{
-    CGContextSetFillColorWithColor(context, [UIColor colorWithRed:47/255.0 green:47/255.0 blue:47/255.0 alpha:1].CGColor);
+- (void) drawCloseButtonWithContext:(CGContextRef) context{   
     
+    UIImage *image = [UIImage imageNamed:@"close_button.png"];
+    
+    // Create the rect and the point to draw the image.
     // Calculate the x and y coordinate at pi/4.
     float x = _origin.x - 45/2.0 + cosf(M_PI/4)*_largeRectSize/2.0;
     float y = _origin.y - 45/2.0 - sinf(M_PI/4)*_largeRectSize/2.0;
     
-    CGRect largeCircleRect = CGRectMake(x,y,45,45);
-    CGContextAddEllipseInRect(context, largeCircleRect);
-    CGContextFillPath(context);
+    CGRect tempRect = CGRectMake(x,y,45,45);
+    
+    // Start image context.
+    UIGraphicsBeginImageContext(image.size);
+    UIGraphicsPushContext(context);
+    
+    // Draw the image.
+    [image drawInRect:tempRect];
+    
+    // End image context.
+    UIGraphicsPopContext();
+    UIGraphicsEndImageContext();
 }
 
 /* Draw touch region. */
