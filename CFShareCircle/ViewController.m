@@ -33,10 +33,33 @@
     // Dispose of any resources that can be recreated.
 }
 
-- (void)shareCircleView:(CFShareCircleView *)shareCircleView didSelectIndex:(int)index{
+- (void)shareCircleView:(CFShareCircleView *)aShareCircleView didSelectIndex:(int)index{
     NSLog(@"Selected index: %d", index);
+    [UIView beginAnimations:nil context:NULL];
+    [UIView setAnimationDuration:0.3];
+    [UIView setAnimationDelegate:self];
+    [shareCircleView setFrame:CGRectMake(320, 0, 320, 480)];
+    [UIView commitAnimations];
 }
+
+-(void)shareCircleViewWasCanceled{
+    [UIView beginAnimations:nil context:NULL];
+    [UIView setAnimationDuration:0.3];
+    [UIView setAnimationDelegate:self];
+    [shareCircleView setFrame:CGRectMake(320, 0, 320, 480)];
+    [UIView commitAnimations];
+}
+
 - (IBAction)shareButtonClicked:(id)sender {
-    [shareCircleView setHidden:NO];
+    [shareCircleView setFrame:CGRectMake(320, 0, 320, 480)];
+    [shareCircleView setBounds:CGRectMake(0, 0, 320, 480)];
+    
+    shareCircleView.hidden = NO;
+    
+    [UIView beginAnimations:nil context:NULL];
+    [UIView setAnimationDuration:0.3];
+    [UIView setAnimationDelegate:self];
+    [shareCircleView setFrame:CGRectMake(0, 0, 320, 480)];
+    [UIView commitAnimations];
 }
 @end

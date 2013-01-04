@@ -96,14 +96,11 @@
     // Make sure the user starts with touch inside the circle.
     if([self closeButtonEnclosesPoint: point]){
         _currentPosition = _origin;
-        [self setHidden:YES];
+        [self.delegate shareCircleViewWasCanceled];
     }
     else if([self circleEnclosesPoint: point]){
         _currentPosition = [self translatePoint:[touch locationInView:self]];
         _dragging = YES;
-    }
-    else{
-        _currentPosition = _origin;
     }
     
     [self setNeedsDisplay];
@@ -128,10 +125,8 @@
             CGPoint point = [self pointAtIndex:i];
             
             // Determine if point is inside rect.
-            if(CGRectContainsPoint(CGRectMake(point.x, point.y, _tempRectSize, _tempRectSize), _currentPosition)){
-                [self.delegate shareCircleView:self didSelectIndex:i];
-                [self setHidden:YES];
-            }
+            if(CGRectContainsPoint(CGRectMake(point.x, point.y, _tempRectSize, _tempRectSize), _currentPosition))
+                [self.delegate shareCircleView:self didSelectIndex:i];            
         }
         
         _currentPosition = _origin;

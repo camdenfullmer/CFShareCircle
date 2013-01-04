@@ -11,7 +11,8 @@
 @class CFShareCircleView;
 
 @protocol CFShareCircleViewDelegate
-- (void)shareCircleView:(CFShareCircleView *)shareCircleView didSelectIndex:(int)index;
+- (void)shareCircleView:(CFShareCircleView *)aShareCircleView didSelectIndex:(int)index;
+- (void)shareCircleViewWasCanceled;
 @end
 
 @interface CFShareCircleView : UIView{
