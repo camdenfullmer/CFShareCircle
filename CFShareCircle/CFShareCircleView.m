@@ -68,9 +68,9 @@
     CGContextAddEllipseInRect(context, largeCircleRect);
     CGContextFillPath(context);
     
-    [self drawTouchRegionWithContext:context];
     [self drawCloseButtonWithContext:context];
     [self drawImagesWithContext:context];
+    [self drawTouchRegionWithContext:context];
 }
 
 - (void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event{
@@ -162,7 +162,10 @@
         UIGraphicsPushContext(context);
         
         // Draw the image.
-        [image drawInRect:rect];
+        if(CGRectContainsPoint(CGRectMake(point.x, point.y, _tempRectSize, _tempRectSize), _currentPosition))
+            [image drawInRect:rect];
+        else
+            [image drawInRect:rect blendMode:kCGBlendModeNormal alpha:0.8];
         
         // End image context.
         UIGraphicsPopContext();
@@ -177,10 +180,10 @@
     
     // Create the rect and the point to draw the image.
     // Calculate the x and y coordinate at pi/4.
-    float x = _origin.x - 45/2.0 + cosf(M_PI/4)*_largeRectSize/2.0;
-    float y = _origin.y - 45/2.0 - sinf(M_PI/4)*_largeRectSize/2.0;
+    float x = _origin.x - 40/2.0 + cosf(M_PI/4)*_largeRectSize/2.0;
+    float y = _origin.y - 40/2.0 - sinf(M_PI/4)*_largeRectSize/2.0;
     
-    CGRect tempRect = CGRectMake(x,y,45,45);
+    CGRect tempRect = CGRectMake(x,y,40,40);
     
     // Start image context.
     UIGraphicsBeginImageContext(image.size);
