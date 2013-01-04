@@ -112,7 +112,7 @@
             
             // Determine if point is inside rect.
             if(CGRectContainsPoint(CGRectMake(point.x, point.y, _tempRectSize, _tempRectSize), _currentPosition))
-                [self.delegate shareCircleView:self didSelectIndex:i];            
+                [self.delegate shareCircleView:self didSelectIndex:i];
         }
         
         _currentPosition = _origin;
@@ -207,22 +207,28 @@
 /**
  ANIMATION METHODS
  **/
-- (void) animateIn{    
+- (void) animateIn{
     self.hidden = NO;
     
-    [UIView beginAnimations:nil context:NULL];
-    [UIView setAnimationDuration:0.3];
-    [UIView setAnimationDelegate:self];
-    [self setFrame:CGRectMake(0, 0, 320, 480)];
-    [UIView commitAnimations];
+    [UIView animateWithDuration: 0.2
+                          delay: 0.0
+                        options: UIViewAnimationOptionCurveEaseIn
+                     animations:^{
+                         [self setFrame:CGRectMake(0, 0, 320, 480)];
+                     }
+                     completion:^(BOOL finished){}];
 }
 
-- (void) animateOut{
-    [UIView beginAnimations:nil context:NULL];
-    [UIView setAnimationDuration:0.3];
-    [UIView setAnimationDelegate:self];
-    [self setFrame:CGRectMake(320, 0, 320, 480)];
-    [UIView commitAnimations];
+- (void) animateOut{   
+    [UIView animateWithDuration: 0.2
+                          delay: 0.0
+                        options: UIViewAnimationOptionCurveEaseOut
+                     animations:^{
+                         [self setFrame:CGRectMake(320, 0, 320, 480)];
+                     }
+                     completion:^(BOOL finished){
+                         self.hidden = YES;
+                     }];
 }
 
 /**
@@ -277,7 +283,7 @@
     float x = _origin.x - closeButtonImage.size.width/2.0 + cosf(M_PI/4)*_largeRectSize/2.0;
     float y = _origin.y - closeButtonImage.size.height/2.0 - sinf(M_PI/4)*_largeRectSize/2.0;
     
-    CGRect tempRect = CGRectMake(x,y,closeButtonImage.size.width,closeButtonImage.size.height);    
+    CGRect tempRect = CGRectMake(x,y,closeButtonImage.size.width,closeButtonImage.size.height);
     
     if(CGRectContainsPoint(tempRect, point))
         return YES;
