@@ -4,7 +4,7 @@
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="1930"/>
     </dependencies>
     <scenes>
-        <!--View Controller - CFShareCircle App-->
+        <!--View Controller - CFShareCircle Demo-->
         <scene sceneID="5">
             <objects>
                 <viewController id="2" customClass="ViewController" sceneMemberID="viewController">
@@ -29,7 +29,7 @@
                             <constraint firstItem="tm6-Qg-mNj" firstAttribute="trailing" secondItem="3" secondAttribute="trailing" type="default" id="o4L-7f-rLy"/>
                         </constraints>
                     </view>
-                    <navigationItem key="navigationItem" title="CFShareCircle App" id="MF8-pq-sSd"/>
+                    <navigationItem key="navigationItem" title="CFShareCircle Demo" id="MF8-pq-sSd"/>
                     <connections>
                         <outlet property="shareCircleView" destination="3" id="hoN-Cj-zqr"/>
                     </connections>
@@ -57,6 +57,17 @@
             <point key="canvasLocation" x="250" y="696"/>
         </scene>
     </scenes>
+    <classes>
+        <class className="NSLayoutConstraint" superclassName="NSObject">
+            <source key="sourceIdentifier" type="project" relativePath="./Classes/NSLayoutConstraint.h"/>
+        </class>
+        <class className="ViewController" superclassName="UIViewController">
+            <source key="sourceIdentifier" type="project" relativePath="./Classes/ViewController.h"/>
+            <relationships>
+                <relationship kind="action" name="shareButtonClicked:"/>
+            </relationships>
+        </class>
+    </classes>
     <simulatedMetricsContainer key="defaultSimulatedMetrics">
         <simulatedStatusBarMetrics key="statusBar"/>
         <simulatedOrientationMetrics key="orientation"/>
