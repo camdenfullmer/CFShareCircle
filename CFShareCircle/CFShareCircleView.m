@@ -46,6 +46,9 @@
     
     [self setFrame:CGRectMake(320, 0, 320, 480)];
     [self setBounds:CGRectMake(0, 0, 320, 480)];
+    
+    self.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleRightMargin |
+    UIViewAutoresizingFlexibleTopMargin | UIViewAutoresizingFlexibleBottomMargin;
 }
 
 // Only override drawRect: if you perform custom drawing.
