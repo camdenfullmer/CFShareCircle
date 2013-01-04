@@ -59,3 +59,4 @@ List of sharing icons included with project.
     - Google+ (googleplus.png)
     - Facebook (facebook.png)
     - Email (email.png)
+    - Message (message.png)
