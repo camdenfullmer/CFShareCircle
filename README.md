@@ -29,7 +29,7 @@ Follow the instructions to add CFShareCircle to your project.
         [self.navigationController.view addSubview:shareCircleView];
 }
 ```
-4. Then set up the frame bounds for the view and implement the delegate method. Note that the index returned from the view is in order of the array (i.e. Starts from pi = 0).
+4. Then set up the frame bounds for the view and implement the delegate method. Note that the index returned from the view is in order of the array (i.e. Starts from pi = 0 on the unit circle).
 ```
     - (void)viewWillAppear:(BOOL)animated{
         shareCircleView.frame = self.navigationController.view.frame;
