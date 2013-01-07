@@ -45,8 +45,12 @@
     closeButtonImage = [UIImage imageNamed:@"close_button.png"];
     touchImage = [UIImage imageNamed:@"touch.png"];
     
+    // Set up frame and positions.
     [self setFrame:CGRectMake(320, 0, 320, 480)];
     [self setBounds:CGRectMake(0, 0, 320, 480)];
+    _origin = CGPointMake(160, 240);
+    _currentPosition = _origin;
+    visibile = NO;
     
     // Create shadow for UIView.
     self.layer.masksToBounds = NO;
@@ -56,17 +60,15 @@
     
     self.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleRightMargin |
     UIViewAutoresizingFlexibleTopMargin | UIViewAutoresizingFlexibleBottomMargin;
+    
+    [[UIDevice currentDevice] beginGeneratingDeviceOrientationNotifications];
+    [[NSNotificationCenter defaultCenter] addObserver: self selector: @selector(deviceOrientationDidChange:) name: UIDeviceOrientationDidChangeNotification object: nil];
 }
 
 // Only override drawRect: if you perform custom drawing.
 // An empty implementation adversely affects performance during animation.
 - (void)drawRect:(CGRect)rect
 {
-    if(_origin.y != rect.size.height/2){
-        _origin = CGPointMake(self.frame.size.width/2, self.frame.size.height/2);
-        _currentPosition = _origin;
-    }
-    
     CGContextRef context = UIGraphicsGetCurrentContext();
     
     // Draw the larger circle.
@@ -85,7 +87,7 @@
  **/
 
 - (void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event{
-    UITouch *touch = (UITouch *)[[touches allObjects] objectAtIndex:0];    
+    UITouch *touch = (UITouch *)[[touches allObjects] objectAtIndex:0];
     _currentPosition = [touch locationInView:self];
     
     // Make sure the user starts with touch inside the circle.
@@ -98,7 +100,7 @@
 - (void)touchesMoved:(NSSet *)touches withEvent:(UIEvent *)event{
     UITouch *touch = (UITouch *)[[touches allObjects] objectAtIndex:0];
     _currentPosition = [touch locationInView:self];
-        
+    
     if(_dragging)
         [self setNeedsDisplay];
 }
@@ -120,7 +122,7 @@
         }
         
         _currentPosition = _origin;
-        _dragging = NO;        
+        _dragging = NO;
     }
     [self setNeedsDisplay];
 }
@@ -175,10 +177,10 @@
     // Start image context.
     UIGraphicsBeginImageContext(closeButtonImage.size);
     UIGraphicsPushContext(context);
-       
+    
     // Draw the image.
     [closeButtonImage drawInRect:tempRect];
-        
+    
     // End image context.
     UIGraphicsPopContext();
     UIGraphicsEndImageContext();
@@ -221,6 +223,7 @@
  **/
 - (void) animateIn{
     self.hidden = NO;
+    visibile = YES;
     // Reset the view.
     [self setNeedsDisplay];
     
@@ -228,22 +231,21 @@
                           delay: 0.0
                         options: UIViewAnimationOptionCurveEaseIn
                      animations:^{
-                         [self setFrame:CGRectMake(0, 0, 320, 480)];
+                         [self setViewFrame];
                      }
                      completion:^(BOOL finished){}];
 }
 
-- (void) animateOut{   
+- (void) animateOut{
+    visibile = NO;
     [UIView animateWithDuration: 0.2
                           delay: 0.0
                         options: UIViewAnimationOptionCurveEaseOut
                      animations:^{
-                         [self setFrame:CGRectMake(320, 0, 320, 480)];
+                         [self setViewFrame];
                      }
                      completion:^(BOOL finished){
                          self.hidden = YES;
-                         // Reset the position.
-                         _currentPosition = _origin;
                      }];
 }
 
@@ -251,7 +253,7 @@
  HELPER METHODS
  **/
 
-/* Method makes sure that the generated point won't be outside of the larger circle. */
+/* Determines where the touch images is going to be placed inside of the view. */
 - (CGRect) touchRectLocationAtPoint:(CGPoint)point{
     
     if(!_dragging)
@@ -319,6 +321,50 @@
     for (int i = 0; i < [imageFileNames count]; i++) {
         [images addObject:[UIImage imageNamed:[imageFileNames objectAtIndex:i]]];
     }
+}
+
+/* Determine the frame that the view is to use based on orientation. */
+
+- (void) setViewFrame{
+    if(UIDeviceOrientationIsPortrait(currentOrientation)){
+        [self setFrame:CGRectMake(320*!visibile, 0, 320, 480)];
+        [self setBounds:CGRectMake(0, 0, 320, 480)];
+        _origin = CGPointMake(160, 240);
+        _currentPosition = _origin;
+    }else if(UIDeviceOrientationIsLandscape(currentOrientation)){
+        [self setFrame:CGRectMake(480*!visibile, 0, 480, 320)];
+        [self setBounds:CGRectMake(0, 0, 480, 320)];
+        _origin = CGPointMake(240, 160);
+        _currentPosition = _origin;
+    }
+    [self setNeedsDisplay];
+}
+
+/**
+ ORIENTATION CHANGE
+ **/
+
+- (void)deviceOrientationDidChange:(NSNotification *)notification {
+    //Obtaining the current device orientation
+    UIDeviceOrientation orientation = [[UIDevice currentDevice] orientation];
+    
+    //Ignoring specific orientations
+    if (orientation == UIDeviceOrientationFaceUp || orientation == UIDeviceOrientationFaceDown || orientation == UIDeviceOrientationUnknown || currentOrientation == orientation) {
+        return;
+    }
+    
+    if ((UIDeviceOrientationIsPortrait(currentOrientation) && UIDeviceOrientationIsPortrait(orientation)) ||
+        (UIDeviceOrientationIsLandscape(currentOrientation) && UIDeviceOrientationIsLandscape(orientation))) {
+        //still saving the current orientation
+        currentOrientation = orientation;
+        return;
+    }
+    
+    [NSObject cancelPreviousPerformRequestsWithTarget:self selector:@selector(relayoutLayers) object:nil];
+    //Responding only to changes in landscape or portrait
+    currentOrientation = orientation;
+    //
+    [self performSelector:@selector(setViewFrame) withObject:nil afterDelay:0];
 }
 
 @end

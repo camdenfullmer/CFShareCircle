@@ -26,6 +26,8 @@
     NSMutableArray *images;
     UIImage *touchImage;
     UIImage *closeButtonImage;
+    UIDeviceOrientation currentOrientation;
+    BOOL visibile;
 }
 
 @property (assign) id <CFShareCircleViewDelegate> delegate;
