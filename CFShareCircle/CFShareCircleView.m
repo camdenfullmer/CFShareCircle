@@ -7,6 +7,7 @@
 //
 
 #import "CFShareCircleView.h"
+#import <QuartzCore/QuartzCore.h>
 
 @implementation CFShareCircleView
 
@@ -39,13 +40,19 @@
     _tempRectSize = 50;
     
     self.hidden = YES;
-    self.backgroundColor = [UIColor colorWithWhite:0 alpha:0.8];
+    self.backgroundColor = [UIColor clearColor];
     
     closeButtonImage = [UIImage imageNamed:@"close_button.png"];
     touchImage = [UIImage imageNamed:@"touch.png"];
     
     [self setFrame:CGRectMake(320, 0, 320, 480)];
     [self setBounds:CGRectMake(0, 0, 320, 480)];
+    
+    // Create shadow for UIView.
+    self.layer.masksToBounds = NO;
+    self.layer.shadowOffset = CGSizeMake(0, 0);
+    self.layer.shadowRadius = 5;
+    self.layer.shadowOpacity = 0.5;
     
     self.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleRightMargin |
     UIViewAutoresizingFlexibleTopMargin | UIViewAutoresizingFlexibleBottomMargin;
