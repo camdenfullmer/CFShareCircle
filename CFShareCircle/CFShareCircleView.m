@@ -257,23 +257,25 @@
 /* Determines where the touch images is going to be placed inside of the view. */
 - (CGRect) touchRectLocationAtPoint:(CGPoint)point{
     
+    // If not dragging make sure we redraw the touch image at the origin.
     if(!_dragging)
         point = _origin;
     
-    float touchImageSize = touchImage.size.height;
+    float touchImageSize = touchImage.size.height;   
     
+    // See if the new point is outside of the circle's radius.
     if(pow(_largeRectSize/2.0 - touchImageSize/2.0,2) < (pow(point.x - _origin.x,2) + pow(point.y - _origin.y,2))){
-        // Translate the x point.
-        if(point.x > _origin.x + _largeRectSize/2.0 - touchImageSize/2.0)
-            point.x = _origin.x + _largeRectSize/2.0 - touchImageSize/2.0;
-        else if(point.x < _origin.x - _largeRectSize/2.0 + touchImageSize/2.0)
-            point.x = _origin.x - _largeRectSize/2.0 + touchImageSize/2.0;
         
-        // Translate the y point.
-        if(point.y > _origin.y)
-            point.y = sqrt(pow(_largeRectSize/2.0 - touchImageSize/2.0,2) - pow(point.x - _origin.x,2)) + _origin.y;
-        else
-            point.y = -sqrt(pow(_largeRectSize/2.0 - touchImageSize/2.0,2) - pow(point.x - _origin.x,2)) + _origin.y;
+        // Determine x and y from the center of the circle.
+        point.x = _origin.x - point.x;
+        point.y -= _origin.y;
+        
+        // Calculate the angle on the around the circle.
+        double angle = atan2(point.y, point.x);
+        
+        // Get the new x and y from the point on the edge of the circle subtracting the size of the touch image.
+        point.x = _origin.x - (_largeRectSize/2.0 - touchImageSize/2.0) * cos(angle);
+        point.y = _origin.y + (_largeRectSize/2.0 - touchImageSize/2.0) * sin(angle);
     }
     
     return CGRectMake(point.x - touchImage.size.width/2.0,point.y - touchImage.size.height/2.0,touchImage.size.width,touchImage.size.height);
