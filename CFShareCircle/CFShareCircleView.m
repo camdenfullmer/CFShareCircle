@@ -90,8 +90,8 @@
     UITouch *touch = (UITouch *)[[touches allObjects] objectAtIndex:0];
     _currentPosition = [touch locationInView:self];
     
-    // Make sure the user starts with touch inside the circle.
-    if([self circleEnclosesPoint: _currentPosition])
+    // Make sure the user starts with touch inside the circle.    
+    if([self circleEnclosesPoint: _currentPosition] && ![self closeButtonEnclosesPoint:_currentPosition])
         _dragging = YES;
     
     [self setNeedsDisplay];
