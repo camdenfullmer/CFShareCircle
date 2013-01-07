@@ -246,6 +246,7 @@
                      }
                      completion:^(BOOL finished){
                          self.hidden = YES;
+                         _dragging = NO;
                      }];
 }
 
