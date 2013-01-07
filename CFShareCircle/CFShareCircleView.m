@@ -85,50 +85,44 @@
  **/
 
 - (void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event{
-    UITouch *touch = (UITouch *)[[touches allObjects] objectAtIndex:0];
-    
-    CGPoint point = [touch locationInView:self];
+    UITouch *touch = (UITouch *)[[touches allObjects] objectAtIndex:0];    
+    _currentPosition = [touch locationInView:self];
     
     // Make sure the user starts with touch inside the circle.
-    if([self closeButtonEnclosesPoint: point]){
-        _currentPosition = _origin;
-        [self.delegate shareCircleViewWasCanceled];
-    }
-    else if([self circleEnclosesPoint: point]){
-        _currentPosition = [self translatePoint:[touch locationInView:self]];
+    if([self circleEnclosesPoint: _currentPosition])
         _dragging = YES;
-    }
     
     [self setNeedsDisplay];
 }
 
 - (void)touchesMoved:(NSSet *)touches withEvent:(UIEvent *)event{
-    if(_dragging){
-        UITouch *touch = (UITouch *)[[touches allObjects] objectAtIndex:0];
-        _currentPosition = [self translatePoint:[touch locationInView:self]];
+    UITouch *touch = (UITouch *)[[touches allObjects] objectAtIndex:0];
+    _currentPosition = [touch locationInView:self];
+        
+    if(_dragging)
         [self setNeedsDisplay];
-    }
 }
 
 - (void)touchesEnded:(NSSet *)touches withEvent:(UIEvent *)event{
-    if(_dragging){
-        // Determine if the location it ended in was in one of the rectangles.
-        UITouch *touch = (UITouch *)[[touches allObjects] objectAtIndex:0];
-        _currentPosition = [self translatePoint:[touch locationInView:self]];
-        
+    UITouch *touch = (UITouch *)[[touches allObjects] objectAtIndex:0];
+    _currentPosition = [touch locationInView:self];
+    
+    if([self closeButtonEnclosesPoint: _currentPosition]){
+        [self.delegate shareCircleViewWasCanceled];
+    }
+    else if(_dragging){
         // Loop through all the rects to see if the user selected one.
         for(int i = 0; i < [images count]; i++){
             CGPoint point = [self pointAtIndex:i];
-            
             // Determine if point is inside rect.
             if(CGRectContainsPoint(CGRectMake(point.x, point.y, _tempRectSize, _tempRectSize), _currentPosition))
                 [self.delegate shareCircleView:self didSelectIndex:i];
         }
         
         _currentPosition = _origin;
-        _dragging = NO;
-        [self setNeedsDisplay];
+        _dragging = NO;        
     }
+    [self setNeedsDisplay];
 }
 
 - (void)touchesCancelled:(NSSet *)touches withEvent:(UIEvent *)event{
@@ -181,19 +175,27 @@
     // Start image context.
     UIGraphicsBeginImageContext(closeButtonImage.size);
     UIGraphicsPushContext(context);
-    
+       
     // Draw the image.
     [closeButtonImage drawInRect:tempRect];
-    
+        
     // End image context.
     UIGraphicsPopContext();
     UIGraphicsEndImageContext();
+    
+    // Make the button a little lighter when not pushed.
+    if(CGRectContainsPoint(tempRect, _currentPosition)){
+        CGContextSetFillColorWithColor(context, [UIColor colorWithWhite:1 alpha:0.2].CGColor);
+        CGContextAddEllipseInRect(context, tempRect);
+        CGContextFillPath(context);
+    }
 }
 
 /* Draw touch region. */
 - (void) drawTouchRegionWithContext: (CGContextRef) context{
+    
     // Create the rect and the point to draw the image.
-    CGRect smallCircleRect = CGRectMake(_currentPosition.x - touchImage.size.width/2.0,_currentPosition.y - touchImage.size.height/2.0,touchImage.size.width,touchImage.size.height);
+    CGRect smallCircleRect = [self touchRectLocationAtPoint:_currentPosition];
     
     // Start image context.
     UIGraphicsBeginImageContext(touchImage.size);
@@ -219,6 +221,7 @@
  **/
 - (void) animateIn{
     self.hidden = NO;
+    [self setNeedsDisplay];
     
     [UIView animateWithDuration: 0.2
                           delay: 0.0
@@ -238,6 +241,7 @@
                      }
                      completion:^(BOOL finished){
                          self.hidden = YES;
+                         _currentPosition = _origin;
                      }];
 }
 
@@ -246,7 +250,10 @@
  **/
 
 /* Method makes sure that the generated point won't be outside of the larger circle. */
-- (CGPoint) translatePoint:(CGPoint)point{
+- (CGRect) touchRectLocationAtPoint:(CGPoint)point{
+    
+    if(!_dragging)
+        point = _origin;
     
     float touchImageSize = touchImage.size.height;
     
@@ -264,7 +271,7 @@
             point.y = -sqrt(pow(_largeRectSize/2.0 - touchImageSize/2.0,2) - pow(point.x - _origin.x,2)) + _origin.y;
     }
     
-    return point;
+    return CGRectMake(point.x - touchImage.size.width/2.0,point.y - touchImage.size.height/2.0,touchImage.size.width,touchImage.size.height);
 }
 
 /* Get the point at the specified index. */
