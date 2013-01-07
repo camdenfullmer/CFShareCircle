@@ -184,7 +184,7 @@
     UIGraphicsEndImageContext();
     
     // Make the button a little lighter when not pushed.
-    if(CGRectContainsPoint(tempRect, _currentPosition)){
+    if(!CGRectContainsPoint(tempRect, _currentPosition)){
         CGContextSetFillColorWithColor(context, [UIColor colorWithWhite:1 alpha:0.2].CGColor);
         CGContextAddEllipseInRect(context, tempRect);
         CGContextFillPath(context);
@@ -221,6 +221,7 @@
  **/
 - (void) animateIn{
     self.hidden = NO;
+    // Reset the view.
     [self setNeedsDisplay];
     
     [UIView animateWithDuration: 0.2
@@ -241,6 +242,7 @@
                      }
                      completion:^(BOOL finished){
                          self.hidden = YES;
+                         // Reset the position.
                          _currentPosition = _origin;
                      }];
 }
