@@ -7,6 +7,7 @@
 //
 
 #import "CFShareCircleView.h"
+#import <CoreText/CoreText.h>
 
 @implementation CFShareCircleView
 
@@ -104,17 +105,17 @@
     for(int i = 0; i < _imageNames.count; i++) {
         UIImage *image = [UIImage imageNamed:[_imageNames objectAtIndex:i]];
         // Construct the base layer in which will be rotated around the origin of the circle.
-        CAShapeLayer *tempLayer = [CAShapeLayer layer];
-        tempLayer.bounds = CGRectMake(0,0, BACKGROUND_SIZE,BACKGROUND_SIZE);
-        tempLayer.position = CGPointMake(CGRectGetMidX(self.bounds), CGRectGetMidY(self.bounds));
+        CAShapeLayer *baseLayer = [CAShapeLayer layer];
+        baseLayer.bounds = CGRectMake(0,0, BACKGROUND_SIZE,BACKGROUND_SIZE);
+        baseLayer.position = CGPointMake(CGRectGetMidX(self.bounds), CGRectGetMidY(self.bounds));
         // Construct the image layer which will contain our image.
         CALayer *imageLayer = [CALayer layer];
         imageLayer.bounds = CGRectMake(0, 0, TEMP_SIZE, TEMP_SIZE);
         imageLayer.position = CGPointMake(BACKGROUND_SIZE/2.0 + PATH_SIZE/2.0, BACKGROUND_SIZE/2.0);
         imageLayer.contents = (id)image.CGImage;
         // Add all the layers
-        [tempLayer addSublayer:imageLayer];
-        [imageLayers addObject:tempLayer];
+        [baseLayer addSublayer:imageLayer];
+        [imageLayers addObject:baseLayer];
         [self.layer addSublayer:[imageLayers objectAtIndex:i]];
     }
     
@@ -124,7 +125,22 @@
     touchLayer.bounds = self.bounds;
     touchLayer.frame = CGRectMake(_origin.x - TOUCH_SIZE/2.0, _origin.y - TOUCH_SIZE/2.0, TOUCH_SIZE, TOUCH_SIZE);
     touchLayer.contents = (id) [UIImage imageNamed:@"touch.png"].CGImage;
+    touchLayer.opacity = 0.0;
     [self.layer addSublayer:touchLayer];
+    
+    // Create the intro text layer to help the user.
+    textLayer = [CATextLayer layer];
+    textLayer.string = @"drag and share";
+    textLayer.fontSize = 16.0;
+    textLayer.bounds = self.bounds;
+    textLayer.foregroundColor = [UIColor blackColor].CGColor;
+    textLayer.frame = CGRectMake(0, 0, 100, 20);
+    textLayer.position = CGPointMake(CGRectGetMidX(self.bounds), CGRectGetMidY(self.bounds));
+    textLayer.contentsScale = [[UIScreen mainScreen] scale];
+    CTFontRef ref = CTFontCreateWithName(CFSTR("Actor-Regular"), 12.0, NULL);
+    textLayer.font = ref;
+    textLayer.opacity = 0.0;
+    [self.layer addSublayer:textLayer];
 }
 
 /**
@@ -209,6 +225,7 @@
                      }
                      completion:^(BOOL finished){
                          [self animateImagesIn];
+                         [self animateTextLayer];
                      }];
 }
 
@@ -224,6 +241,7 @@
                      }
                      completion:^(BOOL finished){
                          self.hidden = YES;
+                         touchLayer.opacity = 0.0;
                      }];
 }
 
@@ -261,6 +279,7 @@
     }
 }
 
+/* Animation used to reset the images so the animation in works correctly. */
 - (void) animateImagesOut{
     for(int i = 0; i < _imageNames.count; i++) {
         // Animate the base layer for the main rotation.
@@ -271,6 +290,32 @@
         CALayer* sub = [layer.sublayers objectAtIndex:0];
         sub.transform = CATransform3DMakeRotation(0, 0, 0, 1);
     }
+}
+
+/* Animate text layer for intro on how to share. */
+- (void) animateTextLayer {   
+    [CATransaction begin];
+    [CATransaction setAnimationDuration:0.2];
+    [CATransaction setAnimationTimingFunction:[CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseIn]];
+    [CATransaction setCompletionBlock:^{
+        [self animateTouchLayer];
+        [CATransaction begin];
+        [CATransaction setAnimationDuration:2.0];
+        [CATransaction setAnimationTimingFunction:[CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseOut]];        
+        textLayer.opacity = 0.0;        
+        [CATransaction commit];
+    }];    
+    textLayer.opacity = 1.0;    
+    [CATransaction commit];
+}
+
+/* Animate the touch layer on to the share circle. */
+- (void) animateTouchLayer{
+    [CATransaction begin];
+    [CATransaction setAnimationDuration:2.0];
+    [CATransaction setAnimationTimingFunction:[CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseIn]];
+    touchLayer.opacity = 0.8;
+    [CATransaction commit];
 }
 
 /**
@@ -341,7 +386,6 @@
 }
 
 /* Determine the frame that the view is to use based on orientation. */
-
 - (void) setViewFrame{
         
     if(UIDeviceOrientationIsPortrait(currentOrientation)){
@@ -359,6 +403,10 @@
     // Update all the layers positions.
     backgroundLayer.position = CGPointMake(CGRectGetMidX(self.bounds), CGRectGetMidY(self.bounds));
     [self updateTouchPosition];
+    for(int i = 0; i < _imageNames.count; i++) {
+        CALayer* layer = [imageLayers objectAtIndex:i];
+        layer.position = CGPointMake(CGRectGetMidX(self.bounds), CGRectGetMidY(self.bounds));
+    }
 }
 
 /**

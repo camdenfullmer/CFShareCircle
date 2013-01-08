@@ -29,6 +29,7 @@
     BOOL visibile;
     CALayer *touchLayer, *closeButtonLayer;
     CAShapeLayer *backgroundLayer;
+    CATextLayer *textLayer;
     NSMutableArray *imageLayers;
 }
 
