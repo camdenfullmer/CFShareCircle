@@ -12,32 +12,34 @@
 @implementation CFShareCircleView
 
 @synthesize delegate;
-@synthesize images = _images;
+@synthesize imageNames = _imageNames;
 
 -(id)init{
     self = [super init];
     if (self) {
         [self initialize];
-        [self setImages:[[NSArray alloc] initWithObjects:@"evernote.png", @"facebook.png", @"googleplus.png", @"twitter.png", @"message.png", @"email.png", nil]];
+        [self setImageNames:[[NSArray alloc] initWithObjects:@"evernote.png", @"facebook.png", @"googleplus.png", @"twitter.png", @"message.png", @"email.png", nil]];
         [self setUpLayers];
     }
     return self;
 }
 
-- (id)initWithCustomImages: (NSArray*)images{
+- (id)initWithCustomImageNames: (NSArray*)images{
     self = [super init];
     if (self) {
         [self initialize];
-        [self setImages:images];
+        [self setImageNames:images];
         [self setUpLayers];
     }
     return self;
 }
 
 /* Set all the default values for the share circle. */
-- (void)initialize{
+- (void)initialize{   
     self.hidden = YES;
     self.backgroundColor = [UIColor clearColor];
+    
+    imageLayers = [[NSMutableArray alloc] init];
     
     // Set up frame and positions.
     [self setFrame:CGRectMake(320, 0, 320, 480)];
@@ -99,15 +101,17 @@
     
     
     // Create the layers for all the sharing services.
-    for(int i = 0; i < _images.count; i++) {
-        UIImage *image = [UIImage imageNamed:[_images objectAtIndex:i]];
+    for(int i = 0; i < _imageNames.count; i++) {
+        UIImage *image = [UIImage imageNamed:[_imageNames objectAtIndex:i]];
         CGPoint point = [self pointAtIndex:i];
         CGRect rect = CGRectMake(point.x,point.y, TEMP_SIZE,TEMP_SIZE);
         CAShapeLayer *tempLayer = [CAShapeLayer layer];
         tempLayer.bounds = self.bounds;
         tempLayer.contents = (id)image.CGImage;
         tempLayer.frame = rect;
-        [self.layer addSublayer:tempLayer];
+        tempLayer.opacity = 0.6;
+        [imageLayers addObject:tempLayer];
+        [self.layer addSublayer:[imageLayers objectAtIndex:i]];
     }
     
     
@@ -131,8 +135,9 @@
     if([self circleEnclosesPoint: _currentPosition] && ![self closeButtonEnclosesPoint:_currentPosition]){
         _dragging = YES;
         [self updateTouchPosition];
+        [self updateImages];
     } else if( [self closeButtonEnclosesPoint:_currentPosition]){
-        // Hide overlay.
+        // Hide close button overlay.
         CALayer *layer = [closeButtonLayer.sublayers objectAtIndex:0];
         layer.opacity = 0.0;
     }
@@ -142,15 +147,17 @@
     UITouch *touch = (UITouch *)[[touches allObjects] objectAtIndex:0];
     _currentPosition = [touch locationInView:self];
     
-    if(_dragging)
+    if(_dragging){
         [self updateTouchPosition];
+        [self updateImages];
+    }
 }
 
 - (void)touchesEnded:(NSSet *)touches withEvent:(UIEvent *)event{
     UITouch *touch = (UITouch *)[[touches allObjects] objectAtIndex:0];
     _currentPosition = [touch locationInView:self];
     
-    // Show overlay.
+    // Show close button overlay.
     CALayer *layer = [closeButtonLayer.sublayers objectAtIndex:0];
     layer.opacity = 0.2;
     
@@ -159,7 +166,7 @@
     }
     else if(_dragging){
         // Loop through all the rects to see if the user selected one.
-        for(int i = 0; i < [_images count]; i++){
+        for(int i = 0; i < [_imageNames count]; i++){
             CGPoint point = [self pointAtIndex:i];
             // Determine if point is inside rect.
             if(CGRectContainsPoint(CGRectMake(point.x, point.y, TEMP_SIZE, TEMP_SIZE), _currentPosition))
@@ -216,6 +223,18 @@
     [CATransaction commit];
 }
 
+- (void) updateImages{
+    for(int i = 0; i < [_imageNames count]; i++){
+        CGPoint point = [self pointAtIndex:i];
+        // Determine if point is inside rect.
+        CALayer *layer = [imageLayers objectAtIndex:i];
+        if(CGRectContainsPoint(CGRectMake(point.x, point.y, TEMP_SIZE, TEMP_SIZE), _currentPosition))
+            layer.opacity = 1;
+        else
+            layer.opacity = 0.6;
+    }
+}
+
 /**
  HELPER METHODS
  **/
@@ -248,7 +267,7 @@
 /* Get the point at the specified index. */
 - (CGPoint) pointAtIndex:(int) index{
     // Number for trig.
-    float trig = index/([_images count]/2.0)*M_PI;
+    float trig = index/([_imageNames count]/2.0)*M_PI;
     
     // Calculate the x and y coordinate.
     // Points go around the unit circle starting at pi = 0.

@@ -27,11 +27,12 @@
     UIDeviceOrientation currentOrientation;
     BOOL visibile;
     CALayer *touchLayer, *closeButtonLayer;
+    NSMutableArray *imageLayers;
 }
 
 @property (assign) id <CFShareCircleViewDelegate> delegate;
-@property (strong) NSArray *images;
-- (id)initWithCustomImages: (NSArray*)images;
+@property (strong) NSArray *imageNames;
+- (id)initWithCustomImageNames: (NSArray*)images;
 - (void)animateIn;
 - (void)animateOut;
 
