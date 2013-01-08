@@ -83,7 +83,7 @@
     double x = _origin.x - CLOSE_BUTTON_SIZE/2.0 + cosf(M_PI/4)*BACKGROUND_SIZE/2.0;
     double y = _origin.y - CLOSE_BUTTON_SIZE/2.0 - sinf(M_PI/4)*BACKGROUND_SIZE/2.0;
     
-    CGRect tempRect = CGRectMake(x,y,CLOSE_BUTTON_SIZE,CLOSE_BUTTON_SIZE);
+    CGRect tempRect = CGRectMake(x,y - 10,CLOSE_BUTTON_SIZE,CLOSE_BUTTON_SIZE);
     closeButtonLayer.frame = tempRect;
     
     // Create the overlay for the button
