@@ -44,9 +44,11 @@ Follow the instructions to add CFShareCircle to your project.
         NSLog(@"Selected index: %d", index);
     }
 ```
-6. Lastly, just show the view when you want it to appear.
+6. Lastly, just use animate in and out to show the CFShareCircle View.
 ```
-    [shareCircleView setHidden:NO];
+    [shareCircleView animateIn];
+
+    [shareCircleView animateOut];
 ```
 
 ###Custom Sharing Images
