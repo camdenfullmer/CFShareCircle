@@ -2,7 +2,7 @@
 
 CFShareCircle is a better way for app developers to let users share the content to many different services. It is a simple UIView that adds touch features.
 
-![Demo Image](http://i.imgur.com/DhLZm.png)
+![Demo Image](http://i.imgur.com/3g1bb.png)
 
 ##How To Use
 
