@@ -23,10 +23,9 @@
 @end
 
 @interface CFShareCircleView : UIView{
-    CGPoint _currentPosition, _origin;
-    BOOL _dragging;
+    CGPoint currentPosition, origin;
+    BOOL dragging, visible;
     UIDeviceOrientation currentOrientation;
-    BOOL visibile;
     CALayer *touchLayer, *closeButtonLayer;
     CAShapeLayer *backgroundLayer;
     CATextLayer *textLayer;

@@ -44,9 +44,9 @@
     // Set up frame and positions.
     [self setFrame:CGRectMake(320, 0, 320, 480)];
     [self setBounds:CGRectMake(0, 0, 320, 480)];
-    _origin = CGPointMake(160, 240);
-    _currentPosition = _origin;
-    visibile = NO;
+    origin = CGPointMake(160, 240);
+    currentPosition = origin;
+    visible = NO;
     
     // Create shadow for UIView.
     self.layer.masksToBounds = NO;
@@ -68,7 +68,7 @@
     backgroundLayer.position = CGPointMake(CGRectGetMidX(self.bounds), CGRectGetMidY(self.bounds));
     backgroundLayer.fillColor = [[UIColor whiteColor] CGColor];    
     CGMutablePathRef backgroundPath = CGPathCreateMutable();
-    CGRect backgroundRect = CGRectMake(_origin.x - BACKGROUND_SIZE/2,_origin.y - BACKGROUND_SIZE/2,BACKGROUND_SIZE,BACKGROUND_SIZE);
+    CGRect backgroundRect = CGRectMake(origin.x - BACKGROUND_SIZE/2,origin.y - BACKGROUND_SIZE/2,BACKGROUND_SIZE,BACKGROUND_SIZE);
     CGPathAddEllipseInRect(backgroundPath, nil, backgroundRect);
     backgroundLayer.path = backgroundPath;    
     [self.layer addSublayer:backgroundLayer];
@@ -81,8 +81,8 @@
     
     // Create the rect and the point to draw the image.
     // Calculate the x and y coordinate at pi/4.
-    double x = _origin.x - CLOSE_BUTTON_SIZE/2.0 + cosf(M_PI/4)*BACKGROUND_SIZE/2.0;
-    double y = _origin.y - CLOSE_BUTTON_SIZE/2.0 - sinf(M_PI/4)*BACKGROUND_SIZE/2.0;
+    double x = origin.x - CLOSE_BUTTON_SIZE/2.0 + cosf(M_PI/4)*BACKGROUND_SIZE/2.0;
+    double y = origin.y - CLOSE_BUTTON_SIZE/2.0 - sinf(M_PI/4)*BACKGROUND_SIZE/2.0;
     
     CGRect tempRect = CGRectMake(x,y - 10,CLOSE_BUTTON_SIZE,CLOSE_BUTTON_SIZE);
     closeButtonLayer.frame = tempRect;
@@ -124,7 +124,7 @@
     // Create the touch layer for the Share Circle.
     touchLayer = [CAShapeLayer layer];
     touchLayer.bounds = self.bounds;
-    touchLayer.frame = CGRectMake(_origin.x - TOUCH_SIZE/2.0, _origin.y - TOUCH_SIZE/2.0, TOUCH_SIZE, TOUCH_SIZE);
+    touchLayer.frame = CGRectMake(origin.x - TOUCH_SIZE/2.0, origin.y - TOUCH_SIZE/2.0, TOUCH_SIZE, TOUCH_SIZE);
     touchLayer.contents = (id) [UIImage imageNamed:@"touch.png"].CGImage;
     touchLayer.opacity = 0.4;
     [self.layer addSublayer:touchLayer];
@@ -152,14 +152,14 @@
 
 - (void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event{
     UITouch *touch = (UITouch *)[[touches allObjects] objectAtIndex:0];
-    _currentPosition = [touch locationInView:self];
+    currentPosition = [touch locationInView:self];
     
     // Make sure the user starts with touch inside the circle.    
-    if([self circleEnclosesPoint: _currentPosition] && ![self closeButtonEnclosesPoint:_currentPosition]){
-        _dragging = YES;
+    if([self circleEnclosesPoint: currentPosition] && ![self closeButtonEnclosesPoint:currentPosition]){
+        dragging = YES;
         [self updateTouchPosition];
         [self updateImages];
-    } else if( [self closeButtonEnclosesPoint:_currentPosition]){
+    } else if( [self closeButtonEnclosesPoint:currentPosition]){
         // Hide close button overlay.
         CALayer *layer = [closeButtonLayer.sublayers objectAtIndex:0];
         layer.opacity = 0.0;
@@ -168,9 +168,9 @@
 
 - (void)touchesMoved:(NSSet *)touches withEvent:(UIEvent *)event{
     UITouch *touch = (UITouch *)[[touches allObjects] objectAtIndex:0];
-    _currentPosition = [touch locationInView:self];
+    currentPosition = [touch locationInView:self];
     
-    if(_dragging){
+    if(dragging){
         [self updateTouchPosition];
         [self updateImages];
     }
@@ -178,35 +178,35 @@
 
 - (void)touchesEnded:(NSSet *)touches withEvent:(UIEvent *)event{
     UITouch *touch = (UITouch *)[[touches allObjects] objectAtIndex:0];
-    _currentPosition = [touch locationInView:self];
+    currentPosition = [touch locationInView:self];
     
     // Show close button overlay.
     CALayer *layer = [closeButtonLayer.sublayers objectAtIndex:0];
     layer.opacity = 0.2;
     
-    if([self closeButtonEnclosesPoint: _currentPosition] && !_dragging){
+    if([self closeButtonEnclosesPoint: currentPosition] && !dragging){
         [self.delegate shareCircleViewWasCanceled];
     }
-    else if(_dragging){
+    else if(dragging){
         // Loop through all the rects to see if the user selected one.
         for(int i = 0; i < [_imageNames count]; i++){
             CGPoint point = [self pointAtIndex:i];
             // Determine if point is inside rect.
-            if(CGRectContainsPoint(CGRectMake(point.x, point.y, TEMP_SIZE, TEMP_SIZE), _currentPosition))
+            if(CGRectContainsPoint(CGRectMake(point.x, point.y, TEMP_SIZE, TEMP_SIZE), currentPosition))
                 [self.delegate shareCircleView:self didSelectIndex:i];
         }
     }
     
-    _currentPosition = _origin;
-    _dragging = NO;
+    currentPosition = origin;
+    dragging = NO;
     [self updateTouchPosition];
     [self updateImages];
 }
 
 - (void)touchesCancelled:(NSSet *)touches withEvent:(UIEvent *)event{
     // Reset location.
-    _currentPosition = _origin;
-    _dragging = NO;
+    currentPosition = origin;
+    dragging = NO;
 }
 
 /**
@@ -216,7 +216,7 @@
 /* Animates the whole view into the screen. */
 - (void) animateIn{
     self.hidden = NO;
-    visibile = YES;
+    visible = YES;
     textLayer.opacity = 0.5;
     // Reset the view.
     [self setNeedsDisplay];
@@ -234,7 +234,7 @@
 
 /* Animates the whole view out of the screen. */
 - (void) animateOut{
-    visibile = NO;
+    visible = NO;
     [self animateImagesOut];
     [UIView animateWithDuration: 0.2
                           delay: 0.0
@@ -252,10 +252,10 @@
     [CATransaction begin];
     [CATransaction setValue: (id) kCFBooleanTrue forKey: kCATransactionDisableActions];
     // Update the position of the touch layer.
-    touchLayer.frame = [self touchRectLocationAtPoint:_currentPosition];
+    touchLayer.frame = [self touchRectLocationAtPoint:currentPosition];
     
     // Show a hover state when dragging, which will also show the text layer when not dragging.
-    if(_dragging){
+    if(dragging){
         touchLayer.opacity = 1.0;
         textLayer.opacity = 0.0;
     }
@@ -272,7 +272,7 @@
         CGPoint point = [self pointAtIndex:i];
         // Determine if point is inside rect.
         CALayer *layer = [imageLayers objectAtIndex:i];
-        if(CGRectContainsPoint(CGRectMake(point.x, point.y, TEMP_SIZE, TEMP_SIZE), _currentPosition) || !_dragging)
+        if(CGRectContainsPoint(CGRectMake(point.x, point.y, TEMP_SIZE, TEMP_SIZE), currentPosition) || !dragging)
             layer.opacity = 1;
         else
             layer.opacity = 0.6;
@@ -314,22 +314,22 @@
 - (CGRect) touchRectLocationAtPoint:(CGPoint)point{
     
     // If not dragging make sure we redraw the touch image at the origin.
-    if(!_dragging)
-        point = _origin;
+    if(!dragging)
+        point = origin;
         
     // See if the new point is outside of the circle's radius.
-    if(pow(BACKGROUND_SIZE/2.0 - TOUCH_SIZE/2.0,2) < (pow(point.x - _origin.x,2) + pow(point.y - _origin.y,2))){
+    if(pow(BACKGROUND_SIZE/2.0 - TOUCH_SIZE/2.0,2) < (pow(point.x - origin.x,2) + pow(point.y - origin.y,2))){
         
         // Determine x and y from the center of the circle.
-        point.x = _origin.x - point.x;
-        point.y -= _origin.y;
+        point.x = origin.x - point.x;
+        point.y -= origin.y;
         
         // Calculate the angle on the around the circle.
         double angle = atan2(point.y, point.x);
         
         // Get the new x and y from the point on the edge of the circle subtracting the size of the touch image.
-        point.x = _origin.x - (BACKGROUND_SIZE/2.0 - TOUCH_SIZE/2.0) * cos(angle);
-        point.y = _origin.y + (BACKGROUND_SIZE/2.0 - TOUCH_SIZE/2.0) * sin(angle);
+        point.x = origin.x - (BACKGROUND_SIZE/2.0 - TOUCH_SIZE/2.0) * cos(angle);
+        point.y = origin.y + (BACKGROUND_SIZE/2.0 - TOUCH_SIZE/2.0) * sin(angle);
     }
     
     return CGRectMake(point.x - TOUCH_SIZE/2.0, point.y - TOUCH_SIZE/2.0, TOUCH_SIZE, TOUCH_SIZE);
@@ -342,8 +342,8 @@
     
     // Calculate the x and y coordinate.
     // Points go around the unit circle starting at pi = 0.
-    float x = _origin.x + cosf(trig)*PATH_SIZE/2.0;
-    float y = _origin.y - sinf(trig)*PATH_SIZE/2.0;
+    float x = origin.x + cosf(trig)*PATH_SIZE/2.0;
+    float y = origin.y - sinf(trig)*PATH_SIZE/2.0;
     
     // Subtract half width and height of image size.
     x -= TEMP_SIZE/2.0;
@@ -354,7 +354,7 @@
 
 /* Helper method to determine if a specified point is inside the circle. */
 - (BOOL) circleEnclosesPoint: (CGPoint) point{
-    if(pow(BACKGROUND_SIZE/2.0,2) < (pow(point.x - _origin.x,2) + pow(point.y - _origin.y,2)))
+    if(pow(BACKGROUND_SIZE/2.0,2) < (pow(point.x - origin.x,2) + pow(point.y - origin.y,2)))
         return NO;
     else
         return YES;
@@ -362,8 +362,8 @@
 
 /* Helper method to determine if a specified point is inside the close button. */
 - (BOOL) closeButtonEnclosesPoint: (CGPoint) point{
-    float x = _origin.x - CLOSE_BUTTON_SIZE/2.0 + cosf(M_PI/4)*BACKGROUND_SIZE/2.0;
-    float y = _origin.y - CLOSE_BUTTON_SIZE/2.0 - sinf(M_PI/4)*BACKGROUND_SIZE/2.0;
+    float x = origin.x - CLOSE_BUTTON_SIZE/2.0 + cosf(M_PI/4)*BACKGROUND_SIZE/2.0;
+    float y = origin.y - CLOSE_BUTTON_SIZE/2.0 - sinf(M_PI/4)*BACKGROUND_SIZE/2.0;
     
     CGRect tempRect = CGRectMake(x,y,CLOSE_BUTTON_SIZE,CLOSE_BUTTON_SIZE);
     
@@ -377,15 +377,15 @@
 - (void) setViewFrame{
         
     if(UIDeviceOrientationIsPortrait(currentOrientation)){
-        [self setFrame:CGRectMake(320*!visibile, 0, 320, 480)];
+        [self setFrame:CGRectMake(320*!visible, 0, 320, 480)];
         [self setBounds:CGRectMake(0, 0, 320, 480)];
-        _origin = CGPointMake(160, 240);
-        _currentPosition = _origin;
+        origin = CGPointMake(160, 240);
+        currentPosition = origin;
     }else if(UIDeviceOrientationIsLandscape(currentOrientation)){
-        [self setFrame:CGRectMake(480*!visibile, 0, 480, 320)];
+        [self setFrame:CGRectMake(480*!visible, 0, 480, 320)];
         [self setBounds:CGRectMake(0, 0, 480, 320)];
-        _origin = CGPointMake(240, 160);
-        _currentPosition = _origin;
+        origin = CGPointMake(240, 160);
+        currentPosition = origin;
     }
     
     // Update all the layers positions.
