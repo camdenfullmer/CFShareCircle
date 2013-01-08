@@ -125,21 +125,23 @@
     touchLayer.bounds = self.bounds;
     touchLayer.frame = CGRectMake(_origin.x - TOUCH_SIZE/2.0, _origin.y - TOUCH_SIZE/2.0, TOUCH_SIZE, TOUCH_SIZE);
     touchLayer.contents = (id) [UIImage imageNamed:@"touch.png"].CGImage;
-    touchLayer.opacity = 0.0;
+    touchLayer.opacity = 0.4;
     [self.layer addSublayer:touchLayer];
     
     // Create the intro text layer to help the user.
     textLayer = [CATextLayer layer];
-    textLayer.string = @"drag and share";
-    textLayer.fontSize = 16.0;
+    textLayer.string = @"Drag and Share";
+    textLayer.wrapped = YES;
+    textLayer.alignmentMode = kCAAlignmentCenter;
+    textLayer.fontSize = 13.0;
     textLayer.bounds = self.bounds;
     textLayer.foregroundColor = [UIColor blackColor].CGColor;
-    textLayer.frame = CGRectMake(0, 0, 100, 20);
+    textLayer.frame = CGRectMake(0, 0, 60, 28);
     textLayer.position = CGPointMake(CGRectGetMidX(self.bounds), CGRectGetMidY(self.bounds));
     textLayer.contentsScale = [[UIScreen mainScreen] scale];
     CTFontRef ref = CTFontCreateWithName(CFSTR("Actor-Regular"), 12.0, NULL);
     textLayer.font = ref;
-    textLayer.opacity = 0.0;
+    textLayer.opacity = 0.5;
     [self.layer addSublayer:textLayer];
 }
 
@@ -214,6 +216,7 @@
 - (void) animateIn{
     self.hidden = NO;
     visibile = YES;
+    textLayer.opacity = 0.5;
     // Reset the view.
     [self setNeedsDisplay];
     
@@ -225,7 +228,6 @@
                      }
                      completion:^(BOOL finished){
                          [self animateImagesIn];
-                         [self animateTextLayer];
                      }];
 }
 
@@ -241,7 +243,6 @@
                      }
                      completion:^(BOOL finished){
                          self.hidden = YES;
-                         touchLayer.opacity = 0.0;
                      }];
 }
 
@@ -249,7 +250,18 @@
 - (void) updateTouchPosition{
     [CATransaction begin];
     [CATransaction setValue: (id) kCFBooleanTrue forKey: kCATransactionDisableActions];
+    // Update the position of the touch layer.
     touchLayer.frame = [self touchRectLocationAtPoint:_currentPosition];
+    
+    // Show a hover state when dragging.
+    if(_dragging){
+        touchLayer.opacity = 1.0;
+        textLayer.opacity = 0.0;
+    }
+    else{
+        touchLayer.opacity = 0.4;
+        textLayer.opacity = 0.6;
+    }
     [CATransaction commit];
 }
 
@@ -259,7 +271,7 @@
         CGPoint point = [self pointAtIndex:i];
         // Determine if point is inside rect.
         CALayer *layer = [imageLayers objectAtIndex:i];
-        if(CGRectContainsPoint(CGRectMake(point.x, point.y, TEMP_SIZE, TEMP_SIZE), _currentPosition))
+        if(CGRectContainsPoint(CGRectMake(point.x, point.y, TEMP_SIZE, TEMP_SIZE), _currentPosition) || !_dragging)
             layer.opacity = 1;
         else
             layer.opacity = 0.6;
@@ -272,6 +284,7 @@
         // Animate the base layer for the main rotation.
         CALayer* layer = [imageLayers objectAtIndex:i];
         layer.transform = CATransform3DMakeRotation(-i/([_imageNames count]/2.0)*M_PI, 0, 0, 1);
+        layer.opacity = 1.0;
         
         // Animate the iamge layer to get the correct orientation.
         CALayer* sub = [layer.sublayers objectAtIndex:0];
@@ -290,32 +303,6 @@
         CALayer* sub = [layer.sublayers objectAtIndex:0];
         sub.transform = CATransform3DMakeRotation(0, 0, 0, 1);
     }
-}
-
-/* Animate text layer for intro on how to share. */
-- (void) animateTextLayer {   
-    [CATransaction begin];
-    [CATransaction setAnimationDuration:0.2];
-    [CATransaction setAnimationTimingFunction:[CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseIn]];
-    [CATransaction setCompletionBlock:^{
-        [self animateTouchLayer];
-        [CATransaction begin];
-        [CATransaction setAnimationDuration:2.0];
-        [CATransaction setAnimationTimingFunction:[CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseOut]];        
-        textLayer.opacity = 0.0;        
-        [CATransaction commit];
-    }];    
-    textLayer.opacity = 1.0;    
-    [CATransaction commit];
-}
-
-/* Animate the touch layer on to the share circle. */
-- (void) animateTouchLayer{
-    [CATransaction begin];
-    [CATransaction setAnimationDuration:2.0];
-    [CATransaction setAnimationTimingFunction:[CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseIn]];
-    touchLayer.opacity = 0.8;
-    [CATransaction commit];
 }
 
 /**
