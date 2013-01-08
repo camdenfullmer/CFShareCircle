@@ -103,15 +103,19 @@
     // Create the layers for all the sharing services.
     for(int i = 0; i < _imageNames.count; i++) {
         UIImage *image = [UIImage imageNamed:[_imageNames objectAtIndex:i]];
-        CGPoint point = [self pointAtIndex:i];
-        CGRect rect = CGRectMake(point.x,point.y, TEMP_SIZE,TEMP_SIZE);
+        // Construct the base layer in which will be rotated around the origin of the circle.
         CAShapeLayer *tempLayer = [CAShapeLayer layer];
-        tempLayer.bounds = self.bounds;
-        tempLayer.contents = (id)image.CGImage;
-        tempLayer.frame = rect;
-        tempLayer.opacity = 0.6;
+        tempLayer.bounds = CGRectMake(0,0, BACKGROUND_SIZE,BACKGROUND_SIZE);
+        tempLayer.position = CGPointMake(CGRectGetMidX(self.bounds), CGRectGetMidY(self.bounds));
+        // Construct the image layer which will contain our image.
+        CALayer *imageLayer = [CALayer layer];
+        imageLayer.bounds = CGRectMake(0, 0, TEMP_SIZE, TEMP_SIZE);
+        imageLayer.position = CGPointMake(BACKGROUND_SIZE/2.0 + PATH_SIZE/2.0, BACKGROUND_SIZE/2.0);
+        imageLayer.contents = (id)image.CGImage;
+        // Add all the layers
+        [tempLayer addSublayer:imageLayer];
         [imageLayers addObject:tempLayer];
-        [backgroundLayer addSublayer:[imageLayers objectAtIndex:i]];
+        [self.layer addSublayer:[imageLayers objectAtIndex:i]];
     }
     
     
@@ -189,6 +193,8 @@
 /**
  ANIMATION METHODS
  **/
+
+/* Animates the whole view into the screen. */
 - (void) animateIn{
     self.hidden = NO;
     visibile = YES;
@@ -201,11 +207,15 @@
                      animations:^{
                          [self setViewFrame];
                      }
-                     completion:^(BOOL finished){}];
+                     completion:^(BOOL finished){
+                         [self animateImagesIn];
+                     }];
 }
 
+/* Animates the whole view out of the screen. */
 - (void) animateOut{
     visibile = NO;
+    [self animateImagesOut];
     [UIView animateWithDuration: 0.2
                           delay: 0.0
                         options: UIViewAnimationOptionCurveEaseOut
@@ -217,6 +227,7 @@
                      }];
 }
 
+/* Moves the touch layer to the proper position when the user is interacting with the view. */
 - (void) updateTouchPosition{
     [CATransaction begin];
     [CATransaction setValue: (id) kCFBooleanTrue forKey: kCATransactionDisableActions];
@@ -224,6 +235,7 @@
     [CATransaction commit];
 }
 
+/* Upadtes the opacity of the images that are hovered over by the user. */
 - (void) updateImages{
     for(int i = 0; i < [_imageNames count]; i++){
         CGPoint point = [self pointAtIndex:i];
@@ -233,6 +245,31 @@
             layer.opacity = 1;
         else
             layer.opacity = 0.6;
+    }
+}
+
+/* Animation used when the view is first presented to the user. */
+- (void) animateImagesIn{
+    for(int i = 0; i < _imageNames.count; i++) {
+        // Animate the base layer for the main rotation.
+        CALayer* layer = [imageLayers objectAtIndex:i];
+        layer.transform = CATransform3DMakeRotation(-i/([_imageNames count]/2.0)*M_PI, 0, 0, 1);
+        
+        // Animate the iamge layer to get the correct orientation.
+        CALayer* sub = [layer.sublayers objectAtIndex:0];
+        sub.transform = CATransform3DMakeRotation(i/([_imageNames count]/2.0)*M_PI, 0, 0, 1);
+    }
+}
+
+- (void) animateImagesOut{
+    for(int i = 0; i < _imageNames.count; i++) {
+        // Animate the base layer for the main rotation.
+        CALayer* layer = [imageLayers objectAtIndex:i];
+        layer.transform = CATransform3DMakeRotation(0, 0, 0, 1);
+        
+        // Animate the iamge layer to get the correct orientation.
+        CALayer* sub = [layer.sublayers objectAtIndex:0];
+        sub.transform = CATransform3DMakeRotation(0, 0, 0, 1);
     }
 }
 
@@ -272,8 +309,12 @@
     
     // Calculate the x and y coordinate.
     // Points go around the unit circle starting at pi = 0.
-    float x = _origin.x - TEMP_SIZE/2.0 + cosf(trig)*PATH_SIZE/2.0;
-    float y = _origin.y - TEMP_SIZE/2.0 - sinf(trig)*PATH_SIZE/2.0;
+    float x = _origin.x + cosf(trig)*PATH_SIZE/2.0;
+    float y = _origin.y - sinf(trig)*PATH_SIZE/2.0;
+    
+    // Subtract half width and height of image size.
+    x -= TEMP_SIZE/2.0;
+    y -= TEMP_SIZE/2.0;    
     
     return CGPointMake(x, y);
 }
