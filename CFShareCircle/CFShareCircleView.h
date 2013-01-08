@@ -8,6 +8,10 @@
 
 #import <UIKit/UIKit.h>
 
+#define LARGE_CIRCLE_SIZE 250
+#define PATH_SIZE 180
+#define TEMP_SIZE 50
+
 @class CFShareCircleView;
 
 @protocol CFShareCircleViewDelegate
@@ -18,10 +22,6 @@
 @interface CFShareCircleView : UIView{
     CGPoint _currentPosition;
     CGPoint _origin;
-    int _largeRectSize;
-    int _smallRectSize;
-    int _pathRectSize;
-    int _tempRectSize;
     BOOL _dragging;
     NSMutableArray *images;
     UIImage *touchImage;

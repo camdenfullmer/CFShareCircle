@@ -17,7 +17,7 @@
     self = [super init];
     if (self) {
         [self initialize];
-        [self setImages:[[NSArray alloc] initWithObjects:@"evernote.png", @"facebook.png", @"twitter.png", @"message.png", @"email.png", nil]];
+        [self setImages:[[NSArray alloc] initWithObjects:@"evernote.png", @"facebook.png", @"googleplus.png", @"twitter.png", @"message.png", @"email.png", nil]];
     }
     return self;
 }
@@ -33,15 +33,10 @@
 
 /* Set all the default values for the share circle. */
 - (void)initialize{
-    // Initialization code
-    _largeRectSize = 250;
-    _smallRectSize = 50;
-    _pathRectSize = 180;
-    _tempRectSize = 50;
-    
     self.hidden = YES;
     self.backgroundColor = [UIColor clearColor];
     
+    // Store the images into memory.
     closeButtonImage = [UIImage imageNamed:@"close_button.png"];
     touchImage = [UIImage imageNamed:@"touch.png"];
     
@@ -58,9 +53,7 @@
     self.layer.shadowRadius = 5;
     self.layer.shadowOpacity = 0.5;
     
-    self.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleRightMargin |
-    UIViewAutoresizingFlexibleTopMargin | UIViewAutoresizingFlexibleBottomMargin;
-    
+    // Set up observer for orientation changes.    
     [[UIDevice currentDevice] beginGeneratingDeviceOrientationNotifications];
     [[NSNotificationCenter defaultCenter] addObserver: self selector: @selector(deviceOrientationDidChange:) name: UIDeviceOrientationDidChangeNotification object: nil];
 }
@@ -73,7 +66,7 @@
     
     // Draw the larger circle.
     CGContextSetFillColorWithColor(context, [UIColor whiteColor].CGColor);
-    CGRect largeCircleRect = CGRectMake(_origin.x - _largeRectSize/2,_origin.y - _largeRectSize/2,_largeRectSize,_largeRectSize);
+    CGRect largeCircleRect = CGRectMake(_origin.x - LARGE_CIRCLE_SIZE/2,_origin.y - LARGE_CIRCLE_SIZE/2,LARGE_CIRCLE_SIZE,LARGE_CIRCLE_SIZE);
     CGContextAddEllipseInRect(context, largeCircleRect);
     CGContextFillPath(context);
     
@@ -117,7 +110,7 @@
         for(int i = 0; i < [images count]; i++){
             CGPoint point = [self pointAtIndex:i];
             // Determine if point is inside rect.
-            if(CGRectContainsPoint(CGRectMake(point.x, point.y, _tempRectSize, _tempRectSize), _currentPosition))
+            if(CGRectContainsPoint(CGRectMake(point.x, point.y, TEMP_SIZE, TEMP_SIZE), _currentPosition))
                 [self.delegate shareCircleView:self didSelectIndex:i];
         }
         
@@ -146,14 +139,14 @@
         
         // Create the rect and the point to draw the image.
         CGPoint point = [self pointAtIndex:i];
-        CGRect rect = CGRectMake(point.x,point.y, _tempRectSize,_tempRectSize);
+        CGRect rect = CGRectMake(point.x,point.y, TEMP_SIZE,TEMP_SIZE);
         
         // Start image context.
         UIGraphicsBeginImageContext(image.size);
         UIGraphicsPushContext(context);
         
         // Draw the image.
-        if(CGRectContainsPoint(CGRectMake(point.x, point.y, _tempRectSize, _tempRectSize), _currentPosition))
+        if(CGRectContainsPoint(CGRectMake(point.x, point.y, TEMP_SIZE, TEMP_SIZE), _currentPosition))
             [image drawInRect:rect];
         else
             [image drawInRect:rect blendMode:kCGBlendModeNormal alpha:0.8];
@@ -169,8 +162,8 @@
     
     // Create the rect and the point to draw the image.
     // Calculate the x and y coordinate at pi/4.
-    float x = _origin.x - closeButtonImage.size.width/2.0 + cosf(M_PI/4)*_largeRectSize/2.0;
-    float y = _origin.y - closeButtonImage.size.height/2.0 - sinf(M_PI/4)*_largeRectSize/2.0;
+    float x = _origin.x - closeButtonImage.size.width/2.0 + cosf(M_PI/4)*LARGE_CIRCLE_SIZE/2.0;
+    float y = _origin.y - closeButtonImage.size.height/2.0 - sinf(M_PI/4)*LARGE_CIRCLE_SIZE/2.0;
     
     CGRect tempRect = CGRectMake(x,y,closeButtonImage.size.width,closeButtonImage.size.height);
     
@@ -264,7 +257,7 @@
     float touchImageSize = touchImage.size.height;   
     
     // See if the new point is outside of the circle's radius.
-    if(pow(_largeRectSize/2.0 - touchImageSize/2.0,2) < (pow(point.x - _origin.x,2) + pow(point.y - _origin.y,2))){
+    if(pow(LARGE_CIRCLE_SIZE/2.0 - touchImageSize/2.0,2) < (pow(point.x - _origin.x,2) + pow(point.y - _origin.y,2))){
         
         // Determine x and y from the center of the circle.
         point.x = _origin.x - point.x;
@@ -274,8 +267,8 @@
         double angle = atan2(point.y, point.x);
         
         // Get the new x and y from the point on the edge of the circle subtracting the size of the touch image.
-        point.x = _origin.x - (_largeRectSize/2.0 - touchImageSize/2.0) * cos(angle);
-        point.y = _origin.y + (_largeRectSize/2.0 - touchImageSize/2.0) * sin(angle);
+        point.x = _origin.x - (LARGE_CIRCLE_SIZE/2.0 - touchImageSize/2.0) * cos(angle);
+        point.y = _origin.y + (LARGE_CIRCLE_SIZE/2.0 - touchImageSize/2.0) * sin(angle);
     }
     
     return CGRectMake(point.x - touchImage.size.width/2.0,point.y - touchImage.size.height/2.0,touchImage.size.width,touchImage.size.height);
@@ -288,15 +281,15 @@
     
     // Calculate the x and y coordinate.
     // Points go around the unit circle starting at pi = 0.
-    float x = _origin.x - _tempRectSize/2.0 + cosf(trig)*_pathRectSize/2.0;
-    float y = _origin.y - _tempRectSize/2.0 - sinf(trig)*_pathRectSize/2.0;
+    float x = _origin.x - TEMP_SIZE/2.0 + cosf(trig)*PATH_SIZE/2.0;
+    float y = _origin.y - TEMP_SIZE/2.0 - sinf(trig)*PATH_SIZE/2.0;
     
     return CGPointMake(x, y);
 }
 
 /* Helper method to determine if a specified point is inside the circle. */
 - (BOOL) circleEnclosesPoint: (CGPoint) point{
-    if(pow(_largeRectSize/2.0,2) < (pow(point.x - _origin.x,2) + pow(point.y - _origin.y,2)))
+    if(pow(LARGE_CIRCLE_SIZE/2.0,2) < (pow(point.x - _origin.x,2) + pow(point.y - _origin.y,2)))
         return NO;
     else
         return YES;
@@ -304,8 +297,8 @@
 
 /* Helper method to determine if a specified point is inside the close button. */
 - (BOOL) closeButtonEnclosesPoint: (CGPoint) point{
-    float x = _origin.x - closeButtonImage.size.width/2.0 + cosf(M_PI/4)*_largeRectSize/2.0;
-    float y = _origin.y - closeButtonImage.size.height/2.0 - sinf(M_PI/4)*_largeRectSize/2.0;
+    float x = _origin.x - closeButtonImage.size.width/2.0 + cosf(M_PI/4)*LARGE_CIRCLE_SIZE/2.0;
+    float y = _origin.y - closeButtonImage.size.height/2.0 - sinf(M_PI/4)*LARGE_CIRCLE_SIZE/2.0;
     
     CGRect tempRect = CGRectMake(x,y,closeButtonImage.size.width,closeButtonImage.size.height);
     
