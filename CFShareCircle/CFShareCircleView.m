@@ -24,7 +24,7 @@
     return self;
 }
 
-- (id)initWithImageFileNames: (NSArray*)images{
+- (id)initWithCustomImages: (NSArray*)images{
     self = [super init];
     if (self) {
         [self initialize];
@@ -63,26 +63,39 @@
     backgroundLayer.bounds = self.bounds;
     backgroundLayer.position = CGPointMake(CGRectGetMidX(self.bounds), CGRectGetMidY(self.bounds));
     backgroundLayer.fillColor = [[UIColor whiteColor] CGColor];    
-    CGMutablePathRef path = CGPathCreateMutable();
+    CGMutablePathRef backgroundPath = CGPathCreateMutable();
     CGRect backgroundRect = CGRectMake(_origin.x - BACKGROUND_SIZE/2,_origin.y - BACKGROUND_SIZE/2,BACKGROUND_SIZE,BACKGROUND_SIZE);
-    CGPathAddEllipseInRect(path, nil, backgroundRect);
-    backgroundLayer.path = path;    
+    CGPathAddEllipseInRect(backgroundPath, nil, backgroundRect);
+    backgroundLayer.path = backgroundPath;    
     [self.layer addSublayer:backgroundLayer];
     
     
     // Create the close button layer for the Share Circle.
-    CAShapeLayer *closeButtonLayer = [CAShapeLayer layer];
+    closeButtonLayer = [CAShapeLayer layer];
     closeButtonLayer.bounds = self.bounds;
     closeButtonLayer.contents = (id) [UIImage imageNamed:@"close_button.png"].CGImage;
     
     // Create the rect and the point to draw the image.
     // Calculate the x and y coordinate at pi/4.
-    float x = _origin.x - CLOSE_BUTTON_SIZE/2.0 + cosf(M_PI/4)*BACKGROUND_SIZE/2.0;
-    float y = _origin.y - CLOSE_BUTTON_SIZE/2.0 - sinf(M_PI/4)*BACKGROUND_SIZE/2.0;
+    double x = _origin.x - CLOSE_BUTTON_SIZE/2.0 + cosf(M_PI/4)*BACKGROUND_SIZE/2.0;
+    double y = _origin.y - CLOSE_BUTTON_SIZE/2.0 - sinf(M_PI/4)*BACKGROUND_SIZE/2.0;
     
     CGRect tempRect = CGRectMake(x,y,CLOSE_BUTTON_SIZE,CLOSE_BUTTON_SIZE);
     closeButtonLayer.frame = tempRect;
+    
+    // Create the overlay for the button
+    CAShapeLayer *overlayLayer = [CAShapeLayer layer];
+    overlayLayer.bounds = closeButtonLayer.frame;
+    overlayLayer.frame = closeButtonLayer.frame;
+    //overlayLayer.position = );
+    overlayLayer.fillColor = [[UIColor whiteColor] CGColor];
+    overlayLayer.opacity = 0.2;
+    CGMutablePathRef path = CGPathCreateMutable();
+    CGPathAddEllipseInRect(path, nil, CGRectMake(0, 0, 40, 40));
+    overlayLayer.path = path;
+    
     [self.layer addSublayer:closeButtonLayer];
+    [closeButtonLayer addSublayer:overlayLayer];
     
     
     // Create the layers for all the sharing services.
@@ -99,11 +112,10 @@
     
     
     // Create the touch layer for the Share Circle.
-    CAShapeLayer *touchLayer = [CAShapeLayer layer];
-    touchLayer.bounds = self.bounds;
+    touchLayer = [CAShapeLayer layer];
+    touchLayer.bounds = CGRectMake(_origin.x - TOUCH_SIZE/2.0, _origin.y - TOUCH_SIZE/2.0, TOUCH_SIZE, TOUCH_SIZE);
     touchLayer.contents = (id) [UIImage imageNamed:@"touch.png"].CGImage;
-    CGRect touchRect = [self touchRectLocationAtPoint:_currentPosition];
-    touchLayer.frame = touchRect;
+    touchLayer.position = [self touchLocationAtPoint:_currentPosition];
     [self.layer addSublayer:touchLayer];
 }
 
@@ -116,10 +128,14 @@
     _currentPosition = [touch locationInView:self];
     
     // Make sure the user starts with touch inside the circle.    
-    if([self circleEnclosesPoint: _currentPosition] && ![self closeButtonEnclosesPoint:_currentPosition])
+    if([self circleEnclosesPoint: _currentPosition] && ![self closeButtonEnclosesPoint:_currentPosition]){
         _dragging = YES;
-    
-    [self setNeedsDisplay];
+        [self updateTouchPosition];
+    } else if( [self closeButtonEnclosesPoint:_currentPosition]){
+        // Hide overlay.
+        CALayer *layer = [closeButtonLayer.sublayers objectAtIndex:0];
+        layer.opacity = 0.0;
+    }
 }
 
 - (void)touchesMoved:(NSSet *)touches withEvent:(UIEvent *)event{
@@ -127,14 +143,18 @@
     _currentPosition = [touch locationInView:self];
     
     if(_dragging)
-        [self setNeedsDisplay];
+        [self updateTouchPosition];
 }
 
 - (void)touchesEnded:(NSSet *)touches withEvent:(UIEvent *)event{
     UITouch *touch = (UITouch *)[[touches allObjects] objectAtIndex:0];
     _currentPosition = [touch locationInView:self];
     
-    if([self closeButtonEnclosesPoint: _currentPosition]){
+    // Show overlay.
+    CALayer *layer = [closeButtonLayer.sublayers objectAtIndex:0];
+    layer.opacity = 0.2;
+    
+    if([self closeButtonEnclosesPoint: _currentPosition] && !_dragging){
         [self.delegate shareCircleViewWasCanceled];
     }
     else if(_dragging){
@@ -145,18 +165,17 @@
             if(CGRectContainsPoint(CGRectMake(point.x, point.y, TEMP_SIZE, TEMP_SIZE), _currentPosition))
                 [self.delegate shareCircleView:self didSelectIndex:i];
         }
-        
-        _currentPosition = _origin;
-        _dragging = NO;
     }
-    [self setNeedsDisplay];
+    
+    _currentPosition = _origin;
+    _dragging = NO;
+    [self updateTouchPosition];
 }
 
 - (void)touchesCancelled:(NSSet *)touches withEvent:(UIEvent *)event{
     // Reset location.
     _currentPosition = _origin;
     _dragging = NO;
-    [self setNeedsDisplay];
 }
 
 /**
@@ -187,8 +206,14 @@
                      }
                      completion:^(BOOL finished){
                          self.hidden = YES;
-                         _dragging = NO;
                      }];
+}
+
+- (void) updateTouchPosition{
+    [CATransaction begin];
+    [CATransaction setValue: (id) kCFBooleanTrue forKey: kCATransactionDisableActions];
+    touchLayer.position = [self touchLocationAtPoint:_currentPosition];
+    [CATransaction commit];
 }
 
 /**
@@ -196,7 +221,7 @@
  **/
 
 /* Determines where the touch images is going to be placed inside of the view. */
-- (CGRect) touchRectLocationAtPoint:(CGPoint)point{
+- (CGPoint) touchLocationAtPoint:(CGPoint)point{
     
     // If not dragging make sure we redraw the touch image at the origin.
     if(!_dragging)
@@ -217,7 +242,7 @@
         point.y = _origin.y + (BACKGROUND_SIZE/2.0 - TOUCH_SIZE/2.0) * sin(angle);
     }
     
-    return CGRectMake(point.x - TOUCH_SIZE/2.0,point.y - TOUCH_SIZE/2.0,TOUCH_SIZE,TOUCH_SIZE);
+    return point;
 }
 
 /* Get the point at the specified index. */

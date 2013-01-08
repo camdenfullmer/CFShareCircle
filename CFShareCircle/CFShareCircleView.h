@@ -22,16 +22,16 @@
 @end
 
 @interface CFShareCircleView : UIView{
-    CGPoint _currentPosition;
-    CGPoint _origin;
+    CGPoint _currentPosition, _origin;
     BOOL _dragging;
     UIDeviceOrientation currentOrientation;
     BOOL visibile;
+    CALayer *touchLayer, *closeButtonLayer;
 }
 
 @property (assign) id <CFShareCircleViewDelegate> delegate;
 @property (strong) NSArray *images;
-- (id)initWithImageFileNames: (NSArray*)images;
+- (id)initWithCustomImages: (NSArray*)images;
 - (void)animateIn;
 - (void)animateOut;
 
