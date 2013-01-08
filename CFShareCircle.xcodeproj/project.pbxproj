@@ -20,8 +20,6 @@
 		4103D87E1680DFF4008AFCFC /* MainStoryboard_iPad.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 4103D87C1680DFF4008AFCFC /* MainStoryboard_iPad.storyboard */; };
 		4103D8811680DFF4008AFCFC /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4103D8801680DFF4008AFCFC /* ViewController.m */; };
 		4103D8891680E069008AFCFC /* CFShareCircleView.m in Sources */ = {isa = PBXBuildFile; fileRef = 4103D8881680E069008AFCFC /* CFShareCircleView.m */; };
-		4119BCF0169CAA1600CE9316 /* CoreText.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4119BCEF169CAA1600CE9316 /* CoreText.framework */; };
-		4119BCF1169CAC5D00CE9316 /* Actor-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 4119BCEE169CA7A900CE9316 /* Actor-Regular.ttf */; };
 		4195D0EC1697667300A9A470 /* close_button.png in Resources */ = {isa = PBXBuildFile; fileRef = 4195D0DC1697667200A9A470 /* close_button.png */; };
 		4195D0ED1697667300A9A470 /* close_button@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 4195D0DD1697667200A9A470 /* close_button@2x.png */; };
 		4195D0EE1697667300A9A470 /* email.png in Resources */ = {isa = PBXBuildFile; fileRef = 4195D0DE1697667200A9A470 /* email.png */; };
@@ -61,8 +59,6 @@
 		4103D8801680DFF4008AFCFC /* ViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ViewController.m; sourceTree = "<group>"; };
 		4103D8871680E069008AFCFC /* CFShareCircleView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CFShareCircleView.h; sourceTree = "<group>"; };
 		4103D8881680E069008AFCFC /* CFShareCircleView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CFShareCircleView.m; sourceTree = "<group>"; };
-		4119BCEE169CA7A900CE9316 /* Actor-Regular.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Actor-Regular.ttf"; sourceTree = "<group>"; };
-		4119BCEF169CAA1600CE9316 /* CoreText.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreText.framework; path = System/Library/Frameworks/CoreText.framework; sourceTree = SDKROOT; };
 		4195D0DC1697667200A9A470 /* close_button.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = close_button.png; sourceTree = "<group>"; };
 		4195D0DD1697667200A9A470 /* close_button@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "close_button@2x.png"; sourceTree = "<group>"; };
 		4195D0DE1697667200A9A470 /* email.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = email.png; sourceTree = "<group>"; };
@@ -87,7 +83,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				4119BCF0169CAA1600CE9316 /* CoreText.framework in Frameworks */,
 				41FC1038169B6FD9007DF1E3 /* QuartzCore.framework in Frameworks */,
 				4103D8621680DFF4008AFCFC /* UIKit.framework in Frameworks */,
 				4103D8641680DFF4008AFCFC /* Foundation.framework in Frameworks */,
@@ -101,8 +96,6 @@
 		4103D8521680DFF4008AFCFC = {
 			isa = PBXGroup;
 			children = (
-				4119BCEF169CAA1600CE9316 /* CoreText.framework */,
-				41FC1037169B6FD9007DF1E3 /* QuartzCore.framework */,
 				4103D8671680DFF4008AFCFC /* CFShareCircle */,
 				4103D8601680DFF4008AFCFC /* Frameworks */,
 				4103D85E1680DFF4008AFCFC /* Products */,
@@ -120,6 +113,7 @@
 		4103D8601680DFF4008AFCFC /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				41FC1037169B6FD9007DF1E3 /* QuartzCore.framework */,
 				4103D8611680DFF4008AFCFC /* UIKit.framework */,
 				4103D8631680DFF4008AFCFC /* Foundation.framework */,
 				4103D8651680DFF4008AFCFC /* CoreGraphics.framework */,
@@ -147,7 +141,6 @@
 		4103D8681680DFF4008AFCFC /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
-				4119BCEE169CA7A900CE9316 /* Actor-Regular.ttf */,
 				4103D8691680DFF4008AFCFC /* CFShareCircle-Info.plist */,
 				4103D86A1680DFF4008AFCFC /* InfoPlist.strings */,
 				4103D86D1680DFF4008AFCFC /* main.m */,
@@ -233,7 +226,6 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				4119BCF1169CAC5D00CE9316 /* Actor-Regular.ttf in Resources */,
 				4103D86C1680DFF4008AFCFC /* InfoPlist.strings in Resources */,
 				4103D8741680DFF4008AFCFC /* Default.png in Resources */,
 				4103D8761680DFF4008AFCFC /* Default@2x.png in Resources */,

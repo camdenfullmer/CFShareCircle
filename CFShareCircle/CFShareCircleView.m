@@ -7,7 +7,6 @@
 //
 
 #import "CFShareCircleView.h"
-#import <CoreText/CoreText.h>
 
 @implementation CFShareCircleView
 
@@ -35,7 +34,7 @@
 }
 
 /* Set all the default values for the share circle. */
-- (void)initialize{   
+- (void)initialize{
     self.hidden = YES;
     self.backgroundColor = [UIColor clearColor];
     
@@ -54,23 +53,23 @@
     self.layer.shadowRadius = 5;
     self.layer.shadowOpacity = 0.5;
     
-    // Set up observer for orientation changes.    
+    // Set up observer for orientation changes.
     [[UIDevice currentDevice] beginGeneratingDeviceOrientationNotifications];
     [[NSNotificationCenter defaultCenter] addObserver: self selector: @selector(deviceOrientationDidChange:) name: UIDeviceOrientationDidChangeNotification object: nil];
 }
 
 /* Build all the layers to be displayed onto the view of the share circle. */
 - (void)setUpLayers{
-     
+    
     // Create a larger circle layer for the background of the Share Circle.
     backgroundLayer = [CAShapeLayer layer];
     backgroundLayer.bounds = self.bounds;
     backgroundLayer.position = CGPointMake(CGRectGetMidX(self.bounds), CGRectGetMidY(self.bounds));
-    backgroundLayer.fillColor = [[UIColor whiteColor] CGColor];    
+    backgroundLayer.fillColor = [[UIColor whiteColor] CGColor];
     CGMutablePathRef backgroundPath = CGPathCreateMutable();
     CGRect backgroundRect = CGRectMake(origin.x - BACKGROUND_SIZE/2,origin.y - BACKGROUND_SIZE/2,BACKGROUND_SIZE,BACKGROUND_SIZE);
     CGPathAddEllipseInRect(backgroundPath, nil, backgroundRect);
-    backgroundLayer.path = backgroundPath;    
+    backgroundLayer.path = backgroundPath;
     [self.layer addSublayer:backgroundLayer];
     
     
@@ -102,7 +101,7 @@
     [closeButtonLayer addSublayer:overlayLayer];
     
     
-    // Create the layers for all the sharing services.
+    // Create the layers for all the sharing service images.
     for(int i = 0; i < _imageNames.count; i++) {
         UIImage *image = [UIImage imageNamed:[_imageNames objectAtIndex:i]];
         // Construct the base layer in which will be rotated around the origin of the circle.
@@ -137,24 +136,22 @@
     textLayer.fontSize = 13.0;
     textLayer.bounds = self.bounds;
     textLayer.foregroundColor = [UIColor blackColor].CGColor;
-    textLayer.frame = CGRectMake(0, 0, 60, 28);
+    textLayer.frame = CGRectMake(0, 0, 60, 29);
     textLayer.position = CGPointMake(CGRectGetMidX(self.bounds), CGRectGetMidY(self.bounds));
     textLayer.contentsScale = [[UIScreen mainScreen] scale];
-    CTFontRef ref = CTFontCreateWithName(CFSTR("Actor-Regular"), 12.0, NULL);
-    textLayer.font = ref;
     textLayer.opacity = 0.5;
     [self.layer addSublayer:textLayer];
 }
 
 /**
- TOUCH METHODS
+ TOUCH METHODS FOR GETTING USER INPUT
  **/
 
 - (void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event{
     UITouch *touch = (UITouch *)[[touches allObjects] objectAtIndex:0];
     currentPosition = [touch locationInView:self];
     
-    // Make sure the user starts with touch inside the circle.    
+    // Make sure the user starts with touch inside the circle and not in the close button.
     if([self circleEnclosesPoint: currentPosition] && ![self closeButtonEnclosesPoint:currentPosition]){
         dragging = YES;
         [self updateTouchPosition];
@@ -184,10 +181,8 @@
     CALayer *layer = [closeButtonLayer.sublayers objectAtIndex:0];
     layer.opacity = 0.2;
     
-    if([self closeButtonEnclosesPoint: currentPosition] && !dragging){
-        [self.delegate shareCircleViewWasCanceled];
-    }
-    else if(dragging){
+    
+    if(dragging){
         // Loop through all the rects to see if the user selected one.
         for(int i = 0; i < [_imageNames count]; i++){
             CGPoint point = [self pointAtIndex:i];
@@ -195,6 +190,8 @@
             if(CGRectContainsPoint(CGRectMake(point.x, point.y, TEMP_SIZE, TEMP_SIZE), currentPosition))
                 [self.delegate shareCircleView:self didSelectIndex:i];
         }
+    } else if([self closeButtonEnclosesPoint: currentPosition]){
+        [self.delegate shareCircleViewWasCanceled];
     }
     
     currentPosition = origin;
@@ -316,7 +313,7 @@
     // If not dragging make sure we redraw the touch image at the origin.
     if(!dragging)
         point = origin;
-        
+    
     // See if the new point is outside of the circle's radius.
     if(pow(BACKGROUND_SIZE/2.0 - TOUCH_SIZE/2.0,2) < (pow(point.x - origin.x,2) + pow(point.y - origin.y,2))){
         
@@ -347,7 +344,7 @@
     
     // Subtract half width and height of image size.
     x -= TEMP_SIZE/2.0;
-    y -= TEMP_SIZE/2.0;    
+    y -= TEMP_SIZE/2.0;
     
     return CGPointMake(x, y);
 }
@@ -375,7 +372,7 @@
 
 /* Determine the frame that the view is to use based on orientation. */
 - (void) setViewFrame{
-        
+    
     if(UIDeviceOrientationIsPortrait(currentOrientation)){
         [self setFrame:CGRectMake(320*!visible, 0, 320, 480)];
         [self setBounds:CGRectMake(0, 0, 320, 480)];
