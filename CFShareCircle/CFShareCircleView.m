@@ -12,21 +12,24 @@
 @implementation CFShareCircleView
 
 @synthesize delegate;
+@synthesize images = _images;
 
 -(id)init{
     self = [super init];
     if (self) {
         [self initialize];
         [self setImages:[[NSArray alloc] initWithObjects:@"evernote.png", @"facebook.png", @"googleplus.png", @"twitter.png", @"message.png", @"email.png", nil]];
+        [self setUpLayers];
     }
     return self;
 }
 
-- (id)initWithImageFileNames: (NSArray*)imageFileNames{
+- (id)initWithImageFileNames: (NSArray*)images{
     self = [super init];
     if (self) {
         [self initialize];
-        [self setImages:imageFileNames];
+        [self setImages:images];
+        [self setUpLayers];
     }
     return self;
 }
@@ -35,10 +38,6 @@
 - (void)initialize{
     self.hidden = YES;
     self.backgroundColor = [UIColor clearColor];
-    
-    // Store the images into memory.
-    closeButtonImage = [UIImage imageNamed:@"close_button.png"];
-    touchImage = [UIImage imageNamed:@"touch.png"];
     
     // Set up frame and positions.
     [self setFrame:CGRectMake(320, 0, 320, 480)];
@@ -58,21 +57,54 @@
     [[NSNotificationCenter defaultCenter] addObserver: self selector: @selector(deviceOrientationDidChange:) name: UIDeviceOrientationDidChangeNotification object: nil];
 }
 
-// Only override drawRect: if you perform custom drawing.
-// An empty implementation adversely affects performance during animation.
-- (void)drawRect:(CGRect)rect
-{
-    CGContextRef context = UIGraphicsGetCurrentContext();
+- (void)setUpLayers{
+    // Create a larger circle layer for the background of the Share Circle.
+    CAShapeLayer *backgroundLayer = [CAShapeLayer layer];
+    backgroundLayer.bounds = self.bounds;
+    backgroundLayer.position = CGPointMake(CGRectGetMidX(self.bounds), CGRectGetMidY(self.bounds));
+    backgroundLayer.fillColor = [[UIColor whiteColor] CGColor];    
+    CGMutablePathRef path = CGPathCreateMutable();
+    CGRect backgroundRect = CGRectMake(_origin.x - BACKGROUND_SIZE/2,_origin.y - BACKGROUND_SIZE/2,BACKGROUND_SIZE,BACKGROUND_SIZE);
+    CGPathAddEllipseInRect(path, nil, backgroundRect);
+    backgroundLayer.path = path;    
+    [self.layer addSublayer:backgroundLayer];
     
-    // Draw the larger circle.
-    CGContextSetFillColorWithColor(context, [UIColor whiteColor].CGColor);
-    CGRect largeCircleRect = CGRectMake(_origin.x - LARGE_CIRCLE_SIZE/2,_origin.y - LARGE_CIRCLE_SIZE/2,LARGE_CIRCLE_SIZE,LARGE_CIRCLE_SIZE);
-    CGContextAddEllipseInRect(context, largeCircleRect);
-    CGContextFillPath(context);
     
-    [self drawCloseButtonWithContext:context];
-    [self drawImagesWithContext:context];
-    [self drawTouchRegionWithContext:context];
+    // Create the close button layer for the Share Circle.
+    CAShapeLayer *closeButtonLayer = [CAShapeLayer layer];
+    closeButtonLayer.bounds = self.bounds;
+    closeButtonLayer.contents = (id) [UIImage imageNamed:@"close_button.png"].CGImage;
+    
+    // Create the rect and the point to draw the image.
+    // Calculate the x and y coordinate at pi/4.
+    float x = _origin.x - CLOSE_BUTTON_SIZE/2.0 + cosf(M_PI/4)*BACKGROUND_SIZE/2.0;
+    float y = _origin.y - CLOSE_BUTTON_SIZE/2.0 - sinf(M_PI/4)*BACKGROUND_SIZE/2.0;
+    
+    CGRect tempRect = CGRectMake(x,y,CLOSE_BUTTON_SIZE,CLOSE_BUTTON_SIZE);
+    closeButtonLayer.frame = tempRect;
+    [self.layer addSublayer:closeButtonLayer];
+    
+    
+    // Create the layers for all the sharing services.
+    for(int i = 0; i < _images.count; i++) {
+        UIImage *image = [UIImage imageNamed:[_images objectAtIndex:i]];
+        CGPoint point = [self pointAtIndex:i];
+        CGRect rect = CGRectMake(point.x,point.y, TEMP_SIZE,TEMP_SIZE);
+        CAShapeLayer *tempLayer = [CAShapeLayer layer];
+        tempLayer.bounds = self.bounds;
+        tempLayer.contents = (id)image.CGImage;
+        tempLayer.frame = rect;
+        [self.layer addSublayer:tempLayer];
+    }
+    
+    
+    // Create the touch layer for the Share Circle.
+    CAShapeLayer *touchLayer = [CAShapeLayer layer];
+    touchLayer.bounds = self.bounds;
+    touchLayer.contents = (id) [UIImage imageNamed:@"touch.png"].CGImage;
+    CGRect touchRect = [self touchRectLocationAtPoint:_currentPosition];
+    touchLayer.frame = touchRect;
+    [self.layer addSublayer:touchLayer];
 }
 
 /**
@@ -107,7 +139,7 @@
     }
     else if(_dragging){
         // Loop through all the rects to see if the user selected one.
-        for(int i = 0; i < [images count]; i++){
+        for(int i = 0; i < [_images count]; i++){
             CGPoint point = [self pointAtIndex:i];
             // Determine if point is inside rect.
             if(CGRectContainsPoint(CGRectMake(point.x, point.y, TEMP_SIZE, TEMP_SIZE), _currentPosition))
@@ -125,90 +157,6 @@
     _currentPosition = _origin;
     _dragging = NO;
     [self setNeedsDisplay];
-}
-
-/**
- DRAWING METHODS
- **/
-
-/* Draws all the images from the list. */
-- (void) drawImagesWithContext:(CGContextRef) context{
-    
-    for (int i = 0; i < [images count]; i++) {
-        UIImage *image = [images objectAtIndex:i];
-        
-        // Create the rect and the point to draw the image.
-        CGPoint point = [self pointAtIndex:i];
-        CGRect rect = CGRectMake(point.x,point.y, TEMP_SIZE,TEMP_SIZE);
-        
-        // Start image context.
-        UIGraphicsBeginImageContext(image.size);
-        UIGraphicsPushContext(context);
-        
-        // Draw the image.
-        if(CGRectContainsPoint(CGRectMake(point.x, point.y, TEMP_SIZE, TEMP_SIZE), _currentPosition))
-            [image drawInRect:rect];
-        else
-            [image drawInRect:rect blendMode:kCGBlendModeNormal alpha:0.8];
-        
-        // End image context.
-        UIGraphicsPopContext();
-        UIGraphicsEndImageContext();
-    }
-}
-
-/* Draw the close button. */
-- (void) drawCloseButtonWithContext:(CGContextRef) context{
-    
-    // Create the rect and the point to draw the image.
-    // Calculate the x and y coordinate at pi/4.
-    float x = _origin.x - closeButtonImage.size.width/2.0 + cosf(M_PI/4)*LARGE_CIRCLE_SIZE/2.0;
-    float y = _origin.y - closeButtonImage.size.height/2.0 - sinf(M_PI/4)*LARGE_CIRCLE_SIZE/2.0;
-    
-    CGRect tempRect = CGRectMake(x,y,closeButtonImage.size.width,closeButtonImage.size.height);
-    
-    // Start image context.
-    UIGraphicsBeginImageContext(closeButtonImage.size);
-    UIGraphicsPushContext(context);
-    
-    // Draw the image.
-    [closeButtonImage drawInRect:tempRect];
-    
-    // End image context.
-    UIGraphicsPopContext();
-    UIGraphicsEndImageContext();
-    
-    // Make the button a little lighter when not pushed.
-    if(!CGRectContainsPoint(tempRect, _currentPosition)){
-        CGContextSetFillColorWithColor(context, [UIColor colorWithWhite:1 alpha:0.2].CGColor);
-        CGContextAddEllipseInRect(context, tempRect);
-        CGContextFillPath(context);
-    }
-}
-
-/* Draw touch region. */
-- (void) drawTouchRegionWithContext: (CGContextRef) context{
-    
-    // Create the rect and the point to draw the image.
-    CGRect smallCircleRect = [self touchRectLocationAtPoint:_currentPosition];
-    
-    // Start image context.
-    UIGraphicsBeginImageContext(touchImage.size);
-    UIGraphicsPushContext(context);
-    
-    // Determine alpha based on if the user is dragging.
-    float alpha;
-    if(_dragging)
-        alpha = 1.0;
-    else
-        alpha = 0.3;
-    
-    // Draw the image.
-    [touchImage drawInRect:smallCircleRect blendMode:kCGBlendModeNormal alpha:alpha];
-    
-    // End image context.
-    UIGraphicsPopContext();
-    UIGraphicsEndImageContext();
 }
 
 /**
@@ -253,11 +201,9 @@
     // If not dragging make sure we redraw the touch image at the origin.
     if(!_dragging)
         point = _origin;
-    
-    float touchImageSize = touchImage.size.height;   
-    
+        
     // See if the new point is outside of the circle's radius.
-    if(pow(LARGE_CIRCLE_SIZE/2.0 - touchImageSize/2.0,2) < (pow(point.x - _origin.x,2) + pow(point.y - _origin.y,2))){
+    if(pow(BACKGROUND_SIZE/2.0 - TOUCH_SIZE/2.0,2) < (pow(point.x - _origin.x,2) + pow(point.y - _origin.y,2))){
         
         // Determine x and y from the center of the circle.
         point.x = _origin.x - point.x;
@@ -267,17 +213,17 @@
         double angle = atan2(point.y, point.x);
         
         // Get the new x and y from the point on the edge of the circle subtracting the size of the touch image.
-        point.x = _origin.x - (LARGE_CIRCLE_SIZE/2.0 - touchImageSize/2.0) * cos(angle);
-        point.y = _origin.y + (LARGE_CIRCLE_SIZE/2.0 - touchImageSize/2.0) * sin(angle);
+        point.x = _origin.x - (BACKGROUND_SIZE/2.0 - TOUCH_SIZE/2.0) * cos(angle);
+        point.y = _origin.y + (BACKGROUND_SIZE/2.0 - TOUCH_SIZE/2.0) * sin(angle);
     }
     
-    return CGRectMake(point.x - touchImage.size.width/2.0,point.y - touchImage.size.height/2.0,touchImage.size.width,touchImage.size.height);
+    return CGRectMake(point.x - TOUCH_SIZE/2.0,point.y - TOUCH_SIZE/2.0,TOUCH_SIZE,TOUCH_SIZE);
 }
 
 /* Get the point at the specified index. */
 - (CGPoint) pointAtIndex:(int) index{
     // Number for trig.
-    float trig = index/([images count]/2.0)*M_PI;
+    float trig = index/([_images count]/2.0)*M_PI;
     
     // Calculate the x and y coordinate.
     // Points go around the unit circle starting at pi = 0.
@@ -289,7 +235,7 @@
 
 /* Helper method to determine if a specified point is inside the circle. */
 - (BOOL) circleEnclosesPoint: (CGPoint) point{
-    if(pow(LARGE_CIRCLE_SIZE/2.0,2) < (pow(point.x - _origin.x,2) + pow(point.y - _origin.y,2)))
+    if(pow(BACKGROUND_SIZE/2.0,2) < (pow(point.x - _origin.x,2) + pow(point.y - _origin.y,2)))
         return NO;
     else
         return YES;
@@ -297,26 +243,15 @@
 
 /* Helper method to determine if a specified point is inside the close button. */
 - (BOOL) closeButtonEnclosesPoint: (CGPoint) point{
-    float x = _origin.x - closeButtonImage.size.width/2.0 + cosf(M_PI/4)*LARGE_CIRCLE_SIZE/2.0;
-    float y = _origin.y - closeButtonImage.size.height/2.0 - sinf(M_PI/4)*LARGE_CIRCLE_SIZE/2.0;
+    float x = _origin.x - CLOSE_BUTTON_SIZE/2.0 + cosf(M_PI/4)*BACKGROUND_SIZE/2.0;
+    float y = _origin.y - CLOSE_BUTTON_SIZE/2.0 - sinf(M_PI/4)*BACKGROUND_SIZE/2.0;
     
-    CGRect tempRect = CGRectMake(x,y,closeButtonImage.size.width,closeButtonImage.size.height);
+    CGRect tempRect = CGRectMake(x,y,CLOSE_BUTTON_SIZE,CLOSE_BUTTON_SIZE);
     
     if(CGRectContainsPoint(tempRect, point))
         return YES;
     else
         return NO;
-}
-
-/* Override setter method for imageFileNames so that when they are set the images can be preloaded.
- * This is important so that the images aren't loaded everytime drawRect is called.
- */
-- (void) setImages:(NSArray *)imageFileNames{
-    images = [[NSMutableArray alloc] init];
-    // Preload all the images.
-    for (int i = 0; i < [imageFileNames count]; i++) {
-        [images addObject:[UIImage imageNamed:[imageFileNames objectAtIndex:i]]];
-    }
 }
 
 /* Determine the frame that the view is to use based on orientation. */

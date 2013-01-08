@@ -8,9 +8,11 @@
 
 #import <UIKit/UIKit.h>
 
-#define LARGE_CIRCLE_SIZE 250
+#define BACKGROUND_SIZE 250
 #define PATH_SIZE 180
 #define TEMP_SIZE 50
+#define CLOSE_BUTTON_SIZE 40
+#define TOUCH_SIZE 64
 
 @class CFShareCircleView;
 
@@ -23,15 +25,13 @@
     CGPoint _currentPosition;
     CGPoint _origin;
     BOOL _dragging;
-    NSMutableArray *images;
-    UIImage *touchImage;
-    UIImage *closeButtonImage;
     UIDeviceOrientation currentOrientation;
     BOOL visibile;
 }
 
 @property (assign) id <CFShareCircleViewDelegate> delegate;
-- (id)initWithImageFileNames: (NSArray*)imageFileNames;
+@property (strong) NSArray *images;
+- (id)initWithImageFileNames: (NSArray*)images;
 - (void)animateIn;
 - (void)animateOut;
 
