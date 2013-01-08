@@ -10,12 +10,12 @@ Follow the instructions to add CFShareCircle to your project.
 
 ###Basic Setup
 
-1. Add the following frameworks to your project under "Link Binary With Libraries"
+1. Add the following frameworks to your project under "Link Binary With Libraries" in "Build Phases"
     - UIKit
     - QuartzCore
     - Foundation
     - CoreGraphics
-2. Add the images directory and CFShareCircle files to your project.
+2. Add the images directory and CFShareCircle resources to your project. Make sure that the CFShareCircle.m and CFShareCircle.h are listed under "Copy Bundle Resources" under "Build Phases".
 3. Edit your view controller to add the CFShareCircle Delegate and reference to the view.
 
     ```
