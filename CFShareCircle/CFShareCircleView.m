@@ -253,7 +253,7 @@
     // Update the position of the touch layer.
     touchLayer.frame = [self touchRectLocationAtPoint:_currentPosition];
     
-    // Show a hover state when dragging.
+    // Show a hover state when dragging, which will also show the text layer when not dragging.
     if(_dragging){
         touchLayer.opacity = 1.0;
         textLayer.opacity = 0.0;
@@ -389,6 +389,7 @@
     
     // Update all the layers positions.
     backgroundLayer.position = CGPointMake(CGRectGetMidX(self.bounds), CGRectGetMidY(self.bounds));
+    textLayer.position = CGPointMake(CGRectGetMidX(self.bounds), CGRectGetMidY(self.bounds));
     [self updateTouchPosition];
     for(int i = 0; i < _imageNames.count; i++) {
         CALayer* layer = [imageLayers objectAtIndex:i];
