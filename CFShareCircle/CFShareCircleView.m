@@ -59,6 +59,7 @@
     [[NSNotificationCenter defaultCenter] addObserver: self selector: @selector(deviceOrientationDidChange:) name: UIDeviceOrientationDidChangeNotification object: nil];
 }
 
+/* Build all the layers to be displayed onto the view of the share circle. */
 - (void)setUpLayers{
      
     // Create a larger circle layer for the background of the Share Circle.
