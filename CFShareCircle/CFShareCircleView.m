@@ -177,6 +177,7 @@
     _currentPosition = _origin;
     _dragging = NO;
     [self updateTouchPosition];
+    [self updateImages];
 }
 
 - (void)touchesCancelled:(NSSet *)touches withEvent:(UIEvent *)event{
