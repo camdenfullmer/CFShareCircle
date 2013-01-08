@@ -7,7 +7,6 @@
 //
 
 #import "CFShareCircleView.h"
-#import <QuartzCore/QuartzCore.h>
 
 @implementation CFShareCircleView
 
@@ -60,8 +59,9 @@
 }
 
 - (void)setUpLayers{
+     
     // Create a larger circle layer for the background of the Share Circle.
-    CAShapeLayer *backgroundLayer = [CAShapeLayer layer];
+    backgroundLayer = [CAShapeLayer layer];
     backgroundLayer.bounds = self.bounds;
     backgroundLayer.position = CGPointMake(CGRectGetMidX(self.bounds), CGRectGetMidY(self.bounds));
     backgroundLayer.fillColor = [[UIColor whiteColor] CGColor];    
@@ -96,7 +96,7 @@
     CGPathAddEllipseInRect(path, nil, CGRectMake(0, 0, 40, 40));
     overlayLayer.path = path;
     
-    [self.layer addSublayer:closeButtonLayer];
+    [backgroundLayer addSublayer:closeButtonLayer];
     [closeButtonLayer addSublayer:overlayLayer];
     
     
@@ -111,15 +111,15 @@
         tempLayer.frame = rect;
         tempLayer.opacity = 0.6;
         [imageLayers addObject:tempLayer];
-        [self.layer addSublayer:[imageLayers objectAtIndex:i]];
+        [backgroundLayer addSublayer:[imageLayers objectAtIndex:i]];
     }
     
     
     // Create the touch layer for the Share Circle.
     touchLayer = [CAShapeLayer layer];
-    touchLayer.bounds = CGRectMake(_origin.x - TOUCH_SIZE/2.0, _origin.y - TOUCH_SIZE/2.0, TOUCH_SIZE, TOUCH_SIZE);
+    touchLayer.bounds = self.bounds;
+    touchLayer.frame = CGRectMake(_origin.x - TOUCH_SIZE/2.0, _origin.y - TOUCH_SIZE/2.0, TOUCH_SIZE, TOUCH_SIZE);
     touchLayer.contents = (id) [UIImage imageNamed:@"touch.png"].CGImage;
-    touchLayer.position = [self touchLocationAtPoint:_currentPosition];
     [self.layer addSublayer:touchLayer];
 }
 
@@ -219,7 +219,7 @@
 - (void) updateTouchPosition{
     [CATransaction begin];
     [CATransaction setValue: (id) kCFBooleanTrue forKey: kCATransactionDisableActions];
-    touchLayer.position = [self touchLocationAtPoint:_currentPosition];
+    touchLayer.frame = [self touchRectLocationAtPoint:_currentPosition];
     [CATransaction commit];
 }
 
@@ -240,7 +240,7 @@
  **/
 
 /* Determines where the touch images is going to be placed inside of the view. */
-- (CGPoint) touchLocationAtPoint:(CGPoint)point{
+- (CGRect) touchRectLocationAtPoint:(CGPoint)point{
     
     // If not dragging make sure we redraw the touch image at the origin.
     if(!_dragging)
@@ -261,7 +261,7 @@
         point.y = _origin.y + (BACKGROUND_SIZE/2.0 - TOUCH_SIZE/2.0) * sin(angle);
     }
     
-    return point;
+    return CGRectMake(point.x - TOUCH_SIZE/2.0, point.y - TOUCH_SIZE/2.0, TOUCH_SIZE, TOUCH_SIZE);
 }
 
 /* Get the point at the specified index. */
@@ -301,6 +301,7 @@
 /* Determine the frame that the view is to use based on orientation. */
 
 - (void) setViewFrame{
+        
     if(UIDeviceOrientationIsPortrait(currentOrientation)){
         [self setFrame:CGRectMake(320*!visibile, 0, 320, 480)];
         [self setBounds:CGRectMake(0, 0, 320, 480)];
@@ -312,7 +313,10 @@
         _origin = CGPointMake(240, 160);
         _currentPosition = _origin;
     }
-    [self setNeedsDisplay];
+    
+    // Update all the layers positions.
+    backgroundLayer.position = CGPointMake(CGRectGetMidX(self.bounds), CGRectGetMidY(self.bounds));
+    [self updateTouchPosition];
 }
 
 /**
