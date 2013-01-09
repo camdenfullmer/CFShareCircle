@@ -15,7 +15,9 @@ Follow the instructions to add CFShareCircle to your project.
     - QuartzCore
     - Foundation
     - CoreGraphics
+
 2. Add the images directory and CFShareCircle resources to your project. Make sure that the CFShareCircle.m and CFShareCircle.h are listed under "Copy Bundle Resources" under "Build Phases".
+
 3. Edit your view controller header file to import the CFShareCircle header file, add the delegate, and create an object.
 
     ```
@@ -25,6 +27,7 @@ Follow the instructions to add CFShareCircle to your project.
         CFShareCircleView *shareCircleView;        
     }
       ```
+      
 4. In your viewDidLoad method instantiate the CFShareCircle, set up the delegate, and add it to your navigation controller.
 ```
 - (void)viewDidLoad
@@ -36,21 +39,29 @@ Follow the instructions to add CFShareCircle to your project.
         [self.navigationController.view addSubview:shareCircleView];
 }
 ```
-5. Then set up the frame bounds for the view and implement the delegate method. Note that the index returned from the view is in order of the array (i.e. Starts from pi = 0 on the unit circle).
+
+5. Then set up the frame bounds for the view. NOTE: Right now you need to make sure the view can be drawn on the whole screen. 
 ```
     - (void)viewWillAppear:(BOOL)animated{
         shareCircleView.frame = self.navigationController.view.frame;
     }
-    
-    - (void)shareCircleView:(CFShareCircleView *)shareCircleView didSelectIndex:(int)index{
+```
+
+6. Implement both of the delegate methods for the view. Note: Index returned from the view is in order of the array (i.e. Starts from pi = 0 on the unit circle).
+``` 
+    - (void)shareCircleView:(CFShareCircleView *)aShareCircleView didSelectIndex:(int)index{
         NSLog(@"Selected index: %d", index);
+        [shareCircleView animateOut];
+    }
+
+    - (void)shareCircleViewWasCanceled{
+        [shareCircleView animateOut];
     }
 ```
-6. Lastly, just use animate in and out to show the CFShareCircle View.
+
+7. Finally just animate in the view whenever you want it to present to the user.
 ```
     [shareCircleView animateIn];
-
-    [shareCircleView animateOut];
 ```
 
 ###Custom Sharing Images
