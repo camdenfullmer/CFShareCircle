@@ -16,9 +16,11 @@ Follow the instructions to add CFShareCircle to your project.
     - Foundation
     - CoreGraphics
 2. Add the images directory and CFShareCircle resources to your project. Make sure that the CFShareCircle.m and CFShareCircle.h are listed under "Copy Bundle Resources" under "Build Phases".
-3. Edit your view controller to add the CFShareCircle Delegate and reference to the view.
+3. Edit your view controller header file to import the CFShareCircle header file, add the delegate, and create an object.
 
     ```
+    #import "CFShareCircleView.h"
+    
     @interface ViewController : UIViewController <CFShareCircleViewDelegate>{    
         CFShareCircleView *shareCircleView;        
     }
