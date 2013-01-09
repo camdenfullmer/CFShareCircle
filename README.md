@@ -81,6 +81,11 @@ List of sharing icons included with project.
     - Email (email.png)
     - Message (message.png)
     
+##Contact
+[Twitter](https://twitter.com/camdenfullmer)
+
+[Website](https://camdenfullmer.com)
+    
 ##License
 The MIT License (MIT)
 Copyright (c) 2013 Camden Fullmer
