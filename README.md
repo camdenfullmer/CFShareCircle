@@ -40,14 +40,7 @@ Follow the instructions to add CFShareCircle to your project.
 }
 ```
 
-5. Then set up the frame bounds for the view. NOTE: Right now you need to make sure the view can be drawn on the whole screen. 
-```
-    - (void)viewWillAppear:(BOOL)animated{
-        shareCircleView.frame = self.navigationController.view.frame;
-    }
-```
-
-6. Implement both of the delegate methods for the view. Note: Index returned from the view is in order of the array (i.e. Starts from pi = 0 on the unit circle).
+5. Implement both of the delegate methods for the view. Note: Index returned from the view is in order of the array (i.e. Starts from pi = 0 on the unit circle).
 ``` 
     - (void)shareCircleView:(CFShareCircleView *)aShareCircleView didSelectIndex:(int)index{
         NSLog(@"Selected index: %d", index);
@@ -59,7 +52,7 @@ Follow the instructions to add CFShareCircle to your project.
     }
 ```
 
-7. Finally just animate in the view whenever you want it to present to the user.
+6. Finally just animate in the view whenever you want it to present to the user.
 ```
     [shareCircleView animateIn];
 ```
