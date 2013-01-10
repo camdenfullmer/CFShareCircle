@@ -73,6 +73,7 @@ List of sharing icons included with project.
     - Facebook (facebook.png)
     - Email (email.png)
     - Message (message.png)
+    - Camera Roll (camera_roll.png)
     
 ##Contact
 [Twitter](https://twitter.com/camdenfullmer)
