@@ -1,8 +1,8 @@
 #CFShareCircle
 
-CFShareCircle is a better way for app developers to let users share the content to many different services. It is a simple UIView that adds touch features.
+CFShareCircle is a better way for app developers to let users share the content to many different services. It is a simple UIView that adds drag and share capabilities to a developers application. View was only tested on iOS 6.0, but should be 5.1+ capable.
 
-![Demo Image](http://i.imgur.com/tTcAo.png)
+![Demo Image](http://i.imgur.com/9qd0V.png?1)
 
 ##How To Use
 
@@ -15,14 +15,19 @@ Follow the instructions to add CFShareCircle to your project.
     - QuartzCore
     - Foundation
     - CoreGraphics
+
 2. Add the images directory and CFShareCircle resources to your project. Make sure that the CFShareCircle.m and CFShareCircle.h are listed under "Copy Bundle Resources" under "Build Phases".
-3. Edit your view controller to add the CFShareCircle Delegate and reference to the view.
+
+3. Edit your view controller header file to import the CFShareCircle header file, add the delegate, and create an object.
 
     ```
+    #import "CFShareCircleView.h"
+    
     @interface ViewController : UIViewController <CFShareCircleViewDelegate>{    
         CFShareCircleView *shareCircleView;        
     }
       ```
+      
 4. In your viewDidLoad method instantiate the CFShareCircle, set up the delegate, and add it to your navigation controller.
 ```
 - (void)viewDidLoad
@@ -34,19 +39,29 @@ Follow the instructions to add CFShareCircle to your project.
         [self.navigationController.view addSubview:shareCircleView];
 }
 ```
-5. Then set up the frame bounds for the view and implement the delegate method. Note that the index returned from the view is in order of the array (i.e. Starts from pi = 0 on the unit circle).
+
+5. Then set up the frame bounds for the view. NOTE: Right now you need to make sure the view can be drawn on the whole screen. 
 ```
     - (void)viewWillAppear:(BOOL)animated{
         shareCircleView.frame = self.navigationController.view.frame;
     }
-    
-    - (void)shareCircleView:(CFShareCircleView *)shareCircleView didSelectIndex:(int)index{
+```
+
+6. Implement both of the delegate methods for the view. Note: Index returned from the view is in order of the array (i.e. Starts from pi = 0 on the unit circle).
+``` 
+    - (void)shareCircleView:(CFShareCircleView *)aShareCircleView didSelectIndex:(int)index{
         NSLog(@"Selected index: %d", index);
+        [shareCircleView animateOut];
+    }
+
+    - (void)shareCircleViewWasCanceled{
+        [shareCircleView animateOut];
     }
 ```
-6. Lastly, just show the view when you want it to appear.
+
+7. Finally just animate in the view whenever you want it to present to the user.
 ```
-    [shareCircleView setHidden:NO];
+    [shareCircleView animateIn];
 ```
 
 ###Custom Sharing Images
@@ -65,6 +80,11 @@ List of sharing icons included with project.
     - Facebook (facebook.png)
     - Email (email.png)
     - Message (message.png)
+    
+##Contact
+[Twitter](https://twitter.com/camdenfullmer)
+
+[Website](https://camdenfullmer.com)
     
 ##License
 The MIT License (MIT)
