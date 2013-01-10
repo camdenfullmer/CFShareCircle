@@ -14,38 +14,39 @@
 @synthesize imageNames = _imageNames;
 
 -(id)init{
-    self = [super init];
+    self = [super initWithFrame:CGRectMake(0, 0, 320, 480)];
     if (self) {
         [self initialize];
         [self setImageNames:[[NSArray alloc] initWithObjects:@"evernote.png", @"facebook.png", @"googleplus.png", @"twitter.png", @"message.png", @"email.png", nil]];
         [self setUpLayers];
+        [self setViewFrame];
     }
     return self;
 }
 
 - (id)initWithCustomImageNames: (NSArray*)images{
-    self = [super init];
+    self = [super initWithFrame:CGRectMake(0, 0, 320, 480)];
     if (self) {
         [self initialize];
         [self setImageNames:images];
         [self setUpLayers];
+        [self setViewFrame];
     }
     return self;
 }
 
 /* Set all the default values for the share circle. */
 - (void)initialize{
-    self.hidden = YES;
-    self.backgroundColor = [UIColor clearColor];
     
     imageLayers = [[NSMutableArray alloc] init];
     
-    // Set up frame and positions.
-    [self setFrame:CGRectMake(320, 0, 320, 480)];
-    [self setBounds:CGRectMake(0, 0, 320, 480)];
+    self.hidden = YES;
+    self.backgroundColor = [UIColor clearColor];
+    self.bounds = CGRectMake(0, 0, 320,480);
     origin = CGPointMake(160, 240);
     currentPosition = origin;
     visible = NO;
+    currentOrientation = [[UIDevice currentDevice] orientation];
     
     // Create shadow for UIView.
     self.layer.masksToBounds = NO;
@@ -123,8 +124,9 @@
     // Create the touch layer for the Share Circle.
     touchLayer = [CAShapeLayer layer];
     touchLayer.bounds = self.bounds;
-    touchLayer.frame = CGRectMake(origin.x - TOUCH_SIZE/2.0, origin.y - TOUCH_SIZE/2.0, TOUCH_SIZE, TOUCH_SIZE);
+    touchLayer.frame = CGRectMake(0, 0, TOUCH_SIZE, TOUCH_SIZE);
     touchLayer.contents = (id) [UIImage imageNamed:@"touch.png"].CGImage;
+    touchLayer.position = CGPointMake(CGRectGetMidX(self.bounds), CGRectGetMidY(self.bounds));
     touchLayer.opacity = 0.4;
     [self.layer addSublayer:touchLayer];
     
@@ -212,11 +214,9 @@
 
 /* Animates the whole view into the screen. */
 - (void) animateIn{
-    self.hidden = NO;
     visible = YES;
+    self.hidden = NO;
     textLayer.opacity = 0.5;
-    // Reset the view.
-    [self setNeedsDisplay];
     
     [UIView animateWithDuration: 0.2
                           delay: 0.0
@@ -249,7 +249,7 @@
     [CATransaction begin];
     [CATransaction setValue: (id) kCFBooleanTrue forKey: kCATransactionDisableActions];
     // Update the position of the touch layer.
-    touchLayer.frame = [self touchRectLocationAtPoint:currentPosition];
+    touchLayer.position = [self touchLocationAtPoint:currentPosition];
     
     // Show a hover state when dragging, which will also show the text layer when not dragging.
     if(dragging){
@@ -308,7 +308,7 @@
  **/
 
 /* Determines where the touch images is going to be placed inside of the view. */
-- (CGRect) touchRectLocationAtPoint:(CGPoint)point{
+- (CGPoint) touchLocationAtPoint:(CGPoint)point{
     
     // If not dragging make sure we redraw the touch image at the origin.
     if(!dragging)
@@ -329,7 +329,7 @@
         point.y = origin.y + (BACKGROUND_SIZE/2.0 - TOUCH_SIZE/2.0) * sin(angle);
     }
     
-    return CGRectMake(point.x - TOUCH_SIZE/2.0, point.y - TOUCH_SIZE/2.0, TOUCH_SIZE, TOUCH_SIZE);
+    return point;
 }
 
 /* Get the point at the specified index. */
