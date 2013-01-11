@@ -79,20 +79,12 @@ NSString *const CFShareCircleViewCanceled = @"CFShareCircleViewCanceled";
     closeButtonLayer = [CAShapeLayer layer];
     closeButtonLayer.bounds = self.bounds;
     closeButtonLayer.contents = (id) [UIImage imageNamed:@"close_button.png"].CGImage;
+    closeButtonLayer.frame = [self closeButtonRect];
     
-    // Create the rect and the point to draw the image.
-    // Calculate the x and y coordinate at pi/4.
-    double x = origin.x - CLOSE_BUTTON_SIZE/2.0 + cosf(M_PI/4)*BACKGROUND_SIZE/2.0;
-    double y = origin.y - CLOSE_BUTTON_SIZE/2.0 - sinf(M_PI/4)*BACKGROUND_SIZE/2.0;
-    
-    CGRect tempRect = CGRectMake(x,y - 15,CLOSE_BUTTON_SIZE,CLOSE_BUTTON_SIZE);
-    closeButtonLayer.frame = tempRect;
-    
-    // Create the overlay for the button
+    // Create the overlay for the close button,
     CAShapeLayer *overlayLayer = [CAShapeLayer layer];
     overlayLayer.bounds = closeButtonLayer.frame;
     overlayLayer.frame = closeButtonLayer.frame;
-    //overlayLayer.position = );
     overlayLayer.fillColor = [[UIColor whiteColor] CGColor];
     overlayLayer.opacity = 0.2;
     CGMutablePathRef path = CGPathCreateMutable();
@@ -170,16 +162,13 @@ NSString *const CFShareCircleViewCanceled = @"CFShareCircleViewCanceled";
     currentPosition = [touch locationInView:self];
     
     // Make sure the user starts with touch inside the circle and not in the close button.
-    if([self circleEnclosesPoint: currentPosition] && ![self closeButtonEnclosesPoint:currentPosition]){
-        dragging = YES;
-        [self updateTouch];
-        [self updateImages];
-        [self updateIntroText];
-        [self updateShareText];
-    } else if( [self closeButtonEnclosesPoint:currentPosition]){
+    if(CGRectContainsPoint([self closeButtonRect], currentPosition)){
         // Hide close button overlay.
         CALayer *layer = [closeButtonLayer.sublayers objectAtIndex:0];
         layer.opacity = 0.0;
+    }else if([self circleEnclosesPoint: currentPosition]){
+        dragging = YES;
+        [self updateLayers];
     }
 }
 
@@ -188,10 +177,7 @@ NSString *const CFShareCircleViewCanceled = @"CFShareCircleViewCanceled";
     currentPosition = [touch locationInView:self];
     
     if(dragging){
-        [self updateTouch];
-        [self updateImages];
-        [self updateIntroText];
-        [self updateShareText];
+        [self updateLayers];
     }
 }
 
@@ -214,7 +200,7 @@ NSString *const CFShareCircleViewCanceled = @"CFShareCircleViewCanceled";
                 [self animateOut];
             }
         }
-    } else if([self closeButtonEnclosesPoint: currentPosition]){
+    } else if(CGRectContainsPoint([self closeButtonRect], currentPosition)){
         dispatch_async(dispatch_get_main_queue(), ^{
             [[NSNotificationCenter defaultCenter] postNotificationName:CFShareCircleViewCanceled object:self userInfo:nil];
         });
@@ -223,10 +209,7 @@ NSString *const CFShareCircleViewCanceled = @"CFShareCircleViewCanceled";
     
     currentPosition = origin;
     dragging = NO;
-    [self updateTouch];
-    [self updateImages];
-    [self updateIntroText];
-    [self updateShareText];
+    [self updateLayers];
 }
 
 - (void)touchesCancelled:(NSSet *)touches withEvent:(UIEvent *)event{
@@ -269,8 +252,12 @@ NSString *const CFShareCircleViewCanceled = @"CFShareCircleViewCanceled";
                      }];
 }
 
-/* Moves the touch layer to the proper position when the user is interacting with the view. */
-- (void) updateTouch{
+/**
+ Updates all the layers based on the new current position of the touch input.
+ */
+- (void) updateLayers{
+    
+    // Update the touch layer.
     [CATransaction begin];
     [CATransaction setValue: (id) kCFBooleanTrue forKey: kCATransactionDisableActions];
     // Update the position of the touch layer.
@@ -281,65 +268,32 @@ NSString *const CFShareCircleViewCanceled = @"CFShareCircleViewCanceled";
         touchLayer.opacity = 1.0;
     else
         touchLayer.opacity = 0.4;
-    [CATransaction commit];
-}
-
-/** 
- Updates the opacity of the images that are hovered over by the user. 
- */
-- (void) updateImages{
+    [CATransaction commit];    
+    
+    // Update the images.
     for(int i = 0; i < [imageLayers count]; i++){
         CALayer *layer = [imageLayers objectAtIndex:i];
-        if(i == [self indexHoveringOver])
+        if(i == [self indexHoveringOver] || !dragging)
             layer.opacity = 1.0;
         else
             layer.opacity = 0.6;
     }
-}
-
-/**
- Updates the opacity of the text and whether it should display the sharing service. 
- */
-- (void) updateIntroText{
-    //If not dragging then just show the drag and share text.
-    //If dragging hide.
-    if(dragging){
+    
+    // Update the intro text layer.
+    if(dragging)
         introTextLayer.opacity = 0.0;
-    }else
+    else 
         introTextLayer.opacity = 0.6;
-}
-
-/**
- Updates the title of the sharing service that is selected.
- */
-- (void) updateShareText{
-    //If not dragging then just show the drag and share text.
-    //If dragging but not over a sharing service then hide.
-    //If over a share service show the share service as its text.
+    
+    // Update the share title text layer
     int index = [self indexHoveringOver];
     if(index != -1){
         shareTextLayer.string = [_imageNames objectAtIndex:index];
-        shareTextLayer.opacity = 0.6;        
-    }else{ 
+        shareTextLayer.opacity = 0.6;
+    }else{
         shareTextLayer.opacity = 0.0;
         shareTextLayer.string = @"";
     }
-}
-
-/**
- Return the index that the user is hovering over at this exact moment in time.
- */
-- (int) indexHoveringOver{
-    if(dragging){
-        for(int i = 0; i < [_imageNames count]; i++){
-            CGPoint point = [self pointAtIndex:i];
-            // Determine if point is inside rect.
-            if(CGRectContainsPoint(CGRectMake(point.x, point.y, TEMP_SIZE, TEMP_SIZE), currentPosition)){
-                return i;
-            }
-        }
-    }
-    return -1;
 }
 
 /* Animation used when the view is first presented to the user. */
@@ -370,13 +324,24 @@ NSString *const CFShareCircleViewCanceled = @"CFShareCircleViewCanceled";
 }
 
 /**
- HELPER METHODS
- **/
+ Return the index that the user is hovering over at this exact moment in time.
+ */
+- (int) indexHoveringOver{
+    if(dragging){
+        for(int i = 0; i < [_imageNames count]; i++){
+            CGPoint point = [self pointAtIndex:i];
+            // Determine if point is inside rect.
+            if(CGRectContainsPoint(CGRectMake(point.x, point.y, TEMP_SIZE, TEMP_SIZE), currentPosition)){
+                return i;
+            }
+        }
+    }
+    return -1;
+}
 
 /**
- This method returns the translated "real" name of the sharing service to the actual file name.
+ Returns the translated "real" name of the sharing service to the actual file name.
  */
-
 - (NSString*) imageFileNameAtIndex: (int) index{
     NSString *temp = [_imageNames objectAtIndex:index];
     // Replace spaces with underscores.
@@ -429,7 +394,9 @@ NSString *const CFShareCircleViewCanceled = @"CFShareCircleViewCanceled";
     return CGPointMake(x, y);
 }
 
-/* Helper method to determine if a specified point is inside the circle. */
+/**
+ Returns if the point is inside the cirlce. 
+ */
 - (BOOL) circleEnclosesPoint: (CGPoint) point{
     if(pow(BACKGROUND_SIZE/2.0,2) < (pow(point.x - origin.x,2) + pow(point.y - origin.y,2)))
         return NO;
@@ -437,17 +404,14 @@ NSString *const CFShareCircleViewCanceled = @"CFShareCircleViewCanceled";
         return YES;
 }
 
-/* Helper method to determine if a specified point is inside the close button. */
-- (BOOL) closeButtonEnclosesPoint: (CGPoint) point{
+/**
+ Returns the rect used to draw the close button.
+ */
+- (CGRect) closeButtonRect{
     float x = origin.x - CLOSE_BUTTON_SIZE/2.0 + cosf(M_PI/4)*BACKGROUND_SIZE/2.0;
     float y = origin.y - CLOSE_BUTTON_SIZE/2.0 - sinf(M_PI/4)*BACKGROUND_SIZE/2.0;
     
-    CGRect tempRect = CGRectMake(x,y,CLOSE_BUTTON_SIZE,CLOSE_BUTTON_SIZE);
-    
-    if(CGRectContainsPoint(tempRect, point))
-        return YES;
-    else
-        return NO;
+    return CGRectMake(x + 5,y - 15,CLOSE_BUTTON_SIZE,CLOSE_BUTTON_SIZE);
 }
 
 /* Determine the frame that the view is to use based on orientation. */
@@ -468,18 +432,12 @@ NSString *const CFShareCircleViewCanceled = @"CFShareCircleViewCanceled";
     // Update all the layers positions.
     backgroundLayer.position = CGPointMake(CGRectGetMidX(self.bounds), CGRectGetMidY(self.bounds));
     introTextLayer.position = CGPointMake(CGRectGetMidX(self.bounds), CGRectGetMidY(self.bounds));
-    [self updateTouch];
-    [self updateIntroText];
-    [self updateShareText];
+    [self updateLayers];
     for(int i = 0; i < _imageNames.count; i++) {
         CALayer* layer = [imageLayers objectAtIndex:i];
         layer.position = CGPointMake(CGRectGetMidX(self.bounds), CGRectGetMidY(self.bounds));
     }
 }
-
-/**
- ORIENTATION CHANGE
- **/
 
 - (void)deviceOrientationDidChange:(NSNotification *)notification {
     //Obtaining the current device orientation
