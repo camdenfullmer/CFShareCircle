@@ -11,6 +11,7 @@ Follow the instructions to add CFShareCircle to your project.
 ###Basic Setup
 
 1. Add the following frameworks to your project under "Link Binary With Libraries" in "Build Phases"
+    
     - UIKit
     - QuartzCore
     - Foundation
@@ -74,6 +75,12 @@ List of sharing icons included with project.
     - Email (email.png)
     - Message (message.png)
     - Photo Album (photo_album.png)
+    - Flickr (flickr.png)
+    
+##Requirments
+
+    - ARC
+    - iOS 5.1+
     
 ##Contact
 [Twitter](https://twitter.com/camdenfullmer)
