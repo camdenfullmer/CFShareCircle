@@ -213,7 +213,6 @@
  ANIMATION METHODS
  **/
 
-/* Animates the whole view into the screen. */
 - (void) animateIn{
     visible = YES;
     self.hidden = NO;
@@ -230,7 +229,6 @@
                      }];
 }
 
-/* Animates the whole view out of the screen. */
 - (void) animateOut{
     visible = NO;
     [self animateImagesOut];

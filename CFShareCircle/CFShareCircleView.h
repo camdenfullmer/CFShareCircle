@@ -33,9 +33,27 @@
 }
 
 @property (assign) id <CFShareCircleViewDelegate> delegate;
+
+/** 
+ Returns the array of all the names of images that are going to be used to display the sharing service images.
+ */
 @property (strong) NSArray *imageNames;
+
+/** 
+ Initialize the share circle with a custom list of image file names. NOTE: These images must be resources that are referenced in your project.
+ 
+ @param array of images that is going to be set for the share circle.
+ */
 - (id)initWithCustomImageNames: (NSArray*)images;
+
+/**
+ Animates the share circle into view. 
+ */
 - (void)animateIn;
+
+/**
+ Animates the share circle out of view.
+ */
 - (void)animateOut;
 
 @end
