@@ -15,11 +15,13 @@
 #define CLOSE_BUTTON_SIZE 40
 #define TOUCH_SIZE 64
 
+/** Notification that gets posted when the underRight view will appear */
+extern NSString *const CFShareCircleViewCanceled;
+
 @class CFShareCircleView;
 
 @protocol CFShareCircleViewDelegate
 - (void)shareCircleView:(CFShareCircleView *)aShareCircleView didSelectIndex:(int)index;
-- (void)shareCircleViewWasCanceled;
 @end
 
 @interface CFShareCircleView : UIView{

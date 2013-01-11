@@ -7,6 +7,7 @@
 //
 
 #import "CFShareCircleView.h"
+NSString *const CFShareCircleViewCanceled = @"CFShareCircleViewCanceled";
 
 @implementation CFShareCircleView
 
@@ -190,11 +191,16 @@
         for(int i = 0; i < [_imageNames count]; i++){
             CGPoint point = [self pointAtIndex:i];
             // Determine if point is inside rect.
-            if(CGRectContainsPoint(CGRectMake(point.x, point.y, TEMP_SIZE, TEMP_SIZE), currentPosition))
+            if(CGRectContainsPoint(CGRectMake(point.x, point.y, TEMP_SIZE, TEMP_SIZE), currentPosition)){
                 [self.delegate shareCircleView:self didSelectIndex:i];
+                [self animateOut];
+            }
         }
     } else if([self closeButtonEnclosesPoint: currentPosition]){
-        [self.delegate shareCircleViewWasCanceled];
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [[NSNotificationCenter defaultCenter] postNotificationName:CFShareCircleViewCanceled object:self userInfo:nil];
+        });
+        [self animateOut];
     }
     
     currentPosition = origin;

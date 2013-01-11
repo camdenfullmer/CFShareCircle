@@ -15,12 +15,16 @@
 @implementation ViewController
 
 - (void)viewDidLoad
-{
-    [super viewDidLoad];
+{    
 	// Do any additional setup after loading the view, typically from a nib.
     shareCircleView = [[CFShareCircleView alloc] init];
     shareCircleView.delegate = self;
     [self.navigationController.view addSubview:shareCircleView];
+    
+    // Set up notification for share circle view being canceled.
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(shareCircleCanceled:) name:CFShareCircleViewCanceled object:shareCircleView];
+    
+    [super viewDidLoad];
 }
 
 - (void)didReceiveMemoryWarning
@@ -31,12 +35,12 @@
 
 - (void)shareCircleView:(CFShareCircleView *)aShareCircleView didSelectIndex:(int)index{
     NSLog(@"Selected index: %d", index);
-    [shareCircleView animateOut];
 }
 
--(void)shareCircleViewWasCanceled{
-    [shareCircleView animateOut];
+- (void)shareCircleCanceled: (NSNotification*)notification{
+    NSLog(@"Share circle view was canceled.");
 }
+
 
 - (IBAction)shareButtonClicked:(id)sender {
     [shareCircleView animateIn];
