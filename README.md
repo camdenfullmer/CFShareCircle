@@ -11,6 +11,7 @@ Follow the instructions to add CFShareCircle to your project.
 ###Basic Setup
 
 1. Add the following frameworks to your project under "Link Binary With Libraries" in "Build Phases"
+    
     - UIKit
     - QuartzCore
     - Foundation
