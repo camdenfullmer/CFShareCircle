@@ -59,7 +59,7 @@
     [[NSNotificationCenter defaultCenter] addObserver: self selector: @selector(deviceOrientationDidChange:) name: UIDeviceOrientationDidChangeNotification object: nil];
 }
 
-/* Build all the layers to be displayed onto the view of the share circle. */
+/** Build all the layers to be displayed onto the view of the share circle. */
 - (void)setUpLayers{
     
     // Create a larger circle layer for the background of the Share Circle.
@@ -84,7 +84,7 @@
     double x = origin.x - CLOSE_BUTTON_SIZE/2.0 + cosf(M_PI/4)*BACKGROUND_SIZE/2.0;
     double y = origin.y - CLOSE_BUTTON_SIZE/2.0 - sinf(M_PI/4)*BACKGROUND_SIZE/2.0;
     
-    CGRect tempRect = CGRectMake(x,y - 10,CLOSE_BUTTON_SIZE,CLOSE_BUTTON_SIZE);
+    CGRect tempRect = CGRectMake(x,y - 15,CLOSE_BUTTON_SIZE,CLOSE_BUTTON_SIZE);
     closeButtonLayer.frame = tempRect;
     
     // Create the overlay for the button
@@ -129,6 +129,7 @@
     touchLayer.position = CGPointMake(CGRectGetMidX(self.bounds), CGRectGetMidY(self.bounds));
     touchLayer.opacity = 0.4;
     [self.layer addSublayer:touchLayer];
+    
     
     // Create the intro text layer to help the user.
     textLayer = [CATextLayer layer];
