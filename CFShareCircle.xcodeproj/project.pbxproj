@@ -32,8 +32,6 @@
 		4119BD66169CC4FA00CE9316 /* facebook@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 4119BD56169CC4FA00CE9316 /* facebook@2x.png */; };
 		4119BD69169CC4FA00CE9316 /* message.png in Resources */ = {isa = PBXBuildFile; fileRef = 4119BD59169CC4FA00CE9316 /* message.png */; };
 		4119BD6A169CC4FA00CE9316 /* message@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 4119BD5A169CC4FA00CE9316 /* message@2x.png */; };
-		4119BD6B169CC4FA00CE9316 /* touch.png in Resources */ = {isa = PBXBuildFile; fileRef = 4119BD5B169CC4FA00CE9316 /* touch.png */; };
-		4119BD6C169CC4FA00CE9316 /* touch@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 4119BD5C169CC4FA00CE9316 /* touch@2x.png */; };
 		4119BD6D169CC4FA00CE9316 /* twitter.png in Resources */ = {isa = PBXBuildFile; fileRef = 4119BD5D169CC4FA00CE9316 /* twitter.png */; };
 		4119BD6E169CC4FA00CE9316 /* twitter@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 4119BD5E169CC4FA00CE9316 /* twitter@2x.png */; };
 		419CC7F016A05D7F006343DA /* photo_album.png in Resources */ = {isa = PBXBuildFile; fileRef = 419CC7EE16A05D7F006343DA /* photo_album.png */; };
@@ -75,8 +73,6 @@
 		4119BD56169CC4FA00CE9316 /* facebook@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "facebook@2x.png"; sourceTree = "<group>"; };
 		4119BD59169CC4FA00CE9316 /* message.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = message.png; sourceTree = "<group>"; };
 		4119BD5A169CC4FA00CE9316 /* message@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "message@2x.png"; sourceTree = "<group>"; };
-		4119BD5B169CC4FA00CE9316 /* touch.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = touch.png; sourceTree = "<group>"; };
-		4119BD5C169CC4FA00CE9316 /* touch@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "touch@2x.png"; sourceTree = "<group>"; };
 		4119BD5D169CC4FA00CE9316 /* twitter.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = twitter.png; sourceTree = "<group>"; };
 		4119BD5E169CC4FA00CE9316 /* twitter@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "twitter@2x.png"; sourceTree = "<group>"; };
 		419CC7EE16A05D7F006343DA /* photo_album.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = photo_album.png; sourceTree = "<group>"; };
@@ -179,8 +175,6 @@
 				4119BD56169CC4FA00CE9316 /* facebook@2x.png */,
 				4119BD59169CC4FA00CE9316 /* message.png */,
 				4119BD5A169CC4FA00CE9316 /* message@2x.png */,
-				4119BD5B169CC4FA00CE9316 /* touch.png */,
-				4119BD5C169CC4FA00CE9316 /* touch@2x.png */,
 				4119BD5D169CC4FA00CE9316 /* twitter.png */,
 				4119BD5E169CC4FA00CE9316 /* twitter@2x.png */,
 			);
@@ -254,8 +248,6 @@
 				4119BD66169CC4FA00CE9316 /* facebook@2x.png in Resources */,
 				4119BD69169CC4FA00CE9316 /* message.png in Resources */,
 				4119BD6A169CC4FA00CE9316 /* message@2x.png in Resources */,
-				4119BD6B169CC4FA00CE9316 /* touch.png in Resources */,
-				4119BD6C169CC4FA00CE9316 /* touch@2x.png in Resources */,
 				4119BD6D169CC4FA00CE9316 /* twitter.png in Resources */,
 				4119BD6E169CC4FA00CE9316 /* twitter@2x.png in Resources */,
 				41F18FB516A05720000318FF /* flickr.png in Resources */,

@@ -13,7 +13,7 @@
 #define PATH_SIZE 180
 #define TEMP_SIZE 50
 #define CLOSE_BUTTON_SIZE 40
-#define TOUCH_SIZE 64
+#define TOUCH_SIZE 70
 
 /** Notification that gets posted when the underRight view will appear */
 extern NSString *const CFShareCircleViewCanceled;
@@ -28,10 +28,10 @@ extern NSString *const CFShareCircleViewCanceled;
     CGPoint currentPosition, origin;
     BOOL dragging, visible;
     UIDeviceOrientation currentOrientation;
-    CALayer *touchLayer, *closeButtonLayer;
-    CAShapeLayer *backgroundLayer;
+    CALayer *closeButtonLayer;
+    CAShapeLayer *backgroundLayer, *touchLayer;
     CATextLayer *introTextLayer, *shareTextLayer;
-    NSMutableArray *imageLayers;
+    NSMutableArray *imageLayers, *imageColors;
 }
 
 @property (assign) id <CFShareCircleViewDelegate> delegate;

@@ -18,7 +18,7 @@ NSString *const CFShareCircleViewCanceled = @"CFShareCircleViewCanceled";
     self = [super initWithFrame:CGRectMake(0, 0, 320, 480)];
     if (self) {
         [self initialize];
-        [self setImageNames:[[NSArray alloc] initWithObjects:@"Evernote", @"Facebook", @"Google+", @"Twitter", @"Flickr", @"Photo Album", @"Email", nil]];
+        [self setImageNames:[[NSArray alloc] initWithObjects:@"Evernote", @"Facebook", @"Google+", @"Twitter", @"Flickr", @"Email", @"Photo Album", nil]];
         [self setUpLayers];
         [self setViewFrame];
     }
@@ -40,6 +40,7 @@ NSString *const CFShareCircleViewCanceled = @"CFShareCircleViewCanceled";
 - (void)initialize{
     
     imageLayers = [[NSMutableArray alloc] init];
+    imageColors = [[NSMutableArray alloc] init];
     
     self.hidden = YES;
     self.backgroundColor = [UIColor clearColor];
@@ -98,6 +99,8 @@ NSString *const CFShareCircleViewCanceled = @"CFShareCircleViewCanceled";
     // Create the layers for all the sharing service images.
     for(int i = 0; i < _imageNames.count; i++) {
         UIImage *image = [UIImage imageNamed:[self imageFileNameAtIndex:i]];
+        //Add major color to the array to display later.
+        [imageColors addObject:[self colorAtPoint:CGPointMake(3, 25) inImage:image]];
         // Construct the base layer in which will be rotated around the origin of the circle.
         CAShapeLayer *baseLayer = [CAShapeLayer layer];
         baseLayer.bounds = CGRectMake(0,0, BACKGROUND_SIZE,BACKGROUND_SIZE);
@@ -118,9 +121,14 @@ NSString *const CFShareCircleViewCanceled = @"CFShareCircleViewCanceled";
     touchLayer = [CAShapeLayer layer];
     touchLayer.bounds = self.bounds;
     touchLayer.frame = CGRectMake(0, 0, TOUCH_SIZE, TOUCH_SIZE);
-    touchLayer.contents = (id) [UIImage imageNamed:@"touch.png"].CGImage;
+    CGMutablePathRef circularPath = CGPathCreateMutable();
+    CGPathAddEllipseInRect(circularPath, NULL, CGRectMake(0, 0, TOUCH_SIZE, TOUCH_SIZE));
+    touchLayer.path = circularPath;
     touchLayer.position = CGPointMake(CGRectGetMidX(self.bounds), CGRectGetMidY(self.bounds));
-    touchLayer.opacity = 0.4;
+    touchLayer.opacity = 0.1;
+    touchLayer.fillColor = [UIColor clearColor].CGColor;
+    touchLayer.strokeColor = [UIColor blackColor].CGColor;
+    touchLayer.lineWidth = 3;
     [self.layer addSublayer:touchLayer];
     
     
@@ -189,7 +197,6 @@ NSString *const CFShareCircleViewCanceled = @"CFShareCircleViewCanceled";
     CALayer *layer = [closeButtonLayer.sublayers objectAtIndex:0];
     layer.opacity = 0.2;
     
-    
     if(dragging){
         // Loop through all the rects to see if the user selected one.
         for(int i = 0; i < [_imageNames count]; i++){
@@ -256,33 +263,41 @@ NSString *const CFShareCircleViewCanceled = @"CFShareCircleViewCanceled";
  Updates all the layers based on the new current position of the touch input.
  */
 - (void) updateLayers{
-    
     // Update the touch layer.
     [CATransaction begin];
     [CATransaction setValue: (id) kCFBooleanTrue forKey: kCATransactionDisableActions];
     // Update the position of the touch layer.
     touchLayer.position = [self touchLocationAtPoint:currentPosition];
+    [CATransaction commit];
     
-    // Show a hover state when dragging.
-    if(dragging)
-        touchLayer.opacity = 1.0;
-    else
-        touchLayer.opacity = 0.4;
-    [CATransaction commit];    
-    
+    int hoveringIndex = [self indexHoveringOver];
+        
     // Update the images.
     for(int i = 0; i < [imageLayers count]; i++){
         CALayer *layer = [imageLayers objectAtIndex:i];
-        if(i == [self indexHoveringOver] || !dragging)
-            layer.opacity = 1.0;
+        if(i == hoveringIndex || !dragging)
+            layer.opacity = 1.0;        
         else
             layer.opacity = 0.6;
+        
     }
+    
+    // Update the touch layer.
+    if(hoveringIndex != -1){
+        // Update color of touch layer.
+        UIColor *newColor = (UIColor *)[imageColors objectAtIndex:hoveringIndex];
+        touchLayer.strokeColor = newColor.CGColor;
+        touchLayer.opacity = 1.0;
+    } else if(dragging){
+        touchLayer.strokeColor = [UIColor blackColor].CGColor;
+        touchLayer.opacity = 0.5;
+    } else
+        touchLayer.opacity = 0.1;
     
     // Update the intro text layer.
     if(dragging)
         introTextLayer.opacity = 0.0;
-    else 
+    else
         introTextLayer.opacity = 0.6;
     
     // Update the share title text layer
@@ -395,7 +410,7 @@ NSString *const CFShareCircleViewCanceled = @"CFShareCircleViewCanceled";
 }
 
 /**
- Returns if the point is inside the cirlce. 
+ Returns if the point is inside the cirlce.
  */
 - (BOOL) circleEnclosesPoint: (CGPoint) point{
     if(pow(BACKGROUND_SIZE/2.0,2) < (pow(point.x - origin.x,2) + pow(point.y - origin.y,2)))
@@ -412,6 +427,27 @@ NSString *const CFShareCircleViewCanceled = @"CFShareCircleViewCanceled";
     float y = origin.y - CLOSE_BUTTON_SIZE/2.0 - sinf(M_PI/4)*BACKGROUND_SIZE/2.0;
     
     return CGRectMake(x + 5,y - 15,CLOSE_BUTTON_SIZE,CLOSE_BUTTON_SIZE);
+}
+
+/**
+ Return the color at the specified point in an image.
+ */
+- (UIColor*) colorAtPoint: (CGPoint)point inImage: (UIImage*) image{
+    CGImageRef cgImage = CGImageCreateWithImageInRect(image.CGImage,
+                                                      CGRectMake(point.x * image.scale,
+                                                                 point.y * image.scale,
+                                                                 1.0f,
+                                                                 1.0f));
+    CGDataProviderRef provider = CGImageGetDataProvider(cgImage);
+    CFDataRef data = CGDataProviderCopyData(provider);
+    CGImageRelease(cgImage);
+    UInt8* buffer = (UInt8*)CFDataGetBytePtr(data);
+    CGFloat red   = (float)buffer[0] / 255.0f;
+    CGFloat green = (float)buffer[1] / 255.0f;
+    CGFloat blue  = (float)buffer[2] / 255.0f;
+    CGFloat alpha = (float)buffer[3] / 255.0f;
+    CFRelease(data);
+    return [UIColor colorWithRed:red green:green blue:blue alpha:alpha];
 }
 
 /* Determine the frame that the view is to use based on orientation. */
