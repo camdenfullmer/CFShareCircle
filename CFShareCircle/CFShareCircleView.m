@@ -161,10 +161,6 @@ NSString *const CFShareCircleViewCanceled = @"CFShareCircleViewCanceled";
     [self.layer addSublayer:shareTextLayer];
 }
 
-/**
- TOUCH METHODS FOR GETTING USER INPUT
- **/
-
 - (void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event{
     UITouch *touch = (UITouch *)[[touches allObjects] objectAtIndex:0];
     currentPosition = [touch locationInView:self];
@@ -201,8 +197,8 @@ NSString *const CFShareCircleViewCanceled = @"CFShareCircleViewCanceled";
         // Loop through all the rects to see if the user selected one.
         for(int i = 0; i < [_imageNames count]; i++){
             CGPoint point = [self pointAtIndex:i];
-            // Determine if point is inside rect.
-            if(CGRectContainsPoint(CGRectMake(point.x, point.y, TEMP_SIZE, TEMP_SIZE), currentPosition)){
+            // Determine if point is inside rect or also account for overshooting circle so just swiping works.
+            if(CGRectContainsPoint(CGRectMake(point.x, point.y, TEMP_SIZE, TEMP_SIZE), currentPosition) || CGRectContainsPoint(CGRectMake(point.x, point.y, TEMP_SIZE, TEMP_SIZE), [self touchLocationAtPoint:currentPosition])){
                 [self.delegate shareCircleView:self didSelectIndex:i];
                 [self animateOut];
             }
@@ -224,10 +220,6 @@ NSString *const CFShareCircleViewCanceled = @"CFShareCircleViewCanceled";
     currentPosition = origin;
     dragging = NO;
 }
-
-/**
- ANIMATION METHODS
- **/
 
 - (void) animateIn{
     visible = YES;
@@ -279,7 +271,6 @@ NSString *const CFShareCircleViewCanceled = @"CFShareCircleViewCanceled";
             layer.opacity = 1.0;        
         else
             layer.opacity = 0.6;
-        
     }
     
     // Update the touch layer.
@@ -291,8 +282,10 @@ NSString *const CFShareCircleViewCanceled = @"CFShareCircleViewCanceled";
     } else if(dragging){
         touchLayer.strokeColor = [UIColor blackColor].CGColor;
         touchLayer.opacity = 0.5;
-    } else
+    } else {
         touchLayer.opacity = 0.1;
+        touchLayer.strokeColor = [UIColor blackColor].CGColor;
+    }
     
     // Update the intro text layer.
     if(dragging)
@@ -345,10 +338,9 @@ NSString *const CFShareCircleViewCanceled = @"CFShareCircleViewCanceled";
     if(dragging){
         for(int i = 0; i < [_imageNames count]; i++){
             CGPoint point = [self pointAtIndex:i];
-            // Determine if point is inside rect.
-            if(CGRectContainsPoint(CGRectMake(point.x, point.y, TEMP_SIZE, TEMP_SIZE), currentPosition)){
+            // Determine if point is inside rect or adjust for the user overshooting sharing service.
+            if(CGRectContainsPoint(CGRectMake(point.x, point.y, TEMP_SIZE, TEMP_SIZE), currentPosition) || CGRectContainsPoint(CGRectMake(point.x, point.y, TEMP_SIZE, TEMP_SIZE), [self touchLocationAtPoint:currentPosition]))
                 return i;
-            }
         }
     }
     return -1;
@@ -468,6 +460,7 @@ NSString *const CFShareCircleViewCanceled = @"CFShareCircleViewCanceled";
     // Update all the layers positions.
     backgroundLayer.position = CGPointMake(CGRectGetMidX(self.bounds), CGRectGetMidY(self.bounds));
     introTextLayer.position = CGPointMake(CGRectGetMidX(self.bounds), CGRectGetMidY(self.bounds));
+    shareTextLayer.position = CGPointMake(CGRectGetMidX(self.bounds), CGRectGetMidY(self.bounds));
     [self updateLayers];
     for(int i = 0; i < _imageNames.count; i++) {
         CALayer* layer = [imageLayers objectAtIndex:i];
