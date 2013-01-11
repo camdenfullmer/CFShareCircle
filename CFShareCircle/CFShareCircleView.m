@@ -17,7 +17,7 @@
     self = [super initWithFrame:CGRectMake(0, 0, 320, 480)];
     if (self) {
         [self initialize];
-        [self setImageNames:[[NSArray alloc] initWithObjects:@"evernote.png", @"facebook.png", @"googleplus.png", @"twitter.png", @"camera_roll.png", @"email.png", nil]];
+        [self setImageNames:[[NSArray alloc] initWithObjects:@"evernote.png", @"facebook.png", @"googleplus.png", @"twitter.png", @"flickr.png", @"photo_album.png", @"email.png", nil]];
         [self setUpLayers];
         [self setViewFrame];
     }

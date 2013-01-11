@@ -36,8 +36,10 @@
 		4119BD6C169CC4FA00CE9316 /* touch@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 4119BD5C169CC4FA00CE9316 /* touch@2x.png */; };
 		4119BD6D169CC4FA00CE9316 /* twitter.png in Resources */ = {isa = PBXBuildFile; fileRef = 4119BD5D169CC4FA00CE9316 /* twitter.png */; };
 		4119BD6E169CC4FA00CE9316 /* twitter@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 4119BD5E169CC4FA00CE9316 /* twitter@2x.png */; };
-		41D8D3B6169F770900B15B52 /* photo_album.png in Resources */ = {isa = PBXBuildFile; fileRef = 41D8D3B4169F770900B15B52 /* photo_album.png */; };
-		41D8D3B7169F770900B15B52 /* photo_album@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 41D8D3B5169F770900B15B52 /* photo_album@2x.png */; };
+		419CC7F016A05D7F006343DA /* photo_album.png in Resources */ = {isa = PBXBuildFile; fileRef = 419CC7EE16A05D7F006343DA /* photo_album.png */; };
+		419CC7F116A05D7F006343DA /* photo_album@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 419CC7EF16A05D7F006343DA /* photo_album@2x.png */; };
+		41F18FB516A05720000318FF /* flickr.png in Resources */ = {isa = PBXBuildFile; fileRef = 41F18FB316A05720000318FF /* flickr.png */; };
+		41F18FB616A05720000318FF /* flickr@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 41F18FB416A05720000318FF /* flickr@2x.png */; };
 		41FC1038169B6FD9007DF1E3 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 41FC1037169B6FD9007DF1E3 /* QuartzCore.framework */; };
 /* End PBXBuildFile section */
 
@@ -77,8 +79,10 @@
 		4119BD5C169CC4FA00CE9316 /* touch@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "touch@2x.png"; sourceTree = "<group>"; };
 		4119BD5D169CC4FA00CE9316 /* twitter.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = twitter.png; sourceTree = "<group>"; };
 		4119BD5E169CC4FA00CE9316 /* twitter@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "twitter@2x.png"; sourceTree = "<group>"; };
-		41D8D3B4169F770900B15B52 /* photo_album.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = photo_album.png; sourceTree = "<group>"; };
-		41D8D3B5169F770900B15B52 /* photo_album@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "photo_album@2x.png"; sourceTree = "<group>"; };
+		419CC7EE16A05D7F006343DA /* photo_album.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = photo_album.png; sourceTree = "<group>"; };
+		419CC7EF16A05D7F006343DA /* photo_album@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "photo_album@2x.png"; sourceTree = "<group>"; };
+		41F18FB316A05720000318FF /* flickr.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = flickr.png; sourceTree = "<group>"; };
+		41F18FB416A05720000318FF /* flickr@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "flickr@2x.png"; sourceTree = "<group>"; };
 		41FC1037169B6FD9007DF1E3 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
 /* End PBXFileReference section */
 
@@ -159,8 +163,10 @@
 		4119BD4E169CC4FA00CE9316 /* images */ = {
 			isa = PBXGroup;
 			children = (
-				41D8D3B4169F770900B15B52 /* photo_album.png */,
-				41D8D3B5169F770900B15B52 /* photo_album@2x.png */,
+				419CC7EE16A05D7F006343DA /* photo_album.png */,
+				419CC7EF16A05D7F006343DA /* photo_album@2x.png */,
+				41F18FB316A05720000318FF /* flickr.png */,
+				41F18FB416A05720000318FF /* flickr@2x.png */,
 				4119BD4F169CC4FA00CE9316 /* close_button.png */,
 				4119BD50169CC4FA00CE9316 /* close_button@2x.png */,
 				4119BD51169CC4FA00CE9316 /* email.png */,
@@ -254,8 +260,10 @@
 				4119BD6C169CC4FA00CE9316 /* touch@2x.png in Resources */,
 				4119BD6D169CC4FA00CE9316 /* twitter.png in Resources */,
 				4119BD6E169CC4FA00CE9316 /* twitter@2x.png in Resources */,
-				41D8D3B6169F770900B15B52 /* photo_album.png in Resources */,
-				41D8D3B7169F770900B15B52 /* photo_album@2x.png in Resources */,
+				41F18FB516A05720000318FF /* flickr.png in Resources */,
+				41F18FB616A05720000318FF /* flickr@2x.png in Resources */,
+				419CC7F016A05D7F006343DA /* photo_album.png in Resources */,
+				419CC7F116A05D7F006343DA /* photo_album@2x.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
