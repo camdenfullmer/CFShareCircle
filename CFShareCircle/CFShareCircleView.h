@@ -30,13 +30,13 @@ extern NSString *const CFShareCircleViewCanceled;
     UIDeviceOrientation currentOrientation;
     CALayer *touchLayer, *closeButtonLayer;
     CAShapeLayer *backgroundLayer;
-    CATextLayer *textLayer;
+    CATextLayer *introTextLayer, *shareTextLayer;
     NSMutableArray *imageLayers;
 }
 
 @property (assign) id <CFShareCircleViewDelegate> delegate;
 
-/** 
+/**
  Returns the array of all the names of images that are going to be used to display the sharing service images.
  */
 @property (strong) NSArray *imageNames;
