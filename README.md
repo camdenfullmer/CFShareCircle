@@ -74,6 +74,12 @@ List of sharing icons included with project.
     - Email (email.png)
     - Message (message.png)
     - Photo Album (photo_album.png)
+    - Flickr (flickr.png)
+    
+##Requirments
+
+    - ARC
+    - iOS 5.1+
     
 ##Contact
 [Twitter](https://twitter.com/camdenfullmer)
