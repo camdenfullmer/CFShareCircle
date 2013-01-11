@@ -57,7 +57,7 @@ Follow the instructions to add CFShareCircle to your project.
 
 To customize what sharing images you want to show all you have to do is intialize with your own array of images. These names specifically correspond to image file names as well. Images should be 100px by 100px for @2x and 50px by 50px for normal.
 
-For Example: Sharing Service "Evernote" will cause the share circle to look for an image named "evernote.png". Where "Photo Album" will look for "photo_album.png". Be aware of this when adding your own images.
+For Example: Adding sharing service named "Evernote" will cause the share circle to look for an image named "evernote.png". Where "Photo Album" will look for "photo_album.png". Be aware of this when adding your own images.
 
 ```
 shareCircleView = [[CFShareCircleView alloc] initWithImageFileNames:[[NSArray alloc] initWithObjects: @"Facebook", @"Twitter", @"Email", nil]];
