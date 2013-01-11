@@ -10,7 +10,7 @@ Follow the instructions to add CFShareCircle to your project.
 
 ###Basic Setup
 
-1. Add the following frameworks to your project under "Link Binary With Libraries" in "Build Phases"
+1. Add the following frameworks to your project under "Link Binary With Libraries" in "Build Phases".
     
     - UIKit
     - QuartzCore
@@ -41,19 +41,14 @@ Follow the instructions to add CFShareCircle to your project.
 }
 ```
 
-5. Implement both of the delegate methods for the view. Note: Index returned from the view is in order of the array (i.e. Starts from pi = 0 on the unit circle).
+5. Implement the delegate method for the view. Note: Index returned from the view is in order of the array (i.e. Starts from pi = 0 on the unit circle).
 ``` 
     - (void)shareCircleView:(CFShareCircleView *)aShareCircleView didSelectIndex:(int)index{
         NSLog(@"Selected index: %d", index);
-        [shareCircleView animateOut];
-    }
-
-    - (void)shareCircleViewWasCanceled{
-        [shareCircleView animateOut];
     }
 ```
 
-6. Finally just animate in the view whenever you want it to present to the user.
+6. Finally just animate in the view whenever you want it pop up for the user.
 ```
     [shareCircleView animateIn];
 ```
@@ -76,6 +71,12 @@ List of sharing icons included with project.
     - Message (message.png)
     - Photo Album (photo_album.png)
     - Flickr (flickr.png)
+    
+##Notifications
+
+Below are notifications that are posted during the life cycle of the share circle.
+
+    - CFShareCircleViewCanceled: posted when the user clicked the close button on the share circle.
     
 ##Requirments
 
