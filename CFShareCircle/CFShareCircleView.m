@@ -18,7 +18,7 @@ NSString *const CFShareCircleViewCanceled = @"CFShareCircleViewCanceled";
     self = [super initWithFrame:CGRectMake(0, 0, 320, 480)];
     if (self) {
         [self initialize];
-        [self setImageNames:[[NSArray alloc] initWithObjects:@"Evernote", @"Facebook", @"Google+", @"Twitter", @"Flickr", @"Email", @"Photo Album", nil]];
+        [self setImageNames:[[NSArray alloc] initWithObjects:@"Evernote", @"Facebook", @"Google+", @"Twitter", @"Flickr", @"Email", @"Message", @"Photo Album", nil]];
         [self setUpLayers];
         [self setViewFrame];
     }
@@ -49,13 +49,7 @@ NSString *const CFShareCircleViewCanceled = @"CFShareCircleViewCanceled";
     currentPosition = origin;
     visible = NO;
     currentOrientation = [[UIDevice currentDevice] orientation];
-    
-    // Create shadow for UIView.
-    self.layer.masksToBounds = NO;
-    self.layer.shadowOffset = CGSizeMake(0, 0);
-    self.layer.shadowRadius = 5;
-    self.layer.shadowOpacity = 0.5;
-    
+   
     // Set up observer for orientation changes.
     [[UIDevice currentDevice] beginGeneratingDeviceOrientationNotifications];
     [[NSNotificationCenter defaultCenter] addObserver: self selector: @selector(deviceOrientationDidChange:) name: UIDeviceOrientationDidChangeNotification object: nil];
@@ -67,6 +61,10 @@ NSString *const CFShareCircleViewCanceled = @"CFShareCircleViewCanceled";
     // Create a larger circle layer for the background of the Share Circle.
     backgroundLayer = [CAShapeLayer layer];
     backgroundLayer.bounds = self.bounds;
+    backgroundLayer.masksToBounds = NO;
+    backgroundLayer.shadowRadius = 10;
+    backgroundLayer.shadowOpacity = 0.5;
+    backgroundLayer.shadowOffset = CGSizeMake(0,0);
     backgroundLayer.position = CGPointMake(CGRectGetMidX(self.bounds), CGRectGetMidY(self.bounds));
     backgroundLayer.fillColor = [[UIColor whiteColor] CGColor];
     CGMutablePathRef backgroundPath = CGPathCreateMutable();
@@ -76,24 +74,13 @@ NSString *const CFShareCircleViewCanceled = @"CFShareCircleViewCanceled";
     [self.layer addSublayer:backgroundLayer];
     
     
-    // Create the close button layer for the Share Circle.
+    /*// Create the close button layer for the Share Circle.
     closeButtonLayer = [CAShapeLayer layer];
     closeButtonLayer.bounds = self.bounds;
-    closeButtonLayer.contents = (id) [UIImage imageNamed:@"close_button.png"].CGImage;
+    closeButtonLayer.contents = (id) [UIImage imageNamed:@"close.png"].CGImage;
     closeButtonLayer.frame = [self closeButtonRect];
-    
-    // Create the overlay for the close button,
-    CAShapeLayer *overlayLayer = [CAShapeLayer layer];
-    overlayLayer.bounds = closeButtonLayer.frame;
-    overlayLayer.frame = closeButtonLayer.frame;
-    overlayLayer.fillColor = [[UIColor whiteColor] CGColor];
-    overlayLayer.opacity = 0.2;
-    CGMutablePathRef path = CGPathCreateMutable();
-    CGPathAddEllipseInRect(path, nil, CGRectMake(0, 0, 40, 40));
-    overlayLayer.path = path;
-    
-    [backgroundLayer addSublayer:closeButtonLayer];
-    [closeButtonLayer addSublayer:overlayLayer];
+    closeButtonLayer.opacity = 0.7;
+    //[self.layer addSublayer:closeButtonLayer];*/
     
     
     // Create the layers for all the sharing service images.
@@ -166,13 +153,14 @@ NSString *const CFShareCircleViewCanceled = @"CFShareCircleViewCanceled";
     currentPosition = [touch locationInView:self];
     
     // Make sure the user starts with touch inside the circle and not in the close button.
-    if(CGRectContainsPoint([self closeButtonRect], currentPosition)){
-        // Hide close button overlay.
-        CALayer *layer = [closeButtonLayer.sublayers objectAtIndex:0];
-        layer.opacity = 0.0;
-    }else if([self circleEnclosesPoint: currentPosition]){
+    if([self circleEnclosesPoint: currentPosition]){
         dragging = YES;
         [self updateLayers];
+    } else{
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [[NSNotificationCenter defaultCenter] postNotificationName:CFShareCircleViewCanceled object:self userInfo:nil];
+        });
+        [self animateOut];
     }
 }
 
@@ -188,11 +176,7 @@ NSString *const CFShareCircleViewCanceled = @"CFShareCircleViewCanceled";
 - (void)touchesEnded:(NSSet *)touches withEvent:(UIEvent *)event{
     UITouch *touch = (UITouch *)[[touches allObjects] objectAtIndex:0];
     currentPosition = [touch locationInView:self];
-    
-    // Show close button overlay.
-    CALayer *layer = [closeButtonLayer.sublayers objectAtIndex:0];
-    layer.opacity = 0.2;
-    
+   
     if(dragging){
         // Loop through all the rects to see if the user selected one.
         for(int i = 0; i < [_imageNames count]; i++){
@@ -203,11 +187,6 @@ NSString *const CFShareCircleViewCanceled = @"CFShareCircleViewCanceled";
                 [self animateOut];
             }
         }
-    } else if(CGRectContainsPoint([self closeButtonRect], currentPosition)){
-        dispatch_async(dispatch_get_main_queue(), ^{
-            [[NSNotificationCenter defaultCenter] postNotificationName:CFShareCircleViewCanceled object:self userInfo:nil];
-        });
-        [self animateOut];
     }
     
     currentPosition = origin;
@@ -409,16 +388,6 @@ NSString *const CFShareCircleViewCanceled = @"CFShareCircleViewCanceled";
         return NO;
     else
         return YES;
-}
-
-/**
- Returns the rect used to draw the close button.
- */
-- (CGRect) closeButtonRect{
-    float x = origin.x - CLOSE_BUTTON_SIZE/2.0 + cosf(M_PI/4)*BACKGROUND_SIZE/2.0;
-    float y = origin.y - CLOSE_BUTTON_SIZE/2.0 - sinf(M_PI/4)*BACKGROUND_SIZE/2.0;
-    
-    return CGRectMake(x + 5,y - 15,CLOSE_BUTTON_SIZE,CLOSE_BUTTON_SIZE);
 }
 
 /**

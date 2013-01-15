@@ -22,8 +22,6 @@
 		4103D8891680E069008AFCFC /* CFShareCircleView.m in Sources */ = {isa = PBXBuildFile; fileRef = 4103D8881680E069008AFCFC /* CFShareCircleView.m */; };
 		4113DA8E16A0957F00EF7253 /* google+.png in Resources */ = {isa = PBXBuildFile; fileRef = 4113DA8C16A0957F00EF7253 /* google+.png */; };
 		4113DA8F16A0957F00EF7253 /* google+@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 4113DA8D16A0957F00EF7253 /* google+@2x.png */; };
-		4119BD5F169CC4FA00CE9316 /* close_button.png in Resources */ = {isa = PBXBuildFile; fileRef = 4119BD4F169CC4FA00CE9316 /* close_button.png */; };
-		4119BD60169CC4FA00CE9316 /* close_button@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 4119BD50169CC4FA00CE9316 /* close_button@2x.png */; };
 		4119BD61169CC4FA00CE9316 /* email.png in Resources */ = {isa = PBXBuildFile; fileRef = 4119BD51169CC4FA00CE9316 /* email.png */; };
 		4119BD62169CC4FA00CE9316 /* email@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 4119BD52169CC4FA00CE9316 /* email@2x.png */; };
 		4119BD63169CC4FA00CE9316 /* evernote.png in Resources */ = {isa = PBXBuildFile; fileRef = 4119BD53169CC4FA00CE9316 /* evernote.png */; };
@@ -63,8 +61,6 @@
 		4103D8881680E069008AFCFC /* CFShareCircleView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CFShareCircleView.m; sourceTree = "<group>"; };
 		4113DA8C16A0957F00EF7253 /* google+.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "google+.png"; sourceTree = "<group>"; };
 		4113DA8D16A0957F00EF7253 /* google+@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "google+@2x.png"; sourceTree = "<group>"; };
-		4119BD4F169CC4FA00CE9316 /* close_button.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = close_button.png; sourceTree = "<group>"; };
-		4119BD50169CC4FA00CE9316 /* close_button@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "close_button@2x.png"; sourceTree = "<group>"; };
 		4119BD51169CC4FA00CE9316 /* email.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = email.png; sourceTree = "<group>"; };
 		4119BD52169CC4FA00CE9316 /* email@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "email@2x.png"; sourceTree = "<group>"; };
 		4119BD53169CC4FA00CE9316 /* evernote.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = evernote.png; sourceTree = "<group>"; };
@@ -165,8 +161,6 @@
 				419CC7EF16A05D7F006343DA /* photo_album@2x.png */,
 				41F18FB316A05720000318FF /* flickr.png */,
 				41F18FB416A05720000318FF /* flickr@2x.png */,
-				4119BD4F169CC4FA00CE9316 /* close_button.png */,
-				4119BD50169CC4FA00CE9316 /* close_button@2x.png */,
 				4119BD51169CC4FA00CE9316 /* email.png */,
 				4119BD52169CC4FA00CE9316 /* email@2x.png */,
 				4119BD53169CC4FA00CE9316 /* evernote.png */,
@@ -238,8 +232,6 @@
 				4103D8781680DFF4008AFCFC /* Default-568h@2x.png in Resources */,
 				4103D87B1680DFF4008AFCFC /* MainStoryboard_iPhone.storyboard in Resources */,
 				4103D87E1680DFF4008AFCFC /* MainStoryboard_iPad.storyboard in Resources */,
-				4119BD5F169CC4FA00CE9316 /* close_button.png in Resources */,
-				4119BD60169CC4FA00CE9316 /* close_button@2x.png in Resources */,
 				4119BD61169CC4FA00CE9316 /* email.png in Resources */,
 				4119BD62169CC4FA00CE9316 /* email@2x.png in Resources */,
 				4119BD63169CC4FA00CE9316 /* evernote.png in Resources */,
