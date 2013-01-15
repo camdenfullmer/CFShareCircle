@@ -32,6 +32,9 @@
 		4119BD6A169CC4FA00CE9316 /* message@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 4119BD5A169CC4FA00CE9316 /* message@2x.png */; };
 		4119BD6D169CC4FA00CE9316 /* twitter.png in Resources */ = {isa = PBXBuildFile; fileRef = 4119BD5D169CC4FA00CE9316 /* twitter.png */; };
 		4119BD6E169CC4FA00CE9316 /* twitter@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 4119BD5E169CC4FA00CE9316 /* twitter@2x.png */; };
+		4150DDFA16A5E296007BA981 /* evernote_title.png in Resources */ = {isa = PBXBuildFile; fileRef = 4150DDF816A5E296007BA981 /* evernote_title.png */; };
+		4150DDFB16A5E296007BA981 /* evernote_title@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 4150DDF916A5E296007BA981 /* evernote_title@2x.png */; };
+		4150DE0116A5E328007BA981 /* CFSharer.m in Sources */ = {isa = PBXBuildFile; fileRef = 4150DE0016A5E328007BA981 /* CFSharer.m */; };
 		419CC7F016A05D7F006343DA /* photo_album.png in Resources */ = {isa = PBXBuildFile; fileRef = 419CC7EE16A05D7F006343DA /* photo_album.png */; };
 		419CC7F116A05D7F006343DA /* photo_album@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 419CC7EF16A05D7F006343DA /* photo_album@2x.png */; };
 		41F18FB516A05720000318FF /* flickr.png in Resources */ = {isa = PBXBuildFile; fileRef = 41F18FB316A05720000318FF /* flickr.png */; };
@@ -71,6 +74,10 @@
 		4119BD5A169CC4FA00CE9316 /* message@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "message@2x.png"; sourceTree = "<group>"; };
 		4119BD5D169CC4FA00CE9316 /* twitter.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = twitter.png; sourceTree = "<group>"; };
 		4119BD5E169CC4FA00CE9316 /* twitter@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "twitter@2x.png"; sourceTree = "<group>"; };
+		4150DDF816A5E296007BA981 /* evernote_title.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = evernote_title.png; sourceTree = "<group>"; };
+		4150DDF916A5E296007BA981 /* evernote_title@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "evernote_title@2x.png"; sourceTree = "<group>"; };
+		4150DDFF16A5E328007BA981 /* CFSharer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CFSharer.h; sourceTree = "<group>"; };
+		4150DE0016A5E328007BA981 /* CFSharer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CFSharer.m; sourceTree = "<group>"; };
 		419CC7EE16A05D7F006343DA /* photo_album.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = photo_album.png; sourceTree = "<group>"; };
 		419CC7EF16A05D7F006343DA /* photo_album@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "photo_album@2x.png"; sourceTree = "<group>"; };
 		41F18FB316A05720000318FF /* flickr.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = flickr.png; sourceTree = "<group>"; };
@@ -134,6 +141,8 @@
 				4103D8871680E069008AFCFC /* CFShareCircleView.h */,
 				4103D8881680E069008AFCFC /* CFShareCircleView.m */,
 				4103D8681680DFF4008AFCFC /* Supporting Files */,
+				4150DDFF16A5E328007BA981 /* CFSharer.h */,
+				4150DE0016A5E328007BA981 /* CFSharer.m */,
 			);
 			path = CFShareCircle;
 			sourceTree = "<group>";
@@ -155,6 +164,8 @@
 		4119BD4E169CC4FA00CE9316 /* images */ = {
 			isa = PBXGroup;
 			children = (
+				4150DDF816A5E296007BA981 /* evernote_title.png */,
+				4150DDF916A5E296007BA981 /* evernote_title@2x.png */,
 				4113DA8C16A0957F00EF7253 /* google+.png */,
 				4113DA8D16A0957F00EF7253 /* google+@2x.png */,
 				419CC7EE16A05D7F006343DA /* photo_album.png */,
@@ -248,6 +259,8 @@
 				419CC7F116A05D7F006343DA /* photo_album@2x.png in Resources */,
 				4113DA8E16A0957F00EF7253 /* google+.png in Resources */,
 				4113DA8F16A0957F00EF7253 /* google+@2x.png in Resources */,
+				4150DDFA16A5E296007BA981 /* evernote_title.png in Resources */,
+				4150DDFB16A5E296007BA981 /* evernote_title@2x.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -262,6 +275,7 @@
 				4103D8721680DFF4008AFCFC /* AppDelegate.m in Sources */,
 				4103D8811680DFF4008AFCFC /* ViewController.m in Sources */,
 				4103D8891680E069008AFCFC /* CFShareCircleView.m in Sources */,
+				4150DE0116A5E328007BA981 /* CFSharer.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

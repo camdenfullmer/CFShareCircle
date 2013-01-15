@@ -7,29 +7,28 @@
 //
 
 #import "CFShareCircleView.h"
+#import "CFSharer.h"
+
 NSString *const CFShareCircleViewCanceled = @"CFShareCircleViewCanceled";
 
 @implementation CFShareCircleView
 
 @synthesize delegate;
-@synthesize imageNames = _imageNames;
 
 -(id)init{
     self = [super initWithFrame:CGRectMake(0, 0, 320, 480)];
     if (self) {
-        [self initialize];
-        [self setImageNames:[[NSArray alloc] initWithObjects:@"Evernote", @"Facebook", @"Google+", @"Twitter", @"Flickr", @"Email", @"Message", @"Photo Album", nil]];
+        [self initialize:[[NSArray alloc] initWithObjects: @"Evernote", @"Facebook", @"Google+", @"Twitter", @"Flickr", @"Email", @"Message", @"Photo Album", nil]];
         [self setUpLayers];
         [self setViewFrame];
     }
     return self;
 }
 
-- (id)initWithCustomImageNames: (NSArray*)images{
+- (id)initWithSharers:(NSArray *)someSharers{
     self = [super initWithFrame:CGRectMake(0, 0, 320, 480)];
     if (self) {
-        [self initialize];
-        [self setImageNames:images];
+        [self initialize:someSharers];
         [self setUpLayers];
         [self setViewFrame];
     }
@@ -37,7 +36,12 @@ NSString *const CFShareCircleViewCanceled = @"CFShareCircleViewCanceled";
 }
 
 /* Set all the default values for the share circle. */
-- (void)initialize{
+- (void)initialize: (NSArray*) someSharers{
+    
+    // Setup all the sharer objects.
+    sharers = [[NSMutableArray alloc] init];
+    for(int i = 0; i<[someSharers count]; i++)
+        [sharers addObject:[[CFSharer alloc] initWithName:[someSharers objectAtIndex:i]]];
     
     imageLayers = [[NSMutableArray alloc] init];
     imageColors = [[NSMutableArray alloc] init];
@@ -49,13 +53,15 @@ NSString *const CFShareCircleViewCanceled = @"CFShareCircleViewCanceled";
     currentPosition = origin;
     visible = NO;
     currentOrientation = [[UIDevice currentDevice] orientation];
-   
+    
     // Set up observer for orientation changes.
     [[UIDevice currentDevice] beginGeneratingDeviceOrientationNotifications];
     [[NSNotificationCenter defaultCenter] addObserver: self selector: @selector(deviceOrientationDidChange:) name: UIDeviceOrientationDidChangeNotification object: nil];
 }
 
-/** Build all the layers to be displayed onto the view of the share circle. */
+/**
+ Build all the layers to be displayed onto the view of the share circle.
+ */
 - (void)setUpLayers{
     
     // Create a larger circle layer for the background of the Share Circle.
@@ -75,17 +81,21 @@ NSString *const CFShareCircleViewCanceled = @"CFShareCircleViewCanceled";
     
     
     /*// Create the close button layer for the Share Circle.
-    closeButtonLayer = [CAShapeLayer layer];
-    closeButtonLayer.bounds = self.bounds;
-    closeButtonLayer.contents = (id) [UIImage imageNamed:@"close.png"].CGImage;
-    closeButtonLayer.frame = [self closeButtonRect];
-    closeButtonLayer.opacity = 0.7;
-    //[self.layer addSublayer:closeButtonLayer];*/
+     closeButtonLayer = [CAShapeLayer layer];
+     closeButtonLayer.bounds = self.bounds;
+     closeButtonLayer.contents = (id) [UIImage imageNamed:@"close.png"].CGImage;
+     closeButtonLayer.frame = [self closeButtonRect];
+     closeButtonLayer.opacity = 0.7;
+     //[self.layer addSublayer:closeButtonLayer];*/
     
     
     // Create the layers for all the sharing service images.
-    for(int i = 0; i < _imageNames.count; i++) {
-        UIImage *image = [UIImage imageNamed:[self imageFileNameAtIndex:i]];
+    for(int i = 0; i < sharers.count; i++) {
+        CFSharer *sharer = [sharers objectAtIndex:i];
+        
+        UIImage *image = [sharer mainImage];
+        
+        
         //Add major color to the array to display later.
         [imageColors addObject:[self colorAtPoint:CGPointMake(3, 25) inImage:image]];
         // Construct the base layer in which will be rotated around the origin of the circle.
@@ -118,7 +128,6 @@ NSString *const CFShareCircleViewCanceled = @"CFShareCircleViewCanceled";
     touchLayer.lineWidth = 3;
     [self.layer addSublayer:touchLayer];
     
-    
     // Create the intro text layer to help the user.
     introTextLayer = [CATextLayer layer];
     introTextLayer.string = @"Drag and Share";
@@ -134,18 +143,18 @@ NSString *const CFShareCircleViewCanceled = @"CFShareCircleViewCanceled";
     [self.layer addSublayer:introTextLayer];
     
     // Create the share title text layer.
-    shareTextLayer = [CATextLayer layer];
-    shareTextLayer.string = @"";
-    shareTextLayer.wrapped = YES;
-    shareTextLayer.alignmentMode = kCAAlignmentCenter;
-    shareTextLayer.fontSize = 20.0;
-    shareTextLayer.bounds = self.bounds;
-    shareTextLayer.foregroundColor = [UIColor blackColor].CGColor;
-    shareTextLayer.frame = CGRectMake(0, 0, 120, 24);
-    shareTextLayer.position = CGPointMake(CGRectGetMidX(self.bounds), CGRectGetMidY(self.bounds));
-    shareTextLayer.contentsScale = [[UIScreen mainScreen] scale];
-    shareTextLayer.opacity = 0.0;
-    [self.layer addSublayer:shareTextLayer];
+    shareTitleLayer = [CATextLayer layer];
+    shareTitleLayer.string = @"";
+    shareTitleLayer.wrapped = YES;
+    shareTitleLayer.alignmentMode = kCAAlignmentCenter;
+    shareTitleLayer.fontSize = 20.0;
+    shareTitleLayer.bounds = self.bounds;
+    shareTitleLayer.foregroundColor = [UIColor blackColor].CGColor;
+    shareTitleLayer.frame = CGRectMake(0, 0, 120, 28);
+    shareTitleLayer.position = CGPointMake(CGRectGetMidX(self.bounds), CGRectGetMidY(self.bounds));
+    shareTitleLayer.contentsScale = [[UIScreen mainScreen] scale];
+    shareTitleLayer.opacity = 0.0;
+    [self.layer addSublayer:shareTitleLayer];
 }
 
 - (void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event{
@@ -176,10 +185,10 @@ NSString *const CFShareCircleViewCanceled = @"CFShareCircleViewCanceled";
 - (void)touchesEnded:(NSSet *)touches withEvent:(UIEvent *)event{
     UITouch *touch = (UITouch *)[[touches allObjects] objectAtIndex:0];
     currentPosition = [touch locationInView:self];
-   
+    
     if(dragging){
         // Loop through all the rects to see if the user selected one.
-        for(int i = 0; i < [_imageNames count]; i++){
+        for(int i = 0; i < [sharers count]; i++){
             CGPoint point = [self pointAtIndex:i];
             // Determine if point is inside rect or also account for overshooting circle so just swiping works.
             if(CGRectContainsPoint(CGRectMake(point.x, point.y, TEMP_SIZE, TEMP_SIZE), currentPosition) || CGRectContainsPoint(CGRectMake(point.x, point.y, TEMP_SIZE, TEMP_SIZE), [self touchLocationAtPoint:currentPosition])){
@@ -242,12 +251,12 @@ NSString *const CFShareCircleViewCanceled = @"CFShareCircleViewCanceled";
     [CATransaction commit];
     
     int hoveringIndex = [self indexHoveringOver];
-        
+    
     // Update the images.
     for(int i = 0; i < [imageLayers count]; i++){
         CALayer *layer = [imageLayers objectAtIndex:i];
         if(i == hoveringIndex || !dragging)
-            layer.opacity = 1.0;        
+            layer.opacity = 1.0;
         else
             layer.opacity = 0.6;
     }
@@ -275,31 +284,37 @@ NSString *const CFShareCircleViewCanceled = @"CFShareCircleViewCanceled";
     // Update the share title text layer
     int index = [self indexHoveringOver];
     if(index != -1){
-        shareTextLayer.string = [_imageNames objectAtIndex:index];
-        shareTextLayer.opacity = 0.6;
+        CFSharer *sharer = [sharers objectAtIndex:index];
+        if([sharer titleImage]){
+            shareTitleLayer.contents = (id)[sharer titleImage].CGImage;
+            shareTitleLayer.opacity = 1.0;
+        }else{
+            shareTitleLayer.string = [sharer name];
+            shareTitleLayer.opacity = 0.6;
+        }
     }else{
-        shareTextLayer.opacity = 0.0;
-        shareTextLayer.string = @"";
+        shareTitleLayer.opacity = 0.0;
+        shareTitleLayer.string = @"";
     }
 }
 
 /* Animation used when the view is first presented to the user. */
 - (void) animateImagesIn{
-    for(int i = 0; i < _imageNames.count; i++) {
+    for(int i = 0; i < sharers.count; i++) {
         // Animate the base layer for the main rotation.
         CALayer* layer = [imageLayers objectAtIndex:i];
-        layer.transform = CATransform3DMakeRotation(-i/([_imageNames count]/2.0)*M_PI, 0, 0, 1);
+        layer.transform = CATransform3DMakeRotation(-i/([sharers count]/2.0)*M_PI, 0, 0, 1);
         layer.opacity = 1.0;
         
         // Animate the iamge layer to get the correct orientation.
         CALayer* sub = [layer.sublayers objectAtIndex:0];
-        sub.transform = CATransform3DMakeRotation(i/([_imageNames count]/2.0)*M_PI, 0, 0, 1);
+        sub.transform = CATransform3DMakeRotation(i/([sharers count]/2.0)*M_PI, 0, 0, 1);
     }
 }
 
 /* Animation used to reset the images so the animation in works correctly. */
 - (void) animateImagesOut{
-    for(int i = 0; i < _imageNames.count; i++) {
+    for(int i = 0; i < sharers.count; i++) {
         // Animate the base layer for the main rotation.
         CALayer* layer = [imageLayers objectAtIndex:i];
         layer.transform = CATransform3DMakeRotation(0, 0, 0, 1);
@@ -315,7 +330,7 @@ NSString *const CFShareCircleViewCanceled = @"CFShareCircleViewCanceled";
  */
 - (int) indexHoveringOver{
     if(dragging){
-        for(int i = 0; i < [_imageNames count]; i++){
+        for(int i = 0; i < [sharers count]; i++){
             CGPoint point = [self pointAtIndex:i];
             // Determine if point is inside rect or adjust for the user overshooting sharing service.
             if(CGRectContainsPoint(CGRectMake(point.x, point.y, TEMP_SIZE, TEMP_SIZE), currentPosition) || CGRectContainsPoint(CGRectMake(point.x, point.y, TEMP_SIZE, TEMP_SIZE), [self touchLocationAtPoint:currentPosition]))
@@ -323,19 +338,6 @@ NSString *const CFShareCircleViewCanceled = @"CFShareCircleViewCanceled";
         }
     }
     return -1;
-}
-
-/**
- Returns the translated "real" name of the sharing service to the actual file name.
- */
-- (NSString*) imageFileNameAtIndex: (int) index{
-    NSString *temp = [_imageNames objectAtIndex:index];
-    // Replace spaces with underscores.
-    temp = [temp stringByReplacingOccurrencesOfString:@" " withString:@"_"];
-    // Add .png to the end.
-    temp = [temp stringByAppendingPathExtension:@"png"];
-    // Convert to lowercase
-    return [temp lowercaseString];
 }
 
 /* Determines where the touch images is going to be placed inside of the view. */
@@ -366,7 +368,7 @@ NSString *const CFShareCircleViewCanceled = @"CFShareCircleViewCanceled";
 /* Get the point at the specified index. */
 - (CGPoint) pointAtIndex:(int) index{
     // Number for trig.
-    float trig = index/([_imageNames count]/2.0)*M_PI;
+    float trig = index/([sharers count]/2.0)*M_PI;
     
     // Calculate the x and y coordinate.
     // Points go around the unit circle starting at pi = 0.
@@ -429,9 +431,9 @@ NSString *const CFShareCircleViewCanceled = @"CFShareCircleViewCanceled";
     // Update all the layers positions.
     backgroundLayer.position = CGPointMake(CGRectGetMidX(self.bounds), CGRectGetMidY(self.bounds));
     introTextLayer.position = CGPointMake(CGRectGetMidX(self.bounds), CGRectGetMidY(self.bounds));
-    shareTextLayer.position = CGPointMake(CGRectGetMidX(self.bounds), CGRectGetMidY(self.bounds));
+    shareTitleLayer.position = CGPointMake(CGRectGetMidX(self.bounds), CGRectGetMidY(self.bounds));
     [self updateLayers];
-    for(int i = 0; i < _imageNames.count; i++) {
+    for(int i = 0; i < sharers.count; i++) {
         CALayer* layer = [imageLayers objectAtIndex:i];
         layer.position = CGPointMake(CGRectGetMidX(self.bounds), CGRectGetMidY(self.bounds));
     }

@@ -30,23 +30,18 @@ extern NSString *const CFShareCircleViewCanceled;
     UIDeviceOrientation currentOrientation;
     CALayer *closeButtonLayer;
     CAShapeLayer *backgroundLayer, *touchLayer;
-    CATextLayer *introTextLayer, *shareTextLayer;
-    NSMutableArray *imageLayers, *imageColors;
+    CATextLayer *introTextLayer, *shareTitleLayer;
+    NSMutableArray *imageLayers, *imageColors, *sharers;
 }
 
 @property (assign) id <CFShareCircleViewDelegate> delegate;
 
-/**
- Returns the array of all the names of images that are going to be used to display the sharing service images.
- */
-@property (strong) NSArray *imageNames;
-
 /** 
  Initialize the share circle with a custom list of image file names. NOTE: These images must be resources that are referenced in your project.
  
- @param array of images that is going to be set for the share circle.
+ @param array of sharer names that are going to be set for the share circle.
  */
-- (id)initWithCustomImageNames: (NSArray*)images;
+- (id)initWithSharers: (NSArray*)someSharers;
 
 /**
  Animates the share circle into view. 
