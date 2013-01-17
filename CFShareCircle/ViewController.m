@@ -23,7 +23,7 @@
     
     // Set up notification for share circle view being canceled.
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(shareCircleCanceled:) name:CFShareCircleViewCanceled object:shareCircleView];
-    
+
     [super viewDidLoad];
 }
 

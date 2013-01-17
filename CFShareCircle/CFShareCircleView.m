@@ -18,7 +18,7 @@ NSString *const CFShareCircleViewCanceled = @"CFShareCircleViewCanceled";
 -(id)init{
     self = [super initWithFrame:CGRectMake(0, 0, 320, 480)];
     if (self) {
-        [self initialize:[[NSArray alloc] initWithObjects: @"Evernote", @"Facebook", @"Google+", @"Twitter", @"Flickr", @"Email", @"Message", @"Photo Album", nil]];
+        [self initialize:[[NSArray alloc] initWithObjects: @"Evernote", @"Facebook", @"Google+", @"Twitter", @"Flickr", @"Mail", @"Message", @"Photo Album", nil]];
         [self setUpLayers];
         [self setViewFrame];
     }
@@ -78,16 +78,6 @@ NSString *const CFShareCircleViewCanceled = @"CFShareCircleViewCanceled";
     CGPathAddEllipseInRect(backgroundPath, nil, backgroundRect);
     backgroundLayer.path = backgroundPath;
     [self.layer addSublayer:backgroundLayer];
-    
-    
-    /*// Create the close button layer for the Share Circle.
-     closeButtonLayer = [CAShapeLayer layer];
-     closeButtonLayer.bounds = self.bounds;
-     closeButtonLayer.contents = (id) [UIImage imageNamed:@"close.png"].CGImage;
-     closeButtonLayer.frame = [self closeButtonRect];
-     closeButtonLayer.opacity = 0.7;
-     //[self.layer addSublayer:closeButtonLayer];*/
-    
     
     // Create the layers for all the sharing service images.
     for(int i = 0; i < sharers.count; i++) {
@@ -155,6 +145,22 @@ NSString *const CFShareCircleViewCanceled = @"CFShareCircleViewCanceled";
     shareTitleLayer.contentsScale = [[UIScreen mainScreen] scale];
     shareTitleLayer.opacity = 0.0;
     [self.layer addSublayer:shareTitleLayer];
+    
+    // BLURRING IMAGE SAMPLE CODE
+    /*CIImage *inputImage = [[CIImage alloc] initWithImage:[UIImage imageNamed:@"evernote.png"]];
+    
+    CIFilter *blurFilter = [CIFilter filterWithName:@"CIGaussianBlur"];
+    [blurFilter setDefaults];
+    [blurFilter setValue: inputImage forKey: @"inputImage"];
+    [blurFilter setValue: [NSNumber numberWithFloat:10.0f]
+                  forKey:@"inputRadius"];
+    
+    
+    CIImage *outputImage = [blurFilter valueForKey: @"outputImage"];
+    
+    CIContext *context = [CIContext contextWithOptions:nil];
+    
+    backgroundLayer.contents = (id)[UIImage imageWithCGImage:[context createCGImage:outputImage fromRect:outputImage.extent]].CGImage;*/
 }
 
 - (void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event{
