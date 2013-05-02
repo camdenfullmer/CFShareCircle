@@ -31,7 +31,7 @@
  
  @param array of sharer names that are going to be set for the share circle.
  */
-- (id)initWithSharers:(NSArray *)someSharers;
+- (id)initWithSharers:(NSArray *)sharers;
 
 /**
  Animates the share circle into view. 

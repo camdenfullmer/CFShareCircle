@@ -9,6 +9,31 @@
 #import "CFShareCircleView.h"
 #import "CFSharer.h"
 
+@interface CFShareCircleView()
+/* Set all the default values for the share circle. */
+- (void)initialize:(NSArray *)sharers;
+/* Build all the layers to be displayed onto the view of the share circle. */
+- (void)setUpLayers;
+/* Updates all the layers based on the new current position of the touch input. */
+- (void)updateLayers;
+/* Animation used when the view is first presented to the user. */
+- (void)animateImagesIn;
+/* Animation used to reset the images so the animation in works correctly. */
+- (void)animateImagesOut;
+/* Return the index that the user is hovering over at this exact moment in time. */
+- (int)indexHoveringOver;
+/* Determines where the touch images is going to be placed inside of the view. */
+- (CGPoint)touchLocationAtPoint:(CGPoint)point;
+/* Get the point at the specified index. */
+- (CGPoint)pointAtIndex:(int)index;
+/* Returns if the point is inside the cirlce. */
+- (BOOL)circleEnclosesPoint:(CGPoint)point;
+/* Return the color at the specified point in an image. */
+- (UIColor *)colorAtPoint:(CGPoint)point inImage:(UIImage *)image;
+/* Determine the frame that the view is to use based on orientation. */
+- (void)setViewFrame;
+@end
+
 @implementation CFShareCircleView{
     CGPoint _currentPosition, _origin;
     BOOL _dragging, _visible;
@@ -31,23 +56,23 @@
     return self;
 }
 
-- (id)initWithSharers:(NSArray *)someSharers {
+- (id)initWithSharers:(NSArray *)sharers {
     self = [super initWithFrame:CGRectMake(0, 0, 320, 480)];
     if (self) {
-        [self initialize:someSharers];
+        [self initialize:sharers];
         [self setUpLayers];
         [self setViewFrame];
     }
     return self;
 }
 
-/* Set all the default values for the share circle. */
-- (void)initialize:(NSArray *)someSharers {
-    
+#pragma mark - Private methods
+
+- (void)initialize:(NSArray *)sharers {    
     // Setup all the sharer objects.
     _sharers = [[NSMutableArray alloc] init];
-    for(int i = 0; i<[someSharers count]; i++)
-        [_sharers addObject:[[CFSharer alloc] initWithName:[someSharers objectAtIndex:i]]];
+    for(int i = 0; i<[sharers count]; i++)
+        [_sharers addObject:[[CFSharer alloc] initWithName:[sharers objectAtIndex:i]]];
     
     _imageLayers = [[NSMutableArray alloc] init];
     _imageColors = [[NSMutableArray alloc] init];
@@ -65,11 +90,7 @@
     [[NSNotificationCenter defaultCenter] addObserver: self selector: @selector(deviceOrientationDidChange:) name: UIDeviceOrientationDidChangeNotification object: nil];
 }
 
-/**
- Build all the layers to be displayed onto the view of the share circle.
- */
-- (void)setUpLayers {
-    
+- (void)setUpLayers {    
     // Create a larger circle layer for the background of the Share Circle.
     _backgroundLayer = [CAShapeLayer layer];
     _backgroundLayer.bounds = self.bounds;
@@ -167,88 +188,6 @@
     backgroundLayer.contents = (id)[UIImage imageWithCGImage:[context createCGImage:outputImage fromRect:outputImage.extent]].CGImage;*/
 }
 
-- (void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event {
-    UITouch *touch = (UITouch *)[[touches allObjects] objectAtIndex:0];
-    _currentPosition = [touch locationInView:self];
-    
-    // Make sure the user starts with touch inside the circle and not in the close button.
-    if([self circleEnclosesPoint: _currentPosition]){
-        _dragging = YES;
-        [self updateLayers];
-    } else{
-        [self animateOut];
-    }
-}
-
-- (void)touchesMoved:(NSSet *)touches withEvent:(UIEvent *)event {
-    UITouch *touch = (UITouch *)[[touches allObjects] objectAtIndex:0];
-    _currentPosition = [touch locationInView:self];
-    
-    if(_dragging){
-        [self updateLayers];
-    }
-}
-
-- (void)touchesEnded:(NSSet *)touches withEvent:(UIEvent *)event {
-    UITouch *touch = (UITouch *)[[touches allObjects] objectAtIndex:0];
-    _currentPosition = [touch locationInView:self];
-    
-    if(_dragging){
-        // Loop through all the rects to see if the user selected one.
-        for(int i = 0; i < [_sharers count]; i++){
-            CGPoint point = [self pointAtIndex:i];
-            // Determine if point is inside rect or also account for overshooting circle so just swiping works.
-            if(CGRectContainsPoint(CGRectMake(point.x, point.y, TEMP_SIZE, TEMP_SIZE), _currentPosition) || CGRectContainsPoint(CGRectMake(point.x, point.y, TEMP_SIZE, TEMP_SIZE), [self touchLocationAtPoint:_currentPosition])){
-                [_delegate shareCircleView:self didSelectIndex:i];
-                [self animateOut];
-            }
-        }
-    }
-    
-    _currentPosition = _origin;
-    _dragging = NO;
-    [self updateLayers];
-}
-
-- (void)touchesCancelled:(NSSet *)touches withEvent:(UIEvent *)event {
-    // Reset location.
-    _currentPosition = _origin;
-    _dragging = NO;
-}
-
-- (void)animateIn {
-    _visible = YES;
-    self.hidden = NO;
-    _introTextLayer.opacity = 0.5;
-    
-    [UIView animateWithDuration: 0.2
-                          delay: 0.0
-                        options: UIViewAnimationOptionCurveEaseIn
-                     animations:^{
-                         [self setViewFrame];
-                     }
-                     completion:^(BOOL finished){
-                         [self animateImagesIn];
-                     }];
-}
-
-- (void)animateOut {
-    _visible = NO;
-    [self animateImagesOut];
-    [UIView animateWithDuration: 0.2
-                          delay: 0.0
-                        options: UIViewAnimationOptionCurveEaseOut
-                     animations:^{
-                         [self setViewFrame];
-                     }
-                     completion:^(BOOL finished){
-                         self.hidden = YES;
-                     }];
-}
-
-/**
- Updates all the layers based on the new current position of the touch input.
- */
 - (void)updateLayers {
     // Update the touch layer.
     [CATransaction begin];
@@ -305,7 +244,6 @@
     }
 }
 
-/* Animation used when the view is first presented to the user. */
 - (void)animateImagesIn {
     for(int i = 0; i < _sharers.count; i++) {
         // Animate the base layer for the main rotation.
@@ -319,7 +257,6 @@
     }
 }
 
-/* Animation used to reset the images so the animation in works correctly. */
 - (void)animateImagesOut {
     for(int i = 0; i < _sharers.count; i++) {
         // Animate the base layer for the main rotation.
@@ -332,9 +269,6 @@
     }
 }
 
-/**
- Return the index that the user is hovering over at this exact moment in time.
- */
 - (int)indexHoveringOver {
     if(_dragging){
         for(int i = 0; i < [_sharers count]; i++){
@@ -347,7 +281,6 @@
     return -1;
 }
 
-/* Determines where the touch images is going to be placed inside of the view. */
 - (CGPoint)touchLocationAtPoint:(CGPoint)point {
     
     // If not dragging make sure we redraw the touch image at the origin.
@@ -372,7 +305,6 @@
     return point;
 }
 
-/* Get the point at the specified index. */
 - (CGPoint)pointAtIndex:(int)index {
     // Number for trig.
     float trig = index/([_sharers count]/2.0)*M_PI;
@@ -389,19 +321,13 @@
     return CGPointMake(x, y);
 }
 
-/**
- Returns if the point is inside the cirlce.
- */
-- (BOOL) circleEnclosesPoint: (CGPoint) point{
+- (BOOL)circleEnclosesPoint:(CGPoint)point {
     if(pow(BACKGROUND_SIZE/2.0,2) < (pow(point.x - _origin.x,2) + pow(point.y - _origin.y,2)))
         return NO;
     else
         return YES;
 }
 
-/**
- Return the color at the specified point in an image.
- */
 - (UIColor *)colorAtPoint:(CGPoint)point inImage:(UIImage *)image {
     CGImageRef cgImage = CGImageCreateWithImageInRect(image.CGImage,
                                                       CGRectMake(point.x * image.scale,
@@ -420,7 +346,6 @@
     return [UIColor colorWithRed:red green:green blue:blue alpha:alpha];
 }
 
-/* Determine the frame that the view is to use based on orientation. */
 - (void)setViewFrame{
     
     if(UIDeviceOrientationIsPortrait(_currentOrientation)){
@@ -445,6 +370,91 @@
         layer.position = CGPointMake(CGRectGetMidX(self.bounds), CGRectGetMidY(self.bounds));
     }
 }
+
+#pragma mark - Touch delegate
+
+- (void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event {
+    UITouch *touch = (UITouch *)[[touches allObjects] objectAtIndex:0];
+    _currentPosition = [touch locationInView:self];
+    
+    // Make sure the user starts with touch inside the circle and not in the close button.
+    if([self circleEnclosesPoint: _currentPosition]){
+        _dragging = YES;
+        [self updateLayers];
+    } else{
+        [self animateOut];
+    }
+}
+
+- (void)touchesMoved:(NSSet *)touches withEvent:(UIEvent *)event {
+    UITouch *touch = (UITouch *)[[touches allObjects] objectAtIndex:0];
+    _currentPosition = [touch locationInView:self];
+    
+    if(_dragging){
+        [self updateLayers];
+    }
+}
+
+- (void)touchesEnded:(NSSet *)touches withEvent:(UIEvent *)event {
+    UITouch *touch = (UITouch *)[[touches allObjects] objectAtIndex:0];
+    _currentPosition = [touch locationInView:self];
+    
+    if(_dragging){
+        // Loop through all the rects to see if the user selected one.
+        for(int i = 0; i < [_sharers count]; i++){
+            CGPoint point = [self pointAtIndex:i];
+            // Determine if point is inside rect or also account for overshooting circle so just swiping works.
+            if(CGRectContainsPoint(CGRectMake(point.x, point.y, TEMP_SIZE, TEMP_SIZE), _currentPosition) || CGRectContainsPoint(CGRectMake(point.x, point.y, TEMP_SIZE, TEMP_SIZE), [self touchLocationAtPoint:_currentPosition])){
+                [_delegate shareCircleView:self didSelectIndex:i];
+                [self animateOut];
+            }
+        }
+    }
+    
+    _currentPosition = _origin;
+    _dragging = NO;
+    [self updateLayers];
+}
+
+- (void)touchesCancelled:(NSSet *)touches withEvent:(UIEvent *)event {
+    // Reset location.
+    _currentPosition = _origin;
+    _dragging = NO;
+}
+
+#pragma mark - Public methods
+
+- (void)animateIn {
+    _visible = YES;
+    self.hidden = NO;
+    _introTextLayer.opacity = 0.5;
+    
+    [UIView animateWithDuration: 0.2
+                          delay: 0.0
+                        options: UIViewAnimationOptionCurveEaseIn
+                     animations:^{
+                         [self setViewFrame];
+                     }
+                     completion:^(BOOL finished){
+                         [self animateImagesIn];
+                     }];
+}
+
+- (void)animateOut {
+    _visible = NO;
+    [self animateImagesOut];
+    [UIView animateWithDuration: 0.2
+                          delay: 0.0
+                        options: UIViewAnimationOptionCurveEaseOut
+                     animations:^{
+                         [self setViewFrame];
+                     }
+                     completion:^(BOOL finished){
+                         self.hidden = YES;
+                     }];
+}
+
+#pragma mark - Notifications
 
 - (void)deviceOrientationDidChange:(NSNotification *)notification {
     //Obtaining the current device orientation
