@@ -62,7 +62,7 @@ To customize what sharing images you want to show all you have to do is intializ
 For Example: Adding sharing service named "Evernote" will cause the share circle to look for an image named "evernote.png". Where "Photo Album" will look for "photo_album.png". Be aware of this when adding your own images.
 
 ```
-shareCircleView = [[CFShareCircleView alloc] initWithImageFileNames:[[NSArray alloc] initWithObjects: @"Facebook", @"Twitter", @"Mail", nil]];
+shareCircleView = [[CFShareCircleView alloc] initWithSharers:[[NSArray alloc] initWithObjects: @"Facebook", @"Twitter", @"Mail", nil]];
 ```
 
 List of sharing icons included with project.
@@ -75,12 +75,6 @@ List of sharing icons included with project.
     - Message
     - Photo Album
     - Flickr
-    
-##Notifications
-
-Below are notifications that are posted during the life cycle of the share circle.
-
-    - CFShareCircleViewCanceled: posted when the user clicked the close button on the share circle.
     
 ##Requirments
 
