@@ -16,24 +16,13 @@
 #define CLOSE_BUTTON_SIZE 40
 #define TOUCH_SIZE 70
 
-/** Notification that gets posted when the underRight view will appear */
-extern NSString *const CFShareCircleViewCanceled;
-
 @class CFShareCircleView;
 
 @protocol CFShareCircleViewDelegate
 - (void)shareCircleView:(CFShareCircleView *)aShareCircleView didSelectIndex:(int)index;
 @end
 
-@interface CFShareCircleView : UIView{
-    CGPoint currentPosition, origin;
-    BOOL dragging, visible;
-    UIDeviceOrientation currentOrientation;
-    CALayer *closeButtonLayer;
-    CAShapeLayer *backgroundLayer, *touchLayer;
-    CATextLayer *introTextLayer, *shareTitleLayer;
-    NSMutableArray *imageLayers, *imageColors, *sharers;
-}
+@interface CFShareCircleView : UIView
 
 @property (assign) id <CFShareCircleViewDelegate> delegate;
 
@@ -42,7 +31,7 @@ extern NSString *const CFShareCircleViewCanceled;
  
  @param array of sharer names that are going to be set for the share circle.
  */
-- (id)initWithSharers: (NSArray*)someSharers;
+- (id)initWithSharers:(NSArray *)someSharers;
 
 /**
  Animates the share circle into view. 

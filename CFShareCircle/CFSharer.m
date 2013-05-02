@@ -10,9 +10,9 @@
 
 @implementation CFSharer
 
-@synthesize name;
+@synthesize name=_name;
 
-- (id) initWithName:(NSString*)aName{
+- (id) initWithName:(NSString *)aName{
     self = [super init];
     if (self) {
         [self setName:aName];
@@ -20,8 +20,8 @@
     return self;    
 }
 
-- (UIImage*)mainImage {
-    NSString *temp = [[NSString alloc] initWithString:name];
+- (UIImage *)mainImage {
+    NSString *temp = [[NSString alloc] initWithString:_name];
     // Replace spaces with underscores.
     temp = [temp stringByReplacingOccurrencesOfString:@" " withString:@"_"];
     // Add .png to the end.
@@ -31,8 +31,8 @@
     return [UIImage imageNamed:[temp lowercaseString]];
 }
 
-- (UIImage*)titleImage{
-    NSString *temp = [[NSString alloc] initWithString:name];
+- (UIImage *)titleImage{
+    NSString *temp = [[NSString alloc] initWithString:_name];
     // Replace spaces with underscores.
     temp = [temp stringByReplacingOccurrencesOfString:@" " withString:@"_"];
     // Add "_title" to the end.

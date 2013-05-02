@@ -20,18 +20,18 @@
  Intializes a sharer object with the string.
  @param NSString
  */
-- (id) initWithName:(NSString*)aName;
+- (id)initWithName:(NSString*)aName;
 
 /**
  Returns a UIImage that is used to display the sharing service in the circle.
  @return UIImage
  */
-- (UIImage*) mainImage;
+- (UIImage *)mainImage;
 
 /**
  Returns a UIImage that is displayed when the user hovers over the main image.
  @return UIImage
  */
-- (UIImage*) titleImage;
+- (UIImage *)titleImage;
 
 @end
