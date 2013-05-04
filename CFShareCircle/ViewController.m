@@ -17,7 +17,7 @@
 - (void)viewDidLoad
 {    
 	// Do any additional setup after loading the view, typically from a nib.
-    shareCircleView = [[CFShareCircleView alloc] init];
+    shareCircleView = [[CFShareCircleView alloc] initWithFrame:self.view.frame];
     shareCircleView.delegate = self;
     [self.navigationController.view addSubview:shareCircleView];
     

@@ -32,7 +32,7 @@ extern const NSString *CFSharerEvernote;
  
  @param array of sharer names that are going to be set for the share circle.
  */
-- (id)initWithSharers:(NSArray *)sharers;
+- (id)initWithFrame:(CGRect) frame sharers:(NSArray *)sharers;
 
 /**
  Animates the share circle into view. 

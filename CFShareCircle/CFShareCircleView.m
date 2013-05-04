@@ -49,8 +49,8 @@ const NSString *CFSharerEvernote = @"Evernote";
 
 @synthesize delegate = _delegate;
 
-- (id)init {
-    self = [super initWithFrame:CGRectMake(0, 0, 320, 480)];
+- (id)initWithFrame:(CGRect)frame {
+    self = [super initWithFrame:frame];
     if (self) {
         [self initialize:[[NSArray alloc] initWithObjects: @"Evernote", @"Facebook", @"Google+", @"Twitter", @"Flickr", @"Mail", @"Message", @"Photo Album", nil]];
         [self setUpLayers];
@@ -59,7 +59,7 @@ const NSString *CFSharerEvernote = @"Evernote";
     return self;
 }
 
-- (id)initWithSharers:(NSArray *)sharers {
+- (id)initWithFrame:(CGRect)frame sharers:(NSArray *)sharers {
     self = [super initWithFrame:CGRectMake(0, 0, 320, 480)];
     if (self) {
         [self initialize:sharers];
@@ -82,8 +82,7 @@ const NSString *CFSharerEvernote = @"Evernote";
     
     self.hidden = YES;
     self.backgroundColor = [UIColor clearColor];
-    self.bounds = CGRectMake(0, 0, 320,480);
-    _origin = CGPointMake(160, 240);
+    _origin = CGPointMake(CGRectGetMidX(self.bounds), CGRectGetMidY(self.bounds));
     _currentPosition = _origin;
     _visible = NO;
     _currentOrientation = [[UIDevice currentDevice] orientation];
@@ -97,7 +96,6 @@ const NSString *CFSharerEvernote = @"Evernote";
     // Create a larger circle layer for the background of the Share Circle.
     _backgroundLayer = [CAShapeLayer layer];
     _backgroundLayer.bounds = self.bounds;
-    _backgroundLayer.masksToBounds = NO;
     _backgroundLayer.strokeColor = [[UIColor colorWithWhite:0 alpha:0.1] CGColor];
     _backgroundLayer.lineWidth = 2.0f;
     _backgroundLayer.position = CGPointMake(CGRectGetMidX(self.bounds), CGRectGetMidY(self.bounds));
@@ -133,12 +131,12 @@ const NSString *CFSharerEvernote = @"Evernote";
     
     // Create the touch layer for the Share Circle.
     _touchLayer = [CAShapeLayer layer];
-    _touchLayer.bounds = self.bounds;
+    _touchLayer.bounds = _backgroundLayer.bounds;
     _touchLayer.frame = CGRectMake(0, 0, TOUCH_SIZE, TOUCH_SIZE);
     CGMutablePathRef circularPath = CGPathCreateMutable();
     CGPathAddEllipseInRect(circularPath, NULL, CGRectMake(0, 0, TOUCH_SIZE, TOUCH_SIZE));
     _touchLayer.path = circularPath;
-    _touchLayer.position = CGPointMake(CGRectGetMidX(self.bounds), CGRectGetMidY(self.bounds));
+    _touchLayer.position = CGPointMake(CGRectGetMidX(_backgroundLayer.bounds), CGRectGetMidY(_backgroundLayer.bounds));
     _touchLayer.opacity = 0.1;
     _touchLayer.fillColor = [UIColor clearColor].CGColor;
     _touchLayer.strokeColor = [UIColor blackColor].CGColor;
@@ -151,10 +149,10 @@ const NSString *CFSharerEvernote = @"Evernote";
     _introTextLayer.wrapped = YES;
     _introTextLayer.alignmentMode = kCAAlignmentCenter;
     _introTextLayer.fontSize = 13.0;
-    _introTextLayer.bounds = self.bounds;
+    _introTextLayer.bounds = _backgroundLayer.bounds;
     _introTextLayer.foregroundColor = [UIColor blackColor].CGColor;
     _introTextLayer.frame = CGRectMake(0, 0, 60, 29);
-    _introTextLayer.position = CGPointMake(CGRectGetMidX(self.bounds), CGRectGetMidY(self.bounds));
+    _introTextLayer.position = CGPointMake(CGRectGetMidX(_backgroundLayer.bounds), CGRectGetMidY(_backgroundLayer.bounds));
     _introTextLayer.contentsScale = [[UIScreen mainScreen] scale];
     _introTextLayer.opacity = 0.5;
     [_backgroundLayer addSublayer:_introTextLayer];
@@ -165,10 +163,10 @@ const NSString *CFSharerEvernote = @"Evernote";
     _shareTitleLayer.wrapped = YES;
     _shareTitleLayer.alignmentMode = kCAAlignmentCenter;
     _shareTitleLayer.fontSize = 20.0;
-    _shareTitleLayer.bounds = self.bounds;
+    _shareTitleLayer.bounds = _backgroundLayer.bounds;
     _shareTitleLayer.foregroundColor = [UIColor blackColor].CGColor;
     _shareTitleLayer.frame = CGRectMake(0, 0, 120, 28);
-    _shareTitleLayer.position = CGPointMake(CGRectGetMidX(self.bounds), CGRectGetMidY(self.bounds));
+    _shareTitleLayer.position = CGPointMake(CGRectGetMidX(_backgroundLayer.bounds), CGRectGetMidY(_backgroundLayer.bounds));
     _shareTitleLayer.contentsScale = [[UIScreen mainScreen] scale];
     _shareTitleLayer.opacity = 0.0;
     [_backgroundLayer addSublayer:_shareTitleLayer];
@@ -335,26 +333,19 @@ const NSString *CFSharerEvernote = @"Evernote";
 - (void)setViewFrame{
     
     if(UIDeviceOrientationIsPortrait(_currentOrientation)){
-        [self setFrame:CGRectMake(320*!_visible, 0, 320, 480)];
-        [self setBounds:CGRectMake(0, 0, 320, 480)];
-        _origin = CGPointMake(160, 240);
-        _currentPosition = _origin;
+        [_backgroundLayer setFrame:CGRectMake(self.bounds.size.width*!_visible, 0, self.bounds.size.width, self.bounds.size.height)];
+        [_backgroundLayer setBounds:self.bounds];
     }else if(UIDeviceOrientationIsLandscape(_currentOrientation)){
-        [self setFrame:CGRectMake(480*!_visible, 0, 480, 320)];
-        [self setBounds:CGRectMake(0, 0, 480, 320)];
-        _origin = CGPointMake(240, 160);
-        _currentPosition = _origin;
+        [_backgroundLayer setFrame:CGRectMake(self.bounds.size.width*!_visible, 0, self.bounds.size.width, self.bounds.size.height)];
+        [_backgroundLayer setBounds:self.bounds];
     }
     
-    // Update all the layers positions.
+    _origin = CGPointMake(CGRectGetMidX(self.bounds), CGRectGetMidY(self.bounds));
+    _currentPosition = _origin;
+    
+    // Update the position of the layers.
     _backgroundLayer.position = CGPointMake(CGRectGetMidX(self.bounds), CGRectGetMidY(self.bounds));
-    _introTextLayer.position = CGPointMake(CGRectGetMidX(self.bounds), CGRectGetMidY(self.bounds));
-    _shareTitleLayer.position = CGPointMake(CGRectGetMidX(self.bounds), CGRectGetMidY(self.bounds));
     [self updateLayers];
-    for(int i = 0; i < _sharers.count; i++) {
-        CALayer* layer = [_imageLayers objectAtIndex:i];
-        layer.position = CGPointMake(CGRectGetMidX(self.bounds), CGRectGetMidY(self.bounds));
-    }
 }
 
 #pragma mark - Touch delegate
