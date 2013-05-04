@@ -9,29 +9,26 @@
 #import "CFShareCircleView.h"
 #import "CFSharer.h"
 
+
+const NSString *CFSharerFacebook = @"Facebook";
+const NSString *CFSharerTwitter = @"Twitter";
+const NSString *CFSharerDropbox = @"Dropbox";
+const NSString *CFSharerGoogleDrive = @"GoogleDrive";
+const NSString *CFSharerPinterest = @"Pinterest";
+const NSString *CFSharerEvernote = @"Evernote";
+
 @interface CFShareCircleView()
-/* Set all the default values for the share circle. */
-- (void)initialize:(NSArray *)sharers;
-/* Build all the layers to be displayed onto the view of the share circle. */
-- (void)setUpLayers;
-/* Updates all the layers based on the new current position of the touch input. */
-- (void)updateLayers;
-/* Animation used when the view is first presented to the user. */
-- (void)animateImagesIn;
-/* Animation used to reset the images so the animation in works correctly. */
-- (void)animateImagesOut;
-/* Return the index that the user is hovering over at this exact moment in time. */
-- (int)indexHoveringOver;
-/* Determines where the touch images is going to be placed inside of the view. */
-- (CGPoint)touchLocationAtPoint:(CGPoint)point;
-/* Get the point at the specified index. */
-- (CGPoint)pointAtIndex:(int)index;
-/* Returns if the point is inside the cirlce. */
-- (BOOL)circleEnclosesPoint:(CGPoint)point;
-/* Return the color at the specified point in an image. */
-- (UIColor *)colorAtPoint:(CGPoint)point inImage:(UIImage *)image;
-/* Determine the frame that the view is to use based on orientation. */
-- (void)setViewFrame;
+- (void)initialize:(NSArray *)sharers; /* Set all the default values for the share circle. */
+- (void)setUpLayers; /* Build all the layers to be displayed onto the view of the share circle. */
+- (void)updateLayers; /* Updates all the layers based on the new current position of the touch input. */
+- (void)animateImagesIn; /* Animation used when the view is first presented to the user. */
+- (void)animateImagesOut; /* Animation used to reset the images so the animation in works correctly. */
+- (int)indexHoveringOver; /* Return the index that the user is hovering over at this exact moment in time. */
+- (CGPoint)touchLocationAtPoint:(CGPoint)point; /* Determines where the touch images is going to be placed inside of the view. */
+- (CGPoint)pointAtIndex:(int)index; /* Get the point at the specified index. */
+- (BOOL)circleEnclosesPoint:(CGPoint)point; /* Returns if the point is inside the cirlce. */
+- (UIColor *)colorAtPoint:(CGPoint)point inImage:(UIImage *)image; /* Return the color at the specified point in an image. */
+- (void)setViewFrame; /* Determine the frame that the view is to use based on orientation. */
 @end
 
 @implementation CFShareCircleView{
@@ -43,6 +40,12 @@
     CATextLayer *_introTextLayer, *_shareTitleLayer;
     NSMutableArray *_imageLayers, *_imageColors, *_sharers;
 }
+
+#define BACKGROUND_SIZE 250
+#define PATH_SIZE 180
+#define TEMP_SIZE 50
+#define CLOSE_BUTTON_SIZE 40
+#define TOUCH_SIZE 70
 
 @synthesize delegate = _delegate;
 
@@ -95,13 +98,12 @@
     _backgroundLayer = [CAShapeLayer layer];
     _backgroundLayer.bounds = self.bounds;
     _backgroundLayer.masksToBounds = NO;
-    _backgroundLayer.shadowRadius = 10;
-    _backgroundLayer.shadowOpacity = 0.5;
-    _backgroundLayer.shadowOffset = CGSizeMake(0,0);
+    _backgroundLayer.strokeColor = [[UIColor colorWithWhite:0 alpha:0.1] CGColor];
+    _backgroundLayer.lineWidth = 2.0f;
     _backgroundLayer.position = CGPointMake(CGRectGetMidX(self.bounds), CGRectGetMidY(self.bounds));
     _backgroundLayer.fillColor = [[UIColor whiteColor] CGColor];
     CGMutablePathRef backgroundPath = CGPathCreateMutable();
-    CGRect backgroundRect = CGRectMake(_origin.x - BACKGROUND_SIZE/2,_origin.y - BACKGROUND_SIZE/2,BACKGROUND_SIZE,BACKGROUND_SIZE);
+    CGRect backgroundRect = CGRectMake(_origin.x - BACKGROUND_SIZE/2.0,_origin.y - BACKGROUND_SIZE/2.0,BACKGROUND_SIZE,BACKGROUND_SIZE);
     CGPathAddEllipseInRect(backgroundPath, nil, backgroundRect);
     _backgroundLayer.path = backgroundPath;
     [self.layer addSublayer:_backgroundLayer];
@@ -126,7 +128,7 @@
         // Add all the layers
         [baseLayer addSublayer:imageLayer];
         [_imageLayers addObject:baseLayer];
-        [self.layer addSublayer:[_imageLayers objectAtIndex:i]];
+        [_backgroundLayer addSublayer:[_imageLayers objectAtIndex:i]];
     }
     
     // Create the touch layer for the Share Circle.
@@ -140,8 +142,8 @@
     _touchLayer.opacity = 0.1;
     _touchLayer.fillColor = [UIColor clearColor].CGColor;
     _touchLayer.strokeColor = [UIColor blackColor].CGColor;
-    _touchLayer.lineWidth = 3;
-    [self.layer addSublayer:_touchLayer];
+    _touchLayer.lineWidth = 2.0f;
+    [_backgroundLayer addSublayer:_touchLayer];
     
     // Create the intro text layer to help the user.
     _introTextLayer = [CATextLayer layer];
@@ -155,7 +157,7 @@
     _introTextLayer.position = CGPointMake(CGRectGetMidX(self.bounds), CGRectGetMidY(self.bounds));
     _introTextLayer.contentsScale = [[UIScreen mainScreen] scale];
     _introTextLayer.opacity = 0.5;
-    [self.layer addSublayer:_introTextLayer];
+    [_backgroundLayer addSublayer:_introTextLayer];
     
     // Create the share title text layer.
     _shareTitleLayer = [CATextLayer layer];
@@ -169,23 +171,7 @@
     _shareTitleLayer.position = CGPointMake(CGRectGetMidX(self.bounds), CGRectGetMidY(self.bounds));
     _shareTitleLayer.contentsScale = [[UIScreen mainScreen] scale];
     _shareTitleLayer.opacity = 0.0;
-    [self.layer addSublayer:_shareTitleLayer];
-    
-    // BLURRING IMAGE SAMPLE CODE
-    /*CIImage *inputImage = [[CIImage alloc] initWithImage:[UIImage imageNamed:@"evernote.png"]];
-    
-    CIFilter *blurFilter = [CIFilter filterWithName:@"CIGaussianBlur"];
-    [blurFilter setDefaults];
-    [blurFilter setValue: inputImage forKey: @"inputImage"];
-    [blurFilter setValue: [NSNumber numberWithFloat:10.0f]
-                  forKey:@"inputRadius"];
-    
-    
-    CIImage *outputImage = [blurFilter valueForKey: @"outputImage"];
-    
-    CIContext *context = [CIContext contextWithOptions:nil];
-    
-    backgroundLayer.contents = (id)[UIImage imageWithCGImage:[context createCGImage:outputImage fromRect:outputImage.extent]].CGImage;*/
+    [_backgroundLayer addSublayer:_shareTitleLayer];
 }
 
 - (void)updateLayers {

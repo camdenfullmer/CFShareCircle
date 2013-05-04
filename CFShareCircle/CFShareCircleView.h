@@ -10,11 +10,12 @@
 #import <QuartzCore/QuartzCore.h>
 #import <CoreImage/CoreImage.h>
 
-#define BACKGROUND_SIZE 250
-#define PATH_SIZE 180
-#define TEMP_SIZE 50
-#define CLOSE_BUTTON_SIZE 40
-#define TOUCH_SIZE 70
+extern const NSString *CFSharerFacebook;
+extern const NSString *CFSharerTwitter;
+extern const NSString *CFSharerDropbox;
+extern const NSString *CFSharerGoogleDrive;
+extern const NSString *CFSharerPinterest;
+extern const NSString *CFSharerEvernote;
 
 @class CFShareCircleView;
 
