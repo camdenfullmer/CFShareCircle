@@ -9,16 +9,7 @@
 #import "CFShareCircleView.h"
 #import "CFSharer.h"
 
-
-const NSString *CFSharerFacebook = @"Facebook";
-const NSString *CFSharerTwitter = @"Twitter";
-const NSString *CFSharerDropbox = @"Dropbox";
-const NSString *CFSharerGoogleDrive = @"GoogleDrive";
-const NSString *CFSharerPinterest = @"Pinterest";
-const NSString *CFSharerEvernote = @"Evernote";
-
 @interface CFShareCircleView()
-- (void)initialize:(NSArray *)sharers; /* Set all the default values for the share circle. */
 - (void)setUpLayers; /* Build all the layers to be displayed onto the view of the share circle. */
 - (void)updateLayers; /* Updates all the layers based on the new current position of the touch input. */
 - (void)animateImagesIn; /* Animation used when the view is first presented to the user. */
@@ -27,7 +18,6 @@ const NSString *CFSharerEvernote = @"Evernote";
 - (CGPoint)touchLocationAtPoint:(CGPoint)point; /* Determines where the touch images is going to be placed inside of the view. */
 - (CGPoint)pointAtIndex:(int)index; /* Get the point at the specified index. */
 - (BOOL)circleEnclosesPoint:(CGPoint)point; /* Returns if the point is inside the cirlce. */
-- (UIColor *)colorAtPoint:(CGPoint)point inImage:(UIImage *)image; /* Return the color at the specified point in an image. */
 - (void)setViewFrame; /* Determine the frame that the view is to use based on orientation. */
 @end
 
@@ -38,7 +28,7 @@ const NSString *CFSharerEvernote = @"Evernote";
     CALayer *_closeButtonLayer, *_overlayLayer;
     CAShapeLayer *_backgroundLayer, *_touchLayer;
     CATextLayer *_introTextLayer, *_shareTitleLayer;
-    NSMutableArray *_imageLayers, *_imageColors, *_sharers;
+    NSMutableArray *_imageLayers, *_sharers;
 }
 
 #define BACKGROUND_SIZE 250
@@ -52,7 +42,7 @@ const NSString *CFSharerEvernote = @"Evernote";
 - (id)initWithFrame:(CGRect)frame {
     self = [super initWithFrame:frame];
     if (self) {
-        [self initialize:[[NSArray alloc] initWithObjects: @"Evernote", @"Facebook", @"Google+", @"Twitter", @"Flickr", @"Mail", @"Message", @"Photo Album", nil]];
+        _sharers = [[NSMutableArray alloc] initWithObjects: [[CFSharer alloc] initWithType:CFSharerTypePinterest], [[CFSharer alloc] initWithType:CFSharerTypeGoogleDrive], [[CFSharer alloc] initWithType:CFSharerTypeTwitter ], [[CFSharer alloc] initWithType:CFSharerTypeFacebook], [[CFSharer alloc] initWithType:CFSharerTypeEvernote], [[CFSharer alloc] initWithType:CFSharerTypeDropbox], nil];
         [self setUpLayers];
         [self setViewFrame];
     }
@@ -60,9 +50,9 @@ const NSString *CFSharerEvernote = @"Evernote";
 }
 
 - (id)initWithFrame:(CGRect)frame sharers:(NSArray *)sharers {
-    self = [super initWithFrame:CGRectMake(0, 0, 320, 480)];
+    self = [super initWithFrame:frame];
     if (self) {
-        [self initialize:sharers];
+        _sharers = [[NSMutableArray alloc] initWithArray:sharers];
         [self setUpLayers];
         [self setViewFrame];
     }
@@ -71,15 +61,8 @@ const NSString *CFSharerEvernote = @"Evernote";
 
 #pragma mark - Private methods
 
-- (void)initialize:(NSArray *)sharers {    
-    // Setup all the sharer objects.
-    _sharers = [[NSMutableArray alloc] init];
-    for(int i = 0; i<[sharers count]; i++)
-        [_sharers addObject:[[CFSharer alloc] initWithName:[sharers objectAtIndex:i]]];
-    
+- (void)setUpLayers {
     _imageLayers = [[NSMutableArray alloc] init];
-    _imageColors = [[NSMutableArray alloc] init];
-    
     self.hidden = YES;
     self.backgroundColor = [UIColor clearColor];
     _origin = CGPointMake(CGRectGetMidX(self.bounds), CGRectGetMidY(self.bounds));
@@ -90,9 +73,6 @@ const NSString *CFSharerEvernote = @"Evernote";
     // Set up observer for orientation changes.
     [[UIDevice currentDevice] beginGeneratingDeviceOrientationNotifications];
     [[NSNotificationCenter defaultCenter] addObserver: self selector: @selector(deviceOrientationDidChange:) name: UIDeviceOrientationDidChangeNotification object: nil];
-}
-
-- (void)setUpLayers {    
     
     // Create the overlay layer for the entire screen.
     _overlayLayer = [CAShapeLayer layer];
@@ -117,10 +97,8 @@ const NSString *CFSharerEvernote = @"Evernote";
     for(int i = 0; i < _sharers.count; i++) {
         CFSharer *sharer = [_sharers objectAtIndex:i];
         
-        UIImage *image = [sharer mainImage];
+        UIImage *image = [sharer image];
         
-        //Add major color to the array to display later.
-        [_imageColors addObject:[self colorAtPoint:CGPointMake(3, 25) inImage:image]];
         // Construct the base layer in which will be rotated around the origin of the circle.
         CAShapeLayer *baseLayer = [CAShapeLayer layer];
         baseLayer.bounds = CGRectMake(0,0, BACKGROUND_SIZE,BACKGROUND_SIZE);
@@ -199,18 +177,15 @@ const NSString *CFSharerEvernote = @"Evernote";
     }
     
     // Update the touch layer.
-    if(hoveringIndex != -1){
-        // Update color of touch layer.
-        UIColor *newColor = (UIColor *)[_imageColors objectAtIndex:hoveringIndex];
-        _touchLayer.strokeColor = newColor.CGColor;
+    if(hoveringIndex != -1){        
         _touchLayer.opacity = 1.0;
     } else if(_dragging){
-        _touchLayer.strokeColor = [UIColor blackColor].CGColor;
         _touchLayer.opacity = 0.5;
     } else {
         _touchLayer.opacity = 0.1;
-        _touchLayer.strokeColor = [UIColor blackColor].CGColor;
     }
+    
+    _touchLayer.strokeColor = [UIColor blackColor].CGColor;
     
     // Update the intro text layer.
     if(_dragging)
@@ -220,16 +195,11 @@ const NSString *CFSharerEvernote = @"Evernote";
     
     // Update the share title text layer
     int index = [self indexHoveringOver];
-    if(index != -1){
+    if(index != -1) {
         CFSharer *sharer = [_sharers objectAtIndex:index];
-        if([sharer titleImage]){
-            _shareTitleLayer.contents = (id)[sharer titleImage].CGImage;
-            _shareTitleLayer.opacity = 1.0;
-        }else{
-            _shareTitleLayer.string = [sharer name];
-            _shareTitleLayer.opacity = 0.6;
-        }
-    }else{
+        _shareTitleLayer.string = [sharer name];
+        _shareTitleLayer.opacity = 0.6;
+    } else {
         _shareTitleLayer.opacity = 0.0;
         _shareTitleLayer.string = @"";
     }
@@ -317,24 +287,6 @@ const NSString *CFSharerEvernote = @"Evernote";
         return NO;
     else
         return YES;
-}
-
-- (UIColor *)colorAtPoint:(CGPoint)point inImage:(UIImage *)image {
-    CGImageRef cgImage = CGImageCreateWithImageInRect(image.CGImage,
-                                                      CGRectMake(point.x * image.scale,
-                                                                 point.y * image.scale,
-                                                                 1.0f,
-                                                                 1.0f));
-    CGDataProviderRef provider = CGImageGetDataProvider(cgImage);
-    CFDataRef data = CGDataProviderCopyData(provider);
-    CGImageRelease(cgImage);
-    UInt8* buffer = (UInt8*)CFDataGetBytePtr(data);
-    CGFloat red   = (float)buffer[0] / 255.0f;
-    CGFloat green = (float)buffer[1] / 255.0f;
-    CGFloat blue  = (float)buffer[2] / 255.0f;
-    CGFloat alpha = (float)buffer[3] / 255.0f;
-    CFRelease(data);
-    return [UIColor colorWithRed:red green:green blue:blue alpha:alpha];
 }
 
 - (void)setViewFrame{

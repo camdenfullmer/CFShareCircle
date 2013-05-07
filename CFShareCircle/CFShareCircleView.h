@@ -10,12 +10,14 @@
 #import <QuartzCore/QuartzCore.h>
 #import <CoreImage/CoreImage.h>
 
-extern const NSString *CFSharerFacebook;
-extern const NSString *CFSharerTwitter;
-extern const NSString *CFSharerDropbox;
-extern const NSString *CFSharerGoogleDrive;
-extern const NSString *CFSharerPinterest;
-extern const NSString *CFSharerEvernote;
+typedef enum {
+    CFSharerTypeFacebook,
+    CFSharerTypeTwitter,
+    CFSharerTypeDropbox,
+    CFSharerTypeGoogleDrive,
+    CFSharerTypePinterest,
+    CFSharerTypeEvernote
+} CFSharerType;
 
 @class CFShareCircleView;
 

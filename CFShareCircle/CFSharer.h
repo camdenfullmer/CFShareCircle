@@ -14,24 +14,10 @@
 
 @interface CFSharer : NSObject
 
-@property NSString* name;
+@property NSString *name;
+@property UIImage *image;
 
-/**
- Intializes a sharer object with the string.
- @param NSString
- */
-- (id)initWithName:(NSString*)aName;
-
-/**
- Returns a UIImage that is used to display the sharing service in the circle.
- @return UIImage
- */
-- (UIImage *)mainImage;
-
-/**
- Returns a UIImage that is displayed when the user hovers over the main image.
- @return UIImage
- */
-- (UIImage *)titleImage;
+- (id)initWithName:(NSString *)name imageName:(NSString *)imageName;
+- (id)initWithType:(NSInteger)type;
 
 @end

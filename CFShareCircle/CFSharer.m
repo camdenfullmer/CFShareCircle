@@ -7,40 +7,56 @@
 //
 
 #import "CFSharer.h"
+#import "CFShareCircleView.h"
 
 @implementation CFSharer
 
-@synthesize name=_name;
+@synthesize name = _name;
+@synthesize image = _image;
 
-- (id) initWithName:(NSString *)aName{
+- (id)initWithName:(NSString *)name imageName:(NSString *)imageName {
     self = [super init];
     if (self) {
-        [self setName:aName];
+        _name = name;
+        _image = [UIImage imageNamed:imageName];
     }
     return self;    
 }
 
-- (UIImage *)mainImage {
-    NSString *temp = [[NSString alloc] initWithString:_name];
-    // Replace spaces with underscores.
-    temp = [temp stringByReplacingOccurrencesOfString:@" " withString:@"_"];
-    // Add .png to the end.
-    temp = [temp stringByAppendingPathExtension:@"png"];
-    // Convert to lowercase
-    
-    return [UIImage imageNamed:[temp lowercaseString]];
-}
-
-- (UIImage *)titleImage{
-    NSString *temp = [[NSString alloc] initWithString:_name];
-    // Replace spaces with underscores.
-    temp = [temp stringByReplacingOccurrencesOfString:@" " withString:@"_"];
-    // Add "_title" to the end.
-    temp = [temp stringByAppendingString:@"_title"];
-    // Add .png to the end.
-    temp = [temp stringByAppendingPathExtension:@"png"];
-    // Convert to lowercase
-    return [UIImage imageNamed:[temp lowercaseString]];
+- (id)initWithType:(NSInteger)type {
+    self = [super init];
+    if (self) {
+        switch(type) {
+            case CFSharerTypeDropbox:
+                _name = @"Dropbox";
+                _image = [UIImage imageNamed:@"dropbox.png"];
+                break;
+            case CFSharerTypeEvernote:
+                _name = @"Evernote";
+                _image = [UIImage imageNamed:@"evernote.png"];
+                break;
+            case CFSharerTypeFacebook:
+                _name = @"Facebook";
+                _image = [UIImage imageNamed:@"facebook.png"];
+                break;
+            case CFSharerTypeGoogleDrive:
+                _name = @"Google Drive";
+                _image = [UIImage imageNamed:@"google_drive.png"];
+                break;
+            case CFSharerTypePinterest:
+                _name = @"Pinterest";
+                _image = [UIImage imageNamed:@"pinterest.png"];
+                break;
+            case CFSharerTypeTwitter:
+                _name = @"Twitter";
+                _image = [UIImage imageNamed:@"twitter.png"];
+                break;
+            default:
+                _name = @"";
+                _image = nil;
+        }
+    }
+    return self;
 }
 
 @end
