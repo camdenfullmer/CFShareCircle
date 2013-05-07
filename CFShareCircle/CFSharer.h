@@ -10,7 +10,14 @@
 #import <UIKit/UIKit.h>
 #import <QuartzCore/QuartzCore.h>
 
-@class CFSharer;
+typedef enum {
+    CFSharerTypeFacebook,
+    CFSharerTypeTwitter,
+    CFSharerTypeDropbox,
+    CFSharerTypeGoogleDrive,
+    CFSharerTypePinterest,
+    CFSharerTypeEvernote
+} CFSharerType;
 
 @interface CFSharer : NSObject
 

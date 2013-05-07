@@ -7,7 +7,6 @@
 //
 
 #import "CFSharer.h"
-#import "CFShareCircleView.h"
 
 @implementation CFSharer
 

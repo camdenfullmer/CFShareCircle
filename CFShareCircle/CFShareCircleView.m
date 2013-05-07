@@ -18,23 +18,20 @@
 - (CGPoint)touchLocationAtPoint:(CGPoint)point; /* Determines where the touch images is going to be placed inside of the view. */
 - (CGPoint)pointAtIndex:(int)index; /* Get the point at the specified index. */
 - (BOOL)circleEnclosesPoint:(CGPoint)point; /* Returns if the point is inside the cirlce. */
-- (void)setViewFrame; /* Determine the frame that the view is to use based on orientation. */
 @end
 
 @implementation CFShareCircleView{
     CGPoint _currentPosition, _origin;
     BOOL _dragging, _visible;
-    UIDeviceOrientation _currentOrientation;
     CALayer *_closeButtonLayer, *_overlayLayer;
     CAShapeLayer *_backgroundLayer, *_touchLayer;
     CATextLayer *_introTextLayer, *_shareTitleLayer;
     NSMutableArray *_imageLayers, *_sharers;
 }
 
-#define BACKGROUND_SIZE 250
-#define PATH_SIZE 180
-#define TEMP_SIZE 50
-#define CLOSE_BUTTON_SIZE 40
+#define BACKGROUND_SIZE 275
+#define PATH_SIZE 200
+#define IMAGE_SIZE 45
 #define TOUCH_SIZE 70
 
 @synthesize delegate = _delegate;
@@ -44,7 +41,6 @@
     if (self) {
         _sharers = [[NSMutableArray alloc] initWithObjects: [[CFSharer alloc] initWithType:CFSharerTypePinterest], [[CFSharer alloc] initWithType:CFSharerTypeGoogleDrive], [[CFSharer alloc] initWithType:CFSharerTypeTwitter ], [[CFSharer alloc] initWithType:CFSharerTypeFacebook], [[CFSharer alloc] initWithType:CFSharerTypeEvernote], [[CFSharer alloc] initWithType:CFSharerTypeDropbox], nil];
         [self setUpLayers];
-        [self setViewFrame];
     }
     return self;
 }
@@ -54,9 +50,16 @@
     if (self) {
         _sharers = [[NSMutableArray alloc] initWithArray:sharers];
         [self setUpLayers];
-        [self setViewFrame];
     }
     return self;
+}
+
+- (void)layoutSubviews {    
+    _overlayLayer.frame = self.bounds;
+    _origin = CGPointMake(CGRectGetMidX(self.bounds), CGRectGetMidY(self.bounds));
+    _currentPosition = _origin;
+    _backgroundLayer.position = _origin;
+    [self updateLayers];
 }
 
 #pragma mark - Private methods
@@ -65,14 +68,10 @@
     _imageLayers = [[NSMutableArray alloc] init];
     self.hidden = YES;
     self.backgroundColor = [UIColor clearColor];
+    self.autoresizingMask = UIViewAutoresizingFlexibleWidth|UIViewAutoresizingFlexibleHeight;
     _origin = CGPointMake(CGRectGetMidX(self.bounds), CGRectGetMidY(self.bounds));
     _currentPosition = _origin;
     _visible = NO;
-    _currentOrientation = [[UIDevice currentDevice] orientation];
-    
-    // Set up observer for orientation changes.
-    [[UIDevice currentDevice] beginGeneratingDeviceOrientationNotifications];
-    [[NSNotificationCenter defaultCenter] addObserver: self selector: @selector(deviceOrientationDidChange:) name: UIDeviceOrientationDidChangeNotification object: nil];
     
     // Create the overlay layer for the entire screen.
     _overlayLayer = [CAShapeLayer layer];
@@ -82,13 +81,13 @@
     
     // Create a larger circle layer for the background of the Share Circle.
     _backgroundLayer = [CAShapeLayer layer];
-    _backgroundLayer.bounds = self.bounds;
+    _backgroundLayer.frame = CGRectMake(CGRectGetMidX(self.bounds) - BACKGROUND_SIZE/2.0, CGRectGetMidY(self.bounds) - BACKGROUND_SIZE/2.0, BACKGROUND_SIZE, BACKGROUND_SIZE);    
     _backgroundLayer.strokeColor = [[UIColor colorWithWhite:0 alpha:0.1] CGColor];
     _backgroundLayer.lineWidth = 2.0f;
     _backgroundLayer.position = CGPointMake(CGRectGetMidX(self.bounds), CGRectGetMidY(self.bounds));
     _backgroundLayer.fillColor = [[UIColor whiteColor] CGColor];
     CGMutablePathRef backgroundPath = CGPathCreateMutable();
-    CGRect backgroundRect = CGRectMake(_origin.x - BACKGROUND_SIZE/2.0,_origin.y - BACKGROUND_SIZE/2.0,BACKGROUND_SIZE,BACKGROUND_SIZE);
+    CGRect backgroundRect = CGRectMake(0,0,BACKGROUND_SIZE,BACKGROUND_SIZE);
     CGPathAddEllipseInRect(backgroundPath, nil, backgroundRect);
     _backgroundLayer.path = backgroundPath;
     [self.layer addSublayer:_backgroundLayer];
@@ -101,11 +100,11 @@
         
         // Construct the base layer in which will be rotated around the origin of the circle.
         CAShapeLayer *baseLayer = [CAShapeLayer layer];
-        baseLayer.bounds = CGRectMake(0,0, BACKGROUND_SIZE,BACKGROUND_SIZE);
-        baseLayer.position = CGPointMake(CGRectGetMidX(self.bounds), CGRectGetMidY(self.bounds));
+        baseLayer.frame = CGRectMake(0,0, BACKGROUND_SIZE,BACKGROUND_SIZE);
+        baseLayer.position = CGPointMake(CGRectGetMidX(_backgroundLayer.bounds), CGRectGetMidY(_backgroundLayer.bounds));
         // Construct the image layer which will contain our image.
         CALayer *imageLayer = [CALayer layer];
-        imageLayer.bounds = CGRectMake(0, 0, TEMP_SIZE, TEMP_SIZE);
+        imageLayer.frame = CGRectMake(0, 0, IMAGE_SIZE, IMAGE_SIZE);
         imageLayer.position = CGPointMake(BACKGROUND_SIZE/2.0 + PATH_SIZE/2.0, BACKGROUND_SIZE/2.0);
         imageLayer.contents = (id)image.CGImage;
         // Add all the layers
@@ -116,7 +115,6 @@
     
     // Create the touch layer for the Share Circle.
     _touchLayer = [CAShapeLayer layer];
-    _touchLayer.bounds = _backgroundLayer.bounds;
     _touchLayer.frame = CGRectMake(0, 0, TOUCH_SIZE, TOUCH_SIZE);
     CGMutablePathRef circularPath = CGPathCreateMutable();
     CGPathAddEllipseInRect(circularPath, NULL, CGRectMake(0, 0, TOUCH_SIZE, TOUCH_SIZE));
@@ -126,7 +124,7 @@
     _touchLayer.fillColor = [UIColor clearColor].CGColor;
     _touchLayer.strokeColor = [UIColor blackColor].CGColor;
     _touchLayer.lineWidth = 2.0f;
-    [_backgroundLayer addSublayer:_touchLayer];
+    [self.layer addSublayer:_touchLayer];
     
     // Create the intro text layer to help the user.
     _introTextLayer = [CATextLayer layer];
@@ -134,7 +132,6 @@
     _introTextLayer.wrapped = YES;
     _introTextLayer.alignmentMode = kCAAlignmentCenter;
     _introTextLayer.fontSize = 13.0;
-    _introTextLayer.bounds = _backgroundLayer.bounds;
     _introTextLayer.foregroundColor = [UIColor blackColor].CGColor;
     _introTextLayer.frame = CGRectMake(0, 0, 60, 29);
     _introTextLayer.position = CGPointMake(CGRectGetMidX(_backgroundLayer.bounds), CGRectGetMidY(_backgroundLayer.bounds));
@@ -148,7 +145,6 @@
     _shareTitleLayer.wrapped = YES;
     _shareTitleLayer.alignmentMode = kCAAlignmentCenter;
     _shareTitleLayer.fontSize = 20.0;
-    _shareTitleLayer.bounds = _backgroundLayer.bounds;
     _shareTitleLayer.foregroundColor = [UIColor blackColor].CGColor;
     _shareTitleLayer.frame = CGRectMake(0, 0, 120, 28);
     _shareTitleLayer.position = CGPointMake(CGRectGetMidX(_backgroundLayer.bounds), CGRectGetMidY(_backgroundLayer.bounds));
@@ -235,7 +231,7 @@
         for(int i = 0; i < [_sharers count]; i++){
             CGPoint point = [self pointAtIndex:i];
             // Determine if point is inside rect or adjust for the user overshooting sharing service.
-            if(CGRectContainsPoint(CGRectMake(point.x, point.y, TEMP_SIZE, TEMP_SIZE), _currentPosition) || CGRectContainsPoint(CGRectMake(point.x, point.y, TEMP_SIZE, TEMP_SIZE), [self touchLocationAtPoint:_currentPosition]))
+            if(CGRectContainsPoint(CGRectMake(point.x, point.y, IMAGE_SIZE, IMAGE_SIZE), _currentPosition) || CGRectContainsPoint(CGRectMake(point.x, point.y, IMAGE_SIZE, IMAGE_SIZE), [self touchLocationAtPoint:_currentPosition]))
                 return i;
         }
     }
@@ -276,8 +272,8 @@
     float y = _origin.y - sinf(trig)*PATH_SIZE/2.0;
     
     // Subtract half width and height of image size.
-    x -= TEMP_SIZE/2.0;
-    y -= TEMP_SIZE/2.0;
+    x -= IMAGE_SIZE/2.0;
+    y -= IMAGE_SIZE/2.0;
     
     return CGPointMake(x, y);
 }
@@ -287,24 +283,6 @@
         return NO;
     else
         return YES;
-}
-
-- (void)setViewFrame{
-    
-    if(UIDeviceOrientationIsPortrait(_currentOrientation)){
-        [_backgroundLayer setFrame:CGRectMake(self.bounds.size.width*!_visible, 0, self.bounds.size.width, self.bounds.size.height)];
-        [_backgroundLayer setBounds:self.bounds];
-    }else if(UIDeviceOrientationIsLandscape(_currentOrientation)){
-        [_backgroundLayer setFrame:CGRectMake(self.bounds.size.width*!_visible, 0, self.bounds.size.width, self.bounds.size.height)];
-        [_backgroundLayer setBounds:self.bounds];
-    }
-    
-    _origin = CGPointMake(CGRectGetMidX(self.bounds), CGRectGetMidY(self.bounds));
-    _currentPosition = _origin;
-    
-    // Update the position of the layers.
-    _backgroundLayer.position = CGPointMake(CGRectGetMidX(self.bounds), CGRectGetMidY(self.bounds));
-    [self updateLayers];
 }
 
 #pragma mark - Touch delegate
@@ -340,7 +318,7 @@
         for(int i = 0; i < [_sharers count]; i++){
             CGPoint point = [self pointAtIndex:i];
             // Determine if point is inside rect or also account for overshooting circle so just swiping works.
-            if(CGRectContainsPoint(CGRectMake(point.x, point.y, TEMP_SIZE, TEMP_SIZE), _currentPosition) || CGRectContainsPoint(CGRectMake(point.x, point.y, TEMP_SIZE, TEMP_SIZE), [self touchLocationAtPoint:_currentPosition])){
+            if(CGRectContainsPoint(CGRectMake(point.x, point.y, IMAGE_SIZE, IMAGE_SIZE), _currentPosition) || CGRectContainsPoint(CGRectMake(point.x, point.y, IMAGE_SIZE, IMAGE_SIZE), [self touchLocationAtPoint:_currentPosition])){
                 [_delegate shareCircleView:self didSelectIndex:i];
                 [self animateOut];
             }
@@ -369,7 +347,7 @@
                           delay: 0.0
                         options: UIViewAnimationOptionCurveEaseIn
                      animations:^{
-                         [self setViewFrame];
+                         [self updateLayers];
                      }
                      completion:^(BOOL finished){
                          [self animateImagesIn];
@@ -383,36 +361,11 @@
                           delay: 0.0
                         options: UIViewAnimationOptionCurveEaseOut
                      animations:^{
-                         [self setViewFrame];
+                         [self updateLayers];
                      }
                      completion:^(BOOL finished){
                          self.hidden = YES;
                      }];
-}
-
-#pragma mark - Notifications
-
-- (void)deviceOrientationDidChange:(NSNotification *)notification {
-    //Obtaining the current device orientation
-    UIDeviceOrientation orientation = [[UIDevice currentDevice] orientation];
-    
-    //Ignoring specific orientations
-    if (orientation == UIDeviceOrientationFaceUp || orientation == UIDeviceOrientationFaceDown || orientation == UIDeviceOrientationUnknown || _currentOrientation == orientation) {
-        return;
-    }
-    
-    if ((UIDeviceOrientationIsPortrait(_currentOrientation) && UIDeviceOrientationIsPortrait(orientation)) ||
-        (UIDeviceOrientationIsLandscape(_currentOrientation) && UIDeviceOrientationIsLandscape(orientation))) {
-        //still saving the current orientation
-        _currentOrientation = orientation;
-        return;
-    }
-    
-    [NSObject cancelPreviousPerformRequestsWithTarget:self selector:@selector(relayoutLayers) object:nil];
-    //Responding only to changes in landscape or portrait
-    _currentOrientation = orientation;
-    //
-    [self performSelector:@selector(setViewFrame) withObject:nil afterDelay:0];
 }
 
 @end

@@ -10,15 +10,6 @@
 #import <QuartzCore/QuartzCore.h>
 #import <CoreImage/CoreImage.h>
 
-typedef enum {
-    CFSharerTypeFacebook,
-    CFSharerTypeTwitter,
-    CFSharerTypeDropbox,
-    CFSharerTypeGoogleDrive,
-    CFSharerTypePinterest,
-    CFSharerTypeEvernote
-} CFSharerType;
-
 @class CFShareCircleView;
 
 @protocol CFShareCircleViewDelegate
