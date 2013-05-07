@@ -35,7 +35,7 @@ const NSString *CFSharerEvernote = @"Evernote";
     CGPoint _currentPosition, _origin;
     BOOL _dragging, _visible;
     UIDeviceOrientation _currentOrientation;
-    CALayer *_closeButtonLayer;
+    CALayer *_closeButtonLayer, *_overlayLayer;
     CAShapeLayer *_backgroundLayer, *_touchLayer;
     CATextLayer *_introTextLayer, *_shareTitleLayer;
     NSMutableArray *_imageLayers, *_imageColors, *_sharers;
@@ -93,6 +93,13 @@ const NSString *CFSharerEvernote = @"Evernote";
 }
 
 - (void)setUpLayers {    
+    
+    // Create the overlay layer for the entire screen.
+    _overlayLayer = [CAShapeLayer layer];
+    _overlayLayer.frame = self.bounds;
+    _overlayLayer.backgroundColor = [UIColor colorWithWhite:0.0 alpha:0.8].CGColor;
+    [self.layer addSublayer:_overlayLayer];
+    
     // Create a larger circle layer for the background of the Share Circle.
     _backgroundLayer = [CAShapeLayer layer];
     _backgroundLayer.bounds = self.bounds;
