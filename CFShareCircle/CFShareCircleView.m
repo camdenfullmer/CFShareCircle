@@ -173,18 +173,19 @@
         [CATransaction commit];
         
         // Update the images.
-        for(int i = 0; i < [_imageLayers count]; i++){
+        for(int i = 0; i < [_imageLayers count]; i++) {
             CALayer *layer = [_imageLayers objectAtIndex:i];
-            if(i == hoveringIndex || !_dragging)
+            if(i == hoveringIndex || !_dragging) {
                 layer.opacity = 1.0;
-            else
+            } else {
                 layer.opacity = 0.6;
+            }
         }
         
         // Update the touch layer.
-        if(hoveringIndex != -1){
+        if(hoveringIndex != -1) {
             _touchLayer.opacity = 1.0;
-        } else if(_dragging){
+        } else if(_dragging) {
             _touchLayer.opacity = 0.5;
         } else {
             _touchLayer.opacity = 0.1;
@@ -192,11 +193,12 @@
         _touchLayer.strokeColor = [UIColor blackColor].CGColor;
         
         // Update the intro text layer.
-        if(_dragging)
+        if(_dragging) {
             _introTextLayer.opacity = 0.0;
-        else
+        } else {
             _introTextLayer.opacity = 0.6;
-        
+        }
+            
         // Update the share title text layer
         if(hoveringIndex != -1) {
             CFSharer *sharer = [_sharers objectAtIndex:hoveringIndex];

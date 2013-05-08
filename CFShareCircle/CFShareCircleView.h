@@ -21,10 +21,8 @@
 @property (assign) id <CFShareCircleViewDelegate> delegate;
 
 /** 
- Initialize the share circle with a custom list of image file names. NOTE: These images must be resources that are referenced in your project.
- 
- @param array of sharer names that are going to be set for the share circle.
- */
+ Initialize the share circle with a custom list of sharers.
+  */
 - (id)initWithFrame:(CGRect) frame sharers:(NSArray *)sharers;
 
 /**
