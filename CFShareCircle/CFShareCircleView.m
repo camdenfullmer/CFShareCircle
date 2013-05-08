@@ -22,7 +22,7 @@
 
 @implementation CFShareCircleView{
     CGPoint _currentPosition, _origin;
-    BOOL _dragging, _ready;
+    BOOL _dragging, _readyForUser;
     CALayer *_closeButtonLayer, *_overlayLayer;
     CAShapeLayer *_backgroundLayer, *_touchLayer;
     CATextLayer *_introTextLayer, *_shareTitleLayer;
@@ -55,10 +55,11 @@
 }
 
 - (void)layoutSubviews {
+    // Adjust geometry when updating the subviews.
     _overlayLayer.frame = self.bounds;
     _origin = CGPointMake(CGRectGetMidX(self.bounds), CGRectGetMidY(self.bounds));
     _currentPosition = _origin;
-    if(_ready) {
+    if(_readyForUser) {
         _backgroundLayer.position = CGPointMake(CGRectGetMidX(self.bounds), CGRectGetMidY(self.bounds));
     } else {
         _backgroundLayer.position = CGPointMake(self.bounds.size.width + BACKGROUND_SIZE/2.0, CGRectGetMidY(self.bounds));
@@ -69,11 +70,12 @@
 #pragma mark - Private methods
 
 - (void)setUpLayers {
+    // Set all the defaults for the circle.
     _imageLayers = [[NSMutableArray alloc] init];
     self.hidden = YES;
     self.backgroundColor = [UIColor clearColor];
     self.autoresizingMask = UIViewAutoresizingFlexibleWidth|UIViewAutoresizingFlexibleHeight;
-    _ready = NO;
+    _readyForUser = NO;
     _origin = CGPointMake(CGRectGetMidX(self.bounds), CGRectGetMidY(self.bounds));
     _currentPosition = _origin;
     
@@ -99,18 +101,19 @@
     // Create the layers for all the sharing service images.
     for(int i = 0; i < _sharers.count; i++) {
         CFSharer *sharer = [_sharers objectAtIndex:i];
-        
         UIImage *image = [sharer image];
         
         // Construct the base layer in which will be rotated around the origin of the circle.
         CAShapeLayer *baseLayer = [CAShapeLayer layer];
         baseLayer.frame = CGRectMake(0,0, BACKGROUND_SIZE,BACKGROUND_SIZE);
         baseLayer.position = CGPointMake(CGRectGetMidX(_backgroundLayer.bounds), CGRectGetMidY(_backgroundLayer.bounds));
+        
         // Construct the image layer which will contain our image.
         CALayer *imageLayer = [CALayer layer];
         imageLayer.frame = CGRectMake(0, 0, IMAGE_SIZE, IMAGE_SIZE);
         imageLayer.position = CGPointMake(BACKGROUND_SIZE/2.0 + PATH_SIZE/2.0, BACKGROUND_SIZE/2.0);
         imageLayer.contents = (id)image.CGImage;
+        
         // Add all the layers
         [baseLayer addSublayer:imageLayer];
         [_imageLayers addObject:baseLayer];
@@ -158,15 +161,16 @@
 }
 
 - (void)updateLayers {
-    if(_ready) {        
-        // Update the touch layer.
-        [CATransaction begin];
-        [CATransaction setValue: (id) kCFBooleanTrue forKey: kCATransactionDisableActions];
-        // Update the position of the touch layer.
-        _touchLayer.position = [self touchLocationAtPoint:_currentPosition];
-        [CATransaction commit];
+    // Only update if the circle is presented to the user.
+    if(_readyForUser) {
         
         int hoveringIndex = [self indexHoveringOver];
+        
+        // Update the touch layer without waiting for an animation.
+        [CATransaction begin];
+        [CATransaction setValue: (id) kCFBooleanTrue forKey: kCATransactionDisableActions];
+        _touchLayer.position = [self touchLocationAtPoint:_currentPosition];
+        [CATransaction commit];
         
         // Update the images.
         for(int i = 0; i < [_imageLayers count]; i++){
@@ -185,7 +189,6 @@
         } else {
             _touchLayer.opacity = 0.1;
         }
-        
         _touchLayer.strokeColor = [UIColor blackColor].CGColor;
         
         // Update the intro text layer.
@@ -195,9 +198,8 @@
             _introTextLayer.opacity = 0.6;
         
         // Update the share title text layer
-        int index = [self indexHoveringOver];
-        if(index != -1) {
-            CFSharer *sharer = [_sharers objectAtIndex:index];
+        if(hoveringIndex != -1) {
+            CFSharer *sharer = [_sharers objectAtIndex:hoveringIndex];
             _shareTitleLayer.string = [sharer name];
             _shareTitleLayer.opacity = 0.6;
         } else {
@@ -205,6 +207,7 @@
             _shareTitleLayer.string = @"";
         }
     } else {
+        // Hide all the layers if the they are not presented to the user.
         [CATransaction begin];
         [CATransaction setValue: (id) kCFBooleanTrue forKey: kCATransactionDisableActions];
         _touchLayer.opacity = 0.0;
@@ -221,7 +224,7 @@
         layer.transform = CATransform3DMakeRotation(-i/([_sharers count]/2.0)*M_PI, 0, 0, 1);
         layer.opacity = 1.0;
         
-        // Animate the iamge layer to get the correct orientation.
+        // Animate the image layer to get the correct orientation.
         CALayer* sub = [layer.sublayers objectAtIndex:0];
         sub.transform = CATransform3DMakeRotation(i/([_sharers count]/2.0)*M_PI, 0, 0, 1);
     }
@@ -276,11 +279,9 @@
 }
 
 - (CGPoint)pointAtIndex:(int)index {
-    // Number for trig.
-    float trig = index/([_sharers count]/2.0)*M_PI;
-    
     // Calculate the x and y coordinate.
     // Points go around the unit circle starting at pi = 0.
+    float trig = index/([_sharers count]/2.0)*M_PI;
     float x = _origin.x + cosf(trig)*PATH_SIZE/2.0;
     float y = _origin.y - sinf(trig)*PATH_SIZE/2.0;
     
@@ -301,13 +302,12 @@
 #pragma mark - Animation delegate
 
 - (void)animationDidStop:(CAAnimation *)anim finished:(BOOL)flag {
-    // Our animation for animate the circle out has ended so let's hide the view.
     if([[anim valueForKey:@"id"] isEqual:@"animateOut"]) {
-        _backgroundLayer.position = CGPointMake(self.bounds.size.width + BACKGROUND_SIZE/2.0, CGRectGetMidY(self.bounds));
+        _backgroundLayer.position = CGPointMake(self.bounds.size.width + BACKGROUND_SIZE/2.0, CGRectGetMidY(self.bounds)); // Needed for Core Animation fix??
         self.hidden = YES;
     } else if([[anim valueForKey:@"id"] isEqual:@"animateIn"]) {
-        _backgroundLayer.position = CGPointMake(CGRectGetMidX(self.bounds), CGRectGetMidY(self.bounds));
-        _ready = YES;
+        _backgroundLayer.position = CGPointMake(CGRectGetMidX(self.bounds), CGRectGetMidY(self.bounds)); // Needed for Core Animation fix??
+        _readyForUser = YES;
         [self updateLayers];
     }
 }
@@ -318,7 +318,7 @@
     UITouch *touch = (UITouch *)[[touches allObjects] objectAtIndex:0];
     _currentPosition = [touch locationInView:self];
     
-    // Make sure the user starts with touch inside the circle and outside.
+    // Make sure the user starts with touch inside the circle.
     if([self circleEnclosesPoint: _currentPosition]) {
         _dragging = YES;
         [self updateLayers];
@@ -331,9 +331,7 @@
     UITouch *touch = (UITouch *)[[touches allObjects] objectAtIndex:0];
     _currentPosition = [touch locationInView:self];
     
-    if(_dragging){
-        [self updateLayers];
-    }
+    if(_dragging) [self updateLayers];
 }
 
 - (void)touchesEnded:(NSSet *)touches withEvent:(UIEvent *)event {
@@ -380,7 +378,7 @@
 }
 
 - (void)animateOut {
-    _ready = NO;
+    _readyForUser = NO;
     [self updateLayers];
     CABasicAnimation *animation = [CABasicAnimation animationWithKeyPath:@"position"];
     [animation setValue:@"animateOut" forKey:@"id"];
