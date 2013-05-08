@@ -135,12 +135,13 @@
     
     // Create the intro text layer to help the user.
     _introTextLayer = [CATextLayer layer];
-    _introTextLayer.string = @"Drag and Share";
+    _introTextLayer.string = @"Drag to\nShare";
     _introTextLayer.wrapped = YES;
     _introTextLayer.alignmentMode = kCAAlignmentCenter;
-    _introTextLayer.fontSize = 13.0;
+    _introTextLayer.fontSize = 14.0;
+    _introTextLayer.font = CFBridgingRetain([UIFont fontWithName:@"HelveticaNeue-Light" size:14.0f].fontName);
     _introTextLayer.foregroundColor = [UIColor blackColor].CGColor;
-    _introTextLayer.frame = CGRectMake(0, 0, 60, 29);
+    _introTextLayer.frame = CGRectMake(0, 0, 60, 31);
     _introTextLayer.position = CGPointMake(CGRectGetMidX(_backgroundLayer.bounds), CGRectGetMidY(_backgroundLayer.bounds));
     _introTextLayer.contentsScale = [[UIScreen mainScreen] scale];
     _introTextLayer.opacity = 0.0;
@@ -152,6 +153,7 @@
     _shareTitleLayer.wrapped = YES;
     _shareTitleLayer.alignmentMode = kCAAlignmentCenter;
     _shareTitleLayer.fontSize = 20.0;
+    _shareTitleLayer.font = CFBridgingRetain([UIFont fontWithName:@"HelveticaNeue-Light" size:14.0f].fontName);
     _shareTitleLayer.foregroundColor = [UIColor blackColor].CGColor;
     _shareTitleLayer.frame = CGRectMake(0, 0, 120, 28);
     _shareTitleLayer.position = CGPointMake(CGRectGetMidX(_backgroundLayer.bounds), CGRectGetMidY(_backgroundLayer.bounds));
