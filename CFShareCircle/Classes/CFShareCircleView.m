@@ -113,6 +113,10 @@
         imageLayer.frame = CGRectMake(0, 0, IMAGE_SIZE, IMAGE_SIZE);
         imageLayer.position = CGPointMake(BACKGROUND_SIZE/2.0 + PATH_SIZE/2.0, BACKGROUND_SIZE/2.0);
         imageLayer.contents = (id)image.CGImage;
+        imageLayer.shadowColor = [UIColor colorWithRed:213.0/255.0 green:213.0/255.0 blue:213.0/255.0 alpha:1.0].CGColor;
+        imageLayer.shadowOffset = CGSizeMake(1, 1);
+        imageLayer.shadowRadius = 0;
+        imageLayer.shadowOpacity = 1.0; 
         
         // Add all the layers
         [baseLayer addSublayer:imageLayer];
