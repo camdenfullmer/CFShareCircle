@@ -22,7 +22,7 @@
 
 @implementation CFShareCircleView{
     CGPoint _currentPosition, _origin;
-    BOOL _dragging, _visible;
+    BOOL _dragging, _ready;
     CALayer *_closeButtonLayer, *_overlayLayer;
     CAShapeLayer *_backgroundLayer, *_touchLayer;
     CATextLayer *_introTextLayer, *_shareTitleLayer;
@@ -54,11 +54,10 @@
     return self;
 }
 
-- (void)layoutSubviews {    
+- (void)layoutSubviews {
     _overlayLayer.frame = self.bounds;
     _origin = CGPointMake(CGRectGetMidX(self.bounds), CGRectGetMidY(self.bounds));
     _currentPosition = _origin;
-    _backgroundLayer.position = _origin;
     [self updateLayers];
 }
 
@@ -69,9 +68,9 @@
     self.hidden = YES;
     self.backgroundColor = [UIColor clearColor];
     self.autoresizingMask = UIViewAutoresizingFlexibleWidth|UIViewAutoresizingFlexibleHeight;
+    _ready = NO;
     _origin = CGPointMake(CGRectGetMidX(self.bounds), CGRectGetMidY(self.bounds));
     _currentPosition = _origin;
-    _visible = NO;
     
     // Create the overlay layer for the entire screen.
     _overlayLayer = [CAShapeLayer layer];
@@ -81,10 +80,10 @@
     
     // Create a larger circle layer for the background of the Share Circle.
     _backgroundLayer = [CAShapeLayer layer];
-    _backgroundLayer.frame = CGRectMake(CGRectGetMidX(self.bounds) - BACKGROUND_SIZE/2.0, CGRectGetMidY(self.bounds) - BACKGROUND_SIZE/2.0, BACKGROUND_SIZE, BACKGROUND_SIZE);    
+    _backgroundLayer.frame = CGRectMake(CGRectGetMidX(self.bounds) - BACKGROUND_SIZE/2.0, CGRectGetMidY(self.bounds) - BACKGROUND_SIZE/2.0, BACKGROUND_SIZE, BACKGROUND_SIZE);
     _backgroundLayer.strokeColor = [[UIColor colorWithWhite:0 alpha:0.1] CGColor];
     _backgroundLayer.lineWidth = 2.0f;
-    _backgroundLayer.position = CGPointMake(CGRectGetMidX(self.bounds), CGRectGetMidY(self.bounds));
+    _backgroundLayer.position = CGPointMake(self.bounds.size.width + BACKGROUND_SIZE/2.0, CGRectGetMidY(self.bounds));
     _backgroundLayer.fillColor = [[UIColor whiteColor] CGColor];
     CGMutablePathRef backgroundPath = CGPathCreateMutable();
     CGRect backgroundRect = CGRectMake(0,0,BACKGROUND_SIZE,BACKGROUND_SIZE);
@@ -120,7 +119,7 @@
     CGPathAddEllipseInRect(circularPath, NULL, CGRectMake(0, 0, TOUCH_SIZE, TOUCH_SIZE));
     _touchLayer.path = circularPath;
     _touchLayer.position = CGPointMake(CGRectGetMidX(_backgroundLayer.bounds), CGRectGetMidY(_backgroundLayer.bounds));
-    _touchLayer.opacity = 0.1;
+    _touchLayer.opacity = 0.0;
     _touchLayer.fillColor = [UIColor clearColor].CGColor;
     _touchLayer.strokeColor = [UIColor blackColor].CGColor;
     _touchLayer.lineWidth = 2.0f;
@@ -136,7 +135,7 @@
     _introTextLayer.frame = CGRectMake(0, 0, 60, 29);
     _introTextLayer.position = CGPointMake(CGRectGetMidX(_backgroundLayer.bounds), CGRectGetMidY(_backgroundLayer.bounds));
     _introTextLayer.contentsScale = [[UIScreen mainScreen] scale];
-    _introTextLayer.opacity = 0.5;
+    _introTextLayer.opacity = 0.0;
     [_backgroundLayer addSublayer:_introTextLayer];
     
     // Create the share title text layer.
@@ -154,50 +153,59 @@
 }
 
 - (void)updateLayers {
-    // Update the touch layer.
-    [CATransaction begin];
-    [CATransaction setValue: (id) kCFBooleanTrue forKey: kCATransactionDisableActions];
-    // Update the position of the touch layer.
-    _touchLayer.position = [self touchLocationAtPoint:_currentPosition];
-    [CATransaction commit];
-    
-    int hoveringIndex = [self indexHoveringOver];
-    
-    // Update the images.
-    for(int i = 0; i < [_imageLayers count]; i++){
-        CALayer *layer = [_imageLayers objectAtIndex:i];
-        if(i == hoveringIndex || !_dragging)
-            layer.opacity = 1.0;
+    if(_ready) {        
+        // Update the touch layer.
+        [CATransaction begin];
+        [CATransaction setValue: (id) kCFBooleanTrue forKey: kCATransactionDisableActions];
+        // Update the position of the touch layer.
+        _touchLayer.position = [self touchLocationAtPoint:_currentPosition];
+        [CATransaction commit];
+        
+        int hoveringIndex = [self indexHoveringOver];
+        
+        // Update the images.
+        for(int i = 0; i < [_imageLayers count]; i++){
+            CALayer *layer = [_imageLayers objectAtIndex:i];
+            if(i == hoveringIndex || !_dragging)
+                layer.opacity = 1.0;
+            else
+                layer.opacity = 0.6;
+        }
+        
+        // Update the touch layer.
+        if(hoveringIndex != -1){
+            _touchLayer.opacity = 1.0;
+        } else if(_dragging){
+            _touchLayer.opacity = 0.5;
+        } else {
+            _touchLayer.opacity = 0.1;
+        }
+        
+        _touchLayer.strokeColor = [UIColor blackColor].CGColor;
+        
+        // Update the intro text layer.
+        if(_dragging)
+            _introTextLayer.opacity = 0.0;
         else
-            layer.opacity = 0.6;
-    }
-    
-    // Update the touch layer.
-    if(hoveringIndex != -1){        
-        _touchLayer.opacity = 1.0;
-    } else if(_dragging){
-        _touchLayer.opacity = 0.5;
+            _introTextLayer.opacity = 0.6;
+        
+        // Update the share title text layer
+        int index = [self indexHoveringOver];
+        if(index != -1) {
+            CFSharer *sharer = [_sharers objectAtIndex:index];
+            _shareTitleLayer.string = [sharer name];
+            _shareTitleLayer.opacity = 0.6;
+        } else {
+            _shareTitleLayer.opacity = 0.0;
+            _shareTitleLayer.string = @"";
+        }
     } else {
-        _touchLayer.opacity = 0.1;
-    }
-    
-    _touchLayer.strokeColor = [UIColor blackColor].CGColor;
-    
-    // Update the intro text layer.
-    if(_dragging)
+        [CATransaction begin];
+        [CATransaction setValue: (id) kCFBooleanTrue forKey: kCATransactionDisableActions];
+        _touchLayer.opacity = 0.0;
         _introTextLayer.opacity = 0.0;
-    else
-        _introTextLayer.opacity = 0.6;
-    
-    // Update the share title text layer
-    int index = [self indexHoveringOver];
-    if(index != -1) {
-        CFSharer *sharer = [_sharers objectAtIndex:index];
-        _shareTitleLayer.string = [sharer name];
-        _shareTitleLayer.opacity = 0.6;
-    } else {
         _shareTitleLayer.opacity = 0.0;
-        _shareTitleLayer.string = @"";
+        [CATransaction commit];
     }
 }
 
@@ -285,17 +293,31 @@
         return YES;
 }
 
+#pragma mark - Animation delegate
+
+- (void)animationDidStop:(CAAnimation *)anim finished:(BOOL)flag {
+    // Our animation for animate the circle out has ended so let's hide the view.
+    if([[anim valueForKey:@"id"] isEqual:@"animateOut"]) {
+        _backgroundLayer.position = CGPointMake(self.bounds.size.width + BACKGROUND_SIZE/2.0, CGRectGetMidY(self.bounds));
+        self.hidden = YES;
+    } else if([[anim valueForKey:@"id"] isEqual:@"animateIn"]) {
+        _backgroundLayer.position = CGPointMake(CGRectGetMidX(self.bounds), CGRectGetMidY(self.bounds));
+        _ready = YES;
+        [self updateLayers];
+    }
+}
+
 #pragma mark - Touch delegate
 
 - (void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event {
     UITouch *touch = (UITouch *)[[touches allObjects] objectAtIndex:0];
     _currentPosition = [touch locationInView:self];
     
-    // Make sure the user starts with touch inside the circle and not in the close button.
-    if([self circleEnclosesPoint: _currentPosition]){
+    // Make sure the user starts with touch inside the circle and outside.
+    if([self circleEnclosesPoint: _currentPosition]) {
         _dragging = YES;
         [self updateLayers];
-    } else{
+    } else {
         [self animateOut];
     }
 }
@@ -339,33 +361,32 @@
 #pragma mark - Public methods
 
 - (void)animateIn {
-    _visible = YES;
     self.hidden = NO;
-    _introTextLayer.opacity = 0.5;
-    
-    [UIView animateWithDuration: 0.2
-                          delay: 0.0
-                        options: UIViewAnimationOptionCurveEaseIn
-                     animations:^{
-                         [self updateLayers];
-                     }
-                     completion:^(BOOL finished){
-                         [self animateImagesIn];
-                     }];
+    CABasicAnimation *animation = [CABasicAnimation animationWithKeyPath:@"position"];
+    [animation setValue:@"animateIn" forKey:@"id"];
+    animation.fromValue = [NSValue valueWithCGPoint:_backgroundLayer.position];
+    animation.toValue = [NSValue valueWithCGPoint:CGPointMake(CGRectGetMidX(self.bounds), CGRectGetMidY(self.bounds))];
+    animation.duration = 0.3;
+    animation.delegate = self;
+    animation.fillMode = kCAFillModeForwards;
+    animation.removedOnCompletion = NO;
+    [_backgroundLayer addAnimation:animation forKey:@"position"];    
+    [self animateImagesIn];
 }
 
 - (void)animateOut {
-    _visible = NO;
+    _ready = NO;
+    [self updateLayers];
+    CABasicAnimation *animation = [CABasicAnimation animationWithKeyPath:@"position"];
+    [animation setValue:@"animateOut" forKey:@"id"];
+    animation.fromValue = [NSValue valueWithCGPoint:_backgroundLayer.position];
+    animation.toValue = [NSValue valueWithCGPoint:CGPointMake(self.bounds.size.width + BACKGROUND_SIZE/2.0, CGRectGetMidY(self.bounds))];
+    animation.duration = 0.3;
+    animation.delegate = self;
+    animation.fillMode = kCAFillModeForwards;
+    animation.removedOnCompletion = NO;
+    [_backgroundLayer addAnimation:animation forKey:@"position"];    
     [self animateImagesOut];
-    [UIView animateWithDuration: 0.2
-                          delay: 0.0
-                        options: UIViewAnimationOptionCurveEaseOut
-                     animations:^{
-                         [self updateLayers];
-                     }
-                     completion:^(BOOL finished){
-                         self.hidden = YES;
-                     }];
 }
 
 @end
