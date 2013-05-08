@@ -88,8 +88,6 @@
     // Create a larger circle layer for the background of the Share Circle.
     _backgroundLayer = [CAShapeLayer layer];
     _backgroundLayer.frame = CGRectMake(CGRectGetMidX(self.bounds) - BACKGROUND_SIZE/2.0, CGRectGetMidY(self.bounds) - BACKGROUND_SIZE/2.0, BACKGROUND_SIZE, BACKGROUND_SIZE);
-    _backgroundLayer.strokeColor = [[UIColor colorWithWhite:0 alpha:0.1] CGColor];
-    _backgroundLayer.lineWidth = 2.0f;
     _backgroundLayer.position = CGPointMake(self.bounds.size.width + BACKGROUND_SIZE/2.0, CGRectGetMidY(self.bounds));
     _backgroundLayer.fillColor = [[UIColor whiteColor] CGColor];
     CGMutablePathRef backgroundPath = CGPathCreateMutable();
@@ -97,6 +95,23 @@
     CGPathAddEllipseInRect(backgroundPath, nil, backgroundRect);
     _backgroundLayer.path = backgroundPath;
     [self.layer addSublayer:_backgroundLayer];
+    
+    // Create the innner shadow layer for the circle.
+    CAShapeLayer* shadowLayer = [CAShapeLayer layer];
+    [shadowLayer setFrame:[self bounds]];
+    [shadowLayer setShadowColor:[[UIColor colorWithWhite:0 alpha:1.0] CGColor]];
+    [shadowLayer setShadowOffset:CGSizeMake(0.0f, 0.0f)];
+    [shadowLayer setShadowOpacity:0.3f];
+    [shadowLayer setShadowRadius:3.0];
+    [shadowLayer setFillRule:kCAFillRuleEvenOdd];
+    CGMutablePathRef path = CGPathCreateMutable();
+    CGPathAddRect(path, NULL, CGRectInset(backgroundRect, -3, -3));
+    CGPathAddPath(path, NULL, backgroundPath);
+    [shadowLayer setPath:path];
+    CAShapeLayer* maskLayer = [CAShapeLayer layer];
+    [maskLayer setPath:backgroundPath];
+    [shadowLayer setMask:maskLayer];
+    [_backgroundLayer addSublayer:shadowLayer];
     
     // Create the layers for all the sharing service images.
     for(int i = 0; i < _sharers.count; i++) {
