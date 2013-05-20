@@ -19,7 +19,7 @@ Follow the instructions to add CFShareCircle to your project.
         - Foundation
         - CoreGraphics
 
-2. Add the images directory, CFShareCircle, and CFSharer resources to your project. Make sure that the CFShareCircle.m, CFShareCircle.h, CHSharer.m, and CFSharer.h are listed under "Copy Bundle Resources" under "Build Phases".
+2. Under the "CFShareCircle" directory copy the "Images" directory under "Resources" to your project. Then also copy over the CFShareCirleView and CFSharer files located under "Classes". Make sure that the CFShareCircle.m, CFShareCircle.h, CHSharer.m, and CFSharer.h are listed under "Copy Bundle Resources" under "Build Phases".
 
 3. Edit your view controller header file to import the CFShareCircle header file, add the delegate, and create an object.
 
@@ -35,17 +35,17 @@ Follow the instructions to add CFShareCircle to your project.
 ```
 - (void)viewDidLoad
 {
-        [super viewDidLoad];
         // Do any additional setup after loading the view, typically from a nib.
-        shareCircleView = [[CFShareCircleView alloc] init];
+        shareCircleView = [[CFShareCircleView alloc] initWithFrame:self.view.frame];
         shareCircleView.delegate = self;
         [self.navigationController.view addSubview:shareCircleView];
+        [super viewDidLoad];
 }
 ```
 
 5. Implement the delegate method for the view. Note: Index returned from the view is in order of the array (i.e. Starts from pi = 0 on the unit circle).
 ``` 
-    - (void)shareCircleView:(CFShareCircleView *)aShareCircleView didSelectIndex:(int)index{
+    - (void)shareCircleView:(CFShareCircleView *)shareCircleView didSelectIndex:(int)index{
         NSLog(@"Selected index: %d", index);
     }
 ```
