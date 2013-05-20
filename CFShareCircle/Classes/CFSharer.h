@@ -16,7 +16,9 @@ typedef enum {
     CFSharerTypeDropbox,
     CFSharerTypeGoogleDrive,
     CFSharerTypePinterest,
-    CFSharerTypeEvernote
+    CFSharerTypeEvernote,
+    CFSharerTypePhotoLibrary,
+    CFSharerTypeMail
 } CFSharerType;
 
 @interface CFSharer : NSObject

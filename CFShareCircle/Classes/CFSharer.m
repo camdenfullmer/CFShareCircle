@@ -26,6 +26,14 @@
     self = [super init];
     if (self) {
         switch(type) {
+            case CFSharerTypeMail:
+                _name = @"Mail";
+                _image = [UIImage imageNamed:@"mail.png"];
+                break;
+            case CFSharerTypePhotoLibrary:
+                _name = @"Photos";
+                _image = [UIImage imageNamed:@"photo_library.png"];
+                break;
             case CFSharerTypeDropbox:
                 _name = @"Dropbox";
                 _image = [UIImage imageNamed:@"dropbox.png"];

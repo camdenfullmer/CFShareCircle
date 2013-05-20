@@ -11,6 +11,10 @@
 		4103D8641680DFF4008AFCFC /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4103D8631680DFF4008AFCFC /* Foundation.framework */; };
 		4103D8661680DFF4008AFCFC /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4103D8651680DFF4008AFCFC /* CoreGraphics.framework */; };
 		4103D86E1680DFF4008AFCFC /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 4103D86D1680DFF4008AFCFC /* main.m */; };
+		411F6769174ABA4C00AFEDBD /* photo_library.png in Resources */ = {isa = PBXBuildFile; fileRef = 411F6767174ABA4C00AFEDBD /* photo_library.png */; };
+		411F676A174ABA4C00AFEDBD /* photo_library@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 411F6768174ABA4C00AFEDBD /* photo_library@2x.png */; };
+		411F676D174ABBD100AFEDBD /* mail.png in Resources */ = {isa = PBXBuildFile; fileRef = 411F676B174ABBD000AFEDBD /* mail.png */; };
+		411F676E174ABBD100AFEDBD /* mail@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 411F676C174ABBD000AFEDBD /* mail@2x.png */; };
 		41A09ECE16A5FACF008C8933 /* CoreImage.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 41A09ECD16A5FACF008C8933 /* CoreImage.framework */; };
 		41C80695173ABB5600B84ED6 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 41C8068E173ABB5600B84ED6 /* AppDelegate.m */; };
 		41C80696173ABB5600B84ED6 /* CFShareCircleView.m in Sources */ = {isa = PBXBuildFile; fileRef = 41C80690173ABB5600B84ED6 /* CFShareCircleView.m */; };
@@ -45,6 +49,10 @@
 		4103D8691680DFF4008AFCFC /* CFShareCircle-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "CFShareCircle-Info.plist"; sourceTree = "<group>"; };
 		4103D86D1680DFF4008AFCFC /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		4103D86F1680DFF4008AFCFC /* CFShareCircle-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "CFShareCircle-Prefix.pch"; sourceTree = "<group>"; };
+		411F6767174ABA4C00AFEDBD /* photo_library.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = photo_library.png; sourceTree = "<group>"; };
+		411F6768174ABA4C00AFEDBD /* photo_library@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "photo_library@2x.png"; sourceTree = "<group>"; };
+		411F676B174ABBD000AFEDBD /* mail.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = mail.png; sourceTree = "<group>"; };
+		411F676C174ABBD000AFEDBD /* mail@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "mail@2x.png"; sourceTree = "<group>"; };
 		41A09ECD16A5FACF008C8933 /* CoreImage.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreImage.framework; path = System/Library/Frameworks/CoreImage.framework; sourceTree = SDKROOT; };
 		41C8068D173ABB5600B84ED6 /* AppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		41C8068E173ABB5600B84ED6 /* AppDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
@@ -173,6 +181,10 @@
 		41C806A3173ABB5E00B84ED6 /* Images */ = {
 			isa = PBXGroup;
 			children = (
+				411F676B174ABBD000AFEDBD /* mail.png */,
+				411F676C174ABBD000AFEDBD /* mail@2x.png */,
+				411F6767174ABA4C00AFEDBD /* photo_library.png */,
+				411F6768174ABA4C00AFEDBD /* photo_library@2x.png */,
 				41C806A4173ABB5E00B84ED6 /* dropbox.png */,
 				41C806A5173ABB5E00B84ED6 /* dropbox@2x.png */,
 				41C806A6173ABB5E00B84ED6 /* evernote.png */,
@@ -265,6 +277,10 @@
 				41C806C0173ABB5E00B84ED6 /* pinterest@2x.png in Resources */,
 				41C806C1173ABB5E00B84ED6 /* twitter.png in Resources */,
 				41C806C2173ABB5E00B84ED6 /* twitter@2x.png in Resources */,
+				411F6769174ABA4C00AFEDBD /* photo_library.png in Resources */,
+				411F676A174ABA4C00AFEDBD /* photo_library@2x.png in Resources */,
+				411F676D174ABBD100AFEDBD /* mail.png in Resources */,
+				411F676E174ABBD100AFEDBD /* mail@2x.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
