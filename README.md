@@ -55,26 +55,28 @@ Follow the instructions to add CFShareCircle to your project.
     [shareCircleView animateIn];
 ```
 
-###Custom Sharing Images
+###Customize CFShareCirlce
 
-To customize what sharing images you want to show all you have to do is intialize with your own array of images. These names specifically correspond to image file names as well. Images should be 100px by 100px for @2x and 50px by 50px for normal.
-
-For Example: Adding sharing service named "Evernote" will cause the share circle to look for an image named "evernote.png". Where "Photo Album" will look for "photo_album.png". Be aware of this when adding your own images.
+If you would like to determine what the CFShareCircle view shows, all you have to do is intialize your own array of sharers.
 
 ```
-shareCircleView = [[CFShareCircleView alloc] initWithSharers:[[NSArray alloc] initWithObjects: @"Facebook", @"Twitter", @"Mail", nil]];
+shareCircleView = [[CFShareCircleView alloc] initWithFrame:self.view.frame sharers:[[NSMutableArray alloc] initWithObjects: [[CFSharer alloc] initWithType:CFSharerTypeTwitter ], [[CFSharer alloc] initWithType:CFSharerTypeFacebook], nil]];
 ```
 
-List of sharing icons included with project.
+Then to extend this you can create your own CFSharer objects, just provide your own name for the sharer and image. Note that icons should be 100px by 100px for @2x and 50px by 50px for standard.
+
+```
+CFSharer *newSharer = [[CFSharer alloc] initWithName:@"Facebook" imageName:@"facebook.png"];
+```
+
+Types of CFSharers included:
 
     - Evernote
     - Twitter
-    - Google+
+    - Google Drive
     - Facebook
-    - Mail
-    - Message
-    - Photo Album
-    - Flickr
+    - Pinterest
+    - Dropbox
     
 ##Requirments
 
