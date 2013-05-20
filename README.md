@@ -2,9 +2,9 @@
 
 CFShareCircle is a better way for app developers to let users share the content to many different services. It is a simple UIView that adds drag and share capabilities to a developers application. View was only tested on iOS 6.0, but should be 5.1+ capable.
 
-![Demo Image 1](http://i.imgur.com/sbIax.png?1)
+![Demo Image 1](http://i.imgur.com/z6mKFlTl.png)
 
-![Demo Image 2](http://i.imgur.com/bHGO4.png?1?8176)
+![Demo Image 2](http://i.imgur.com/lcfzbJwl.png)
 
 ##How To Use
 
@@ -19,7 +19,7 @@ Follow the instructions to add CFShareCircle to your project.
         - Foundation
         - CoreGraphics
 
-2. Add the images directory, CFShareCircle, and CFSharer resources to your project. Make sure that the CFShareCircle.m, CFShareCircle.h, CHSharer.m, and CFSharer.h are listed under "Copy Bundle Resources" under "Build Phases".
+2. Under the "CFShareCircle" directory copy the "Images" directory under "Resources" to your project. Then also copy over the CFShareCirleView and CFSharer files located under "Classes". Make sure that the CFShareCircle.m, CFShareCircle.h, CHSharer.m, and CFSharer.h are listed under "Copy Bundle Resources" under "Build Phases".
 
 3. Edit your view controller header file to import the CFShareCircle header file, add the delegate, and create an object.
 
@@ -35,17 +35,17 @@ Follow the instructions to add CFShareCircle to your project.
 ```
 - (void)viewDidLoad
 {
-        [super viewDidLoad];
         // Do any additional setup after loading the view, typically from a nib.
-        shareCircleView = [[CFShareCircleView alloc] init];
+        shareCircleView = [[CFShareCircleView alloc] initWithFrame:self.view.frame];
         shareCircleView.delegate = self;
         [self.navigationController.view addSubview:shareCircleView];
+        [super viewDidLoad];
 }
 ```
 
 5. Implement the delegate method for the view. Note: Index returned from the view is in order of the array (i.e. Starts from pi = 0 on the unit circle).
 ``` 
-    - (void)shareCircleView:(CFShareCircleView *)aShareCircleView didSelectIndex:(int)index{
+    - (void)shareCircleView:(CFShareCircleView *)shareCircleView didSelectIndex:(int)index{
         NSLog(@"Selected index: %d", index);
     }
 ```
@@ -55,26 +55,30 @@ Follow the instructions to add CFShareCircle to your project.
     [shareCircleView animateIn];
 ```
 
-###Custom Sharing Images
+###Customize CFShareCirlce
 
-To customize what sharing images you want to show all you have to do is intialize with your own array of images. These names specifically correspond to image file names as well. Images should be 100px by 100px for @2x and 50px by 50px for normal.
-
-For Example: Adding sharing service named "Evernote" will cause the share circle to look for an image named "evernote.png". Where "Photo Album" will look for "photo_album.png". Be aware of this when adding your own images.
+If you would like to determine what the CFShareCircle view shows, all you have to do is intialize your own array of sharers.
 
 ```
-shareCircleView = [[CFShareCircleView alloc] initWithSharers:[[NSArray alloc] initWithObjects: @"Facebook", @"Twitter", @"Mail", nil]];
+shareCircleView = [[CFShareCircleView alloc] initWithFrame:self.view.frame sharers:[[NSMutableArray alloc] initWithObjects: [[CFSharer alloc] initWithType:CFSharerTypeTwitter ], [[CFSharer alloc] initWithType:CFSharerTypeFacebook], nil]];
 ```
 
-List of sharing icons included with project.
+Then to extend this you can create your own CFSharer objects, just provide your own name for the sharer and image. Note that icons should be 100px by 100px for @2x and 50px by 50px for standard.
+
+```
+CFSharer *newSharer = [[CFSharer alloc] initWithName:@"Facebook" imageName:@"facebook.png"];
+```
+
+Types of CFSharers included:
 
     - Evernote
     - Twitter
-    - Google+
+    - Google Drive
     - Facebook
+    - Pinterest
+    - Dropbox
+    - Photos
     - Mail
-    - Message
-    - Photo Album
-    - Flickr
     
 ##Requirments
 
