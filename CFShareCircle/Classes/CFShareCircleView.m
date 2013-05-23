@@ -14,9 +14,9 @@
 - (void)updateLayers; /* Updates all the layers based on the new current position of the touch input. */
 - (void)animateImagesIn; /* Animation used when the view is first presented to the user. */
 - (void)animateImagesOut; /* Animation used to reset the images so the animation in works correctly. */
-- (int)indexHoveringOver; /* Return the index that the user is hovering over at this exact moment in time. */
+- (int)indexHoveringOver; /* Return the index of the sharer that the user is hovering over at this exact moment in time. */
 - (CGPoint)touchLocationAtPoint:(CGPoint)point; /* Determines where the touch images is going to be placed inside of the view. */
-- (CGPoint)pointAtIndex:(int)index; /* Get the point at the specified index. */
+- (void)calculateImportantPoints; /* Calculate some points that are used over and over again. */
 - (BOOL)circleEnclosesPoint:(CGPoint)point; /* Returns if the point is inside the cirlce. */
 @end
 
@@ -26,7 +26,7 @@
     CALayer *_closeButtonLayer, *_overlayLayer;
     CAShapeLayer *_backgroundLayer, *_touchLayer;
     CATextLayer *_introTextLayer, *_shareTitleLayer;
-    NSMutableArray *_imageLayers, *_sharers;
+    NSMutableArray *_imageLayers, *_sharers, *_sharerLocations;
 }
 
 #define BACKGROUND_SIZE 275
@@ -69,6 +69,22 @@
 
 #pragma mark - Private methods
 
+- (void)calculateImportantPoints {
+    _sharerLocations = [[NSMutableArray alloc] init];
+    for(int i = 0; i < _sharers.count; i++) {
+        // Calculate the x and y coordinate. Points go around the unit circle starting at pi = 0.
+        float trig = i/(_sharers.count/2.0)*M_PI;
+        float x = _origin.x + cosf(trig)*PATH_SIZE/2.0;
+        float y = _origin.y - sinf(trig)*PATH_SIZE/2.0;
+        
+        // Subtract half width and height of image size.
+        x -= IMAGE_SIZE/2.0;
+        y -= IMAGE_SIZE/2.0;
+        
+        [_sharerLocations addObject:[NSValue valueWithCGPoint:CGPointMake(x, y)]];
+    }
+}
+
 - (void)setUpLayers {
     // Set all the defaults for the circle.
     _imageLayers = [[NSMutableArray alloc] init];
@@ -78,6 +94,7 @@
     _readyForUser = NO;
     _origin = CGPointMake(CGRectGetMidX(self.bounds), CGRectGetMidY(self.bounds));
     _currentPosition = _origin;
+    [self calculateImportantPoints];
     
     // Create the overlay layer for the entire screen.
     _overlayLayer = [CAShapeLayer layer];
@@ -167,15 +184,13 @@
 - (void)updateLayers {
     // Only update if the circle is presented to the user.
     if(_readyForUser) {
-        
-        int hoveringIndex = [self indexHoveringOver];
-        
         // Update the touch layer without waiting for an animation.
         [CATransaction begin];
         [CATransaction setValue: (id) kCFBooleanTrue forKey: kCATransactionDisableActions];
         _touchLayer.position = [self touchLocationAtPoint:_currentPosition];
         [CATransaction commit];
         
+        int hoveringIndex = [self indexHoveringOver];
         // Update the images.
         for(int i = 0; i < [_imageLayers count]; i++) {
             CALayer *layer = [_imageLayers objectAtIndex:i];
@@ -187,21 +202,18 @@
         }
         
         // Update the touch layer.
-        if(hoveringIndex != -1) {
+        if(hoveringIndex != -1)
             _touchLayer.opacity = 1.0;
-        } else if(_dragging) {
+        else if(_dragging)
             _touchLayer.opacity = 0.5;
-        } else {
+        else
             _touchLayer.opacity = 0.1;
-        }
-        _touchLayer.strokeColor = [UIColor blackColor].CGColor;
         
         // Update the intro text layer.
-        if(_dragging) {
+        if(_dragging)
             _introTextLayer.opacity = 0.0;
-        } else {
+        else
             _introTextLayer.opacity = 0.6;
-        }
             
         // Update the share title text layer
         if(hoveringIndex != -1) {
@@ -212,8 +224,10 @@
             _shareTitleLayer.opacity = 0.0;
             _shareTitleLayer.string = @"";
         }
-    } else {
-        // Hide all the layers if the they are not presented to the user.
+    }
+    
+    // Hide all the layers if the they are not presented to the user.
+    else {
         [CATransaction begin];
         [CATransaction setValue: (id) kCFBooleanTrue forKey: kCATransactionDisableActions];
         _touchLayer.opacity = 0.0;
@@ -242,18 +256,18 @@
         CALayer* layer = [_imageLayers objectAtIndex:i];
         layer.transform = CATransform3DMakeRotation(0, 0, 0, 1);
         
-        // Animate the iamge layer to get the correct orientation.
+        // Animate the image layer to get the correct orientation.
         CALayer* sub = [layer.sublayers objectAtIndex:0];
         sub.transform = CATransform3DMakeRotation(0, 0, 0, 1);
     }
 }
 
 - (int)indexHoveringOver {
-    if(_dragging){
-        for(int i = 0; i < [_sharers count]; i++){
-            CGPoint point = [self pointAtIndex:i];
-            // Determine if point is inside rect or adjust for the user overshooting sharing service.
-            if(CGRectContainsPoint(CGRectMake(point.x, point.y, IMAGE_SIZE, IMAGE_SIZE), _currentPosition) || CGRectContainsPoint(CGRectMake(point.x, point.y, IMAGE_SIZE, IMAGE_SIZE), [self touchLocationAtPoint:_currentPosition]))
+    if(_dragging) {
+        for(int i = 0; i < [_sharers count]; i++) {
+            CGPoint point = [[_sharerLocations objectAtIndex:i] CGPointValue];
+            // Determine if point is inside the sharer.
+            if(CGRectContainsPoint(CGRectMake(point.x, point.y, IMAGE_SIZE, IMAGE_SIZE), [self touchLocationAtPoint:_currentPosition]))
                 return i;
         }
     }
@@ -267,7 +281,7 @@
         point = _origin;
     
     // See if the new point is outside of the circle's radius.
-    if(pow(BACKGROUND_SIZE/2.0 - TOUCH_SIZE/2.0,2) < (pow(point.x - _origin.x,2) + pow(point.y - _origin.y,2))){
+    else if(pow(BACKGROUND_SIZE/2.0 - TOUCH_SIZE/2.0,2) < (pow(point.x - _origin.x,2) + pow(point.y - _origin.y,2))) {
         
         // Determine x and y from the center of the circle.
         point.x = _origin.x - point.x;
@@ -282,20 +296,6 @@
     }
     
     return point;
-}
-
-- (CGPoint)pointAtIndex:(int)index {
-    // Calculate the x and y coordinate.
-    // Points go around the unit circle starting at pi = 0.
-    float trig = index/([_sharers count]/2.0)*M_PI;
-    float x = _origin.x + cosf(trig)*PATH_SIZE/2.0;
-    float y = _origin.y - sinf(trig)*PATH_SIZE/2.0;
-    
-    // Subtract half width and height of image size.
-    x -= IMAGE_SIZE/2.0;
-    y -= IMAGE_SIZE/2.0;
-    
-    return CGPointMake(x, y);
 }
 
 - (BOOL)circleEnclosesPoint:(CGPoint)point {
@@ -347,7 +347,7 @@
     if(_dragging){
         // Loop through all the rects to see if the user selected one.
         for(int i = 0; i < [_sharers count]; i++){
-            CGPoint point = [self pointAtIndex:i];
+            CGPoint point = [[_sharerLocations objectAtIndex:i] CGPointValue];
             // Determine if point is inside rect or also account for overshooting circle so just swiping works.
             if(CGRectContainsPoint(CGRectMake(point.x, point.y, IMAGE_SIZE, IMAGE_SIZE), _currentPosition) || CGRectContainsPoint(CGRectMake(point.x, point.y, IMAGE_SIZE, IMAGE_SIZE), [self touchLocationAtPoint:_currentPosition])){
                 [_delegate shareCircleView:self didSelectIndex:i];
