@@ -96,23 +96,6 @@
     _backgroundLayer.path = backgroundPath;
     [self.layer addSublayer:_backgroundLayer];
     
-    // Create the innner shadow layer for the circle.
-    CAShapeLayer* shadowLayer = [CAShapeLayer layer];
-    [shadowLayer setFrame:[self bounds]];
-    [shadowLayer setShadowColor:[[UIColor colorWithWhite:0 alpha:1.0] CGColor]];
-    [shadowLayer setShadowOffset:CGSizeMake(0.0f, 0.0f)];
-    [shadowLayer setShadowOpacity:0.3f];
-    [shadowLayer setShadowRadius:3.0];
-    [shadowLayer setFillRule:kCAFillRuleEvenOdd];
-    CGMutablePathRef path = CGPathCreateMutable();
-    CGPathAddRect(path, NULL, CGRectInset(backgroundRect, -3, -3));
-    CGPathAddPath(path, NULL, backgroundPath);
-    [shadowLayer setPath:path];
-    CAShapeLayer* maskLayer = [CAShapeLayer layer];
-    [maskLayer setPath:backgroundPath];
-    [shadowLayer setMask:maskLayer];
-    [_backgroundLayer addSublayer:shadowLayer];
-    
     // Create the layers for all the sharing service images.
     for(int i = 0; i < _sharers.count; i++) {
         CFSharer *sharer = [_sharers objectAtIndex:i];
