@@ -16,10 +16,10 @@
 		411F676D174ABBD100AFEDBD /* mail.png in Resources */ = {isa = PBXBuildFile; fileRef = 411F676B174ABBD000AFEDBD /* mail.png */; };
 		411F676E174ABBD100AFEDBD /* mail@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 411F676C174ABBD000AFEDBD /* mail@2x.png */; };
 		41A09ECE16A5FACF008C8933 /* CoreImage.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 41A09ECD16A5FACF008C8933 /* CoreImage.framework */; };
-		41C80695173ABB5600B84ED6 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 41C8068E173ABB5600B84ED6 /* AppDelegate.m */; };
+		41C26A4C17569BA600753947 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 41C26A4917569BA600753947 /* AppDelegate.m */; };
+		41C26A4D17569BA600753947 /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 41C26A4B17569BA600753947 /* ViewController.m */; };
 		41C80696173ABB5600B84ED6 /* CFShareCircleView.m in Sources */ = {isa = PBXBuildFile; fileRef = 41C80690173ABB5600B84ED6 /* CFShareCircleView.m */; };
 		41C80697173ABB5600B84ED6 /* CFSharer.m in Sources */ = {isa = PBXBuildFile; fileRef = 41C80692173ABB5600B84ED6 /* CFSharer.m */; };
-		41C80698173ABB5600B84ED6 /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 41C80694173ABB5600B84ED6 /* ViewController.m */; };
 		41C806B1173ABB5E00B84ED6 /* Default-568h@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 41C8069A173ABB5E00B84ED6 /* Default-568h@2x.png */; };
 		41C806B2173ABB5E00B84ED6 /* Default.png in Resources */ = {isa = PBXBuildFile; fileRef = 41C8069B173ABB5E00B84ED6 /* Default.png */; };
 		41C806B3173ABB5E00B84ED6 /* Default@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 41C8069C173ABB5E00B84ED6 /* Default@2x.png */; };
@@ -54,14 +54,14 @@
 		411F676B174ABBD000AFEDBD /* mail.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = mail.png; sourceTree = "<group>"; };
 		411F676C174ABBD000AFEDBD /* mail@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "mail@2x.png"; sourceTree = "<group>"; };
 		41A09ECD16A5FACF008C8933 /* CoreImage.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreImage.framework; path = System/Library/Frameworks/CoreImage.framework; sourceTree = SDKROOT; };
-		41C8068D173ABB5600B84ED6 /* AppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
-		41C8068E173ABB5600B84ED6 /* AppDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
+		41C26A4817569BA600753947 /* AppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
+		41C26A4917569BA600753947 /* AppDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
+		41C26A4A17569BA600753947 /* ViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ViewController.h; sourceTree = "<group>"; };
+		41C26A4B17569BA600753947 /* ViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ViewController.m; sourceTree = "<group>"; };
 		41C8068F173ABB5600B84ED6 /* CFShareCircleView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CFShareCircleView.h; sourceTree = "<group>"; };
 		41C80690173ABB5600B84ED6 /* CFShareCircleView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CFShareCircleView.m; sourceTree = "<group>"; };
 		41C80691173ABB5600B84ED6 /* CFSharer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CFSharer.h; sourceTree = "<group>"; };
 		41C80692173ABB5600B84ED6 /* CFSharer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CFSharer.m; sourceTree = "<group>"; };
-		41C80693173ABB5600B84ED6 /* ViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ViewController.h; sourceTree = "<group>"; };
-		41C80694173ABB5600B84ED6 /* ViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ViewController.m; sourceTree = "<group>"; };
 		41C8069A173ABB5E00B84ED6 /* Default-568h@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default-568h@2x.png"; sourceTree = "<group>"; };
 		41C8069B173ABB5E00B84ED6 /* Default.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Default.png; sourceTree = "<group>"; };
 		41C8069C173ABB5E00B84ED6 /* Default@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default@2x.png"; sourceTree = "<group>"; };
@@ -131,6 +131,7 @@
 		4103D8671680DFF4008AFCFC /* CFShareCircle */ = {
 			isa = PBXGroup;
 			children = (
+				41C26A4717569BA600753947 /* Example */,
 				41C80699173ABB5E00B84ED6 /* Resources */,
 				41C8068C173ABB5600B84ED6 /* Classes */,
 				4103D8681680DFF4008AFCFC /* Supporting Files */,
@@ -148,17 +149,24 @@
 			name = "Supporting Files";
 			sourceTree = "<group>";
 		};
+		41C26A4717569BA600753947 /* Example */ = {
+			isa = PBXGroup;
+			children = (
+				41C26A4817569BA600753947 /* AppDelegate.h */,
+				41C26A4917569BA600753947 /* AppDelegate.m */,
+				41C26A4A17569BA600753947 /* ViewController.h */,
+				41C26A4B17569BA600753947 /* ViewController.m */,
+			);
+			path = Example;
+			sourceTree = "<group>";
+		};
 		41C8068C173ABB5600B84ED6 /* Classes */ = {
 			isa = PBXGroup;
 			children = (
-				41C8068D173ABB5600B84ED6 /* AppDelegate.h */,
-				41C8068E173ABB5600B84ED6 /* AppDelegate.m */,
 				41C8068F173ABB5600B84ED6 /* CFShareCircleView.h */,
 				41C80690173ABB5600B84ED6 /* CFShareCircleView.m */,
 				41C80691173ABB5600B84ED6 /* CFSharer.h */,
 				41C80692173ABB5600B84ED6 /* CFSharer.m */,
-				41C80693173ABB5600B84ED6 /* ViewController.h */,
-				41C80694173ABB5600B84ED6 /* ViewController.m */,
 			);
 			path = Classes;
 			sourceTree = "<group>";
@@ -292,10 +300,10 @@
 			buildActionMask = 2147483647;
 			files = (
 				4103D86E1680DFF4008AFCFC /* main.m in Sources */,
-				41C80695173ABB5600B84ED6 /* AppDelegate.m in Sources */,
 				41C80696173ABB5600B84ED6 /* CFShareCircleView.m in Sources */,
 				41C80697173ABB5600B84ED6 /* CFSharer.m in Sources */,
-				41C80698173ABB5600B84ED6 /* ViewController.m in Sources */,
+				41C26A4C17569BA600753947 /* AppDelegate.m in Sources */,
+				41C26A4D17569BA600753947 /* ViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
