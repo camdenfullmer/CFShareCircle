@@ -9,11 +9,12 @@
 #import <UIKit/UIKit.h>
 #import <QuartzCore/QuartzCore.h>
 #import <CoreImage/CoreImage.h>
+#import "CFSharer.h"
 
 @class CFShareCircleView;
 
 @protocol CFShareCircleViewDelegate
-- (void)shareCircleView:(CFShareCircleView *)aShareCircleView didSelectIndex:(int)index;
+- (void)shareCircleView:(CFShareCircleView *)aShareCircleView didSelectSharer:(CFSharer *)sharer;
 @end
 
 @interface CFShareCircleView : UIView

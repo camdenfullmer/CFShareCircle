@@ -22,8 +22,8 @@
     [super viewDidLoad];
 }
 
-- (void)shareCircleView:(CFShareCircleView *)aShareCircleView didSelectIndex:(int)index {
-    NSLog(@"Selected index: %d", index);
+- (void)shareCircleView:(CFShareCircleView *)aShareCircleView didSelectSharer:(CFSharer *)sharer {
+    NSLog(@"Selected sharer: %@", sharer.name);
 }
 
 - (void)shareCircleCanceled: (NSNotification*)notification{ 
