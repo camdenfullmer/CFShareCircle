@@ -22,24 +22,26 @@
 
 @implementation CFShareCircleView{
     CGPoint _currentPosition, _origin;
-    BOOL _dragging, _readyForUser;
+    BOOL _dragging, _readyForUser, _moreIsActive;
     CALayer *_closeButtonLayer, *_overlayLayer;
     CAShapeLayer *_backgroundLayer, *_touchLayer;
     CATextLayer *_introTextLayer, *_shareTitleLayer;
     NSMutableArray *_imageLayers, *_sharers, *_sharerLocations;
+    NSUInteger _numberSharersInCircle;
 }
 
 #define BACKGROUND_SIZE 275
 #define PATH_SIZE 200
 #define IMAGE_SIZE 45
 #define TOUCH_SIZE 70
+#define MAX_VISIBLE_SHARERS 6
 
 @synthesize delegate = _delegate;
 
 - (id)initWithFrame:(CGRect)frame {
     self = [super initWithFrame:frame];
     if (self) {
-        _sharers = [[NSMutableArray alloc] initWithObjects: [[CFSharer alloc] initWithType:CFSharerTypePinterest], [[CFSharer alloc] initWithType:CFSharerTypeGoogleDrive], [[CFSharer alloc] initWithType:CFSharerTypeTwitter ], [[CFSharer alloc] initWithType:CFSharerTypeFacebook], [[CFSharer alloc] initWithType:CFSharerTypeEvernote], [[CFSharer alloc] initWithType:CFSharerTypePhotoLibrary], nil];
+        _sharers = [[NSMutableArray alloc] initWithObjects: [[CFSharer alloc] initWithType:CFSharerTypePinterest], [[CFSharer alloc] initWithType:CFSharerTypeGoogleDrive], [[CFSharer alloc] initWithType:CFSharerTypeTwitter ], [[CFSharer alloc] initWithType:CFSharerTypeFacebook], [[CFSharer alloc] initWithType:CFSharerTypeEvernote], [[CFSharer alloc] initWithType:CFSharerTypeDropbox], [[CFSharer alloc] initWithType:CFSharerTypeMail], [[CFSharer alloc] initWithType:CFSharerTypePhotoLibrary], nil];
         [self setUpLayers];
     }
     return self;
@@ -71,9 +73,9 @@
 
 - (void)calculateImportantPoints {
     _sharerLocations = [[NSMutableArray alloc] init];
-    for(int i = 0; i < _sharers.count; i++) {
+    for(int i = 0; i < _numberSharersInCircle; i++) {
         // Calculate the x and y coordinate. Points go around the unit circle starting at pi = 0.
-        float trig = i/(_sharers.count/2.0)*M_PI;
+        float trig = i/(_numberSharersInCircle/2.0)*M_PI;
         float x = _origin.x + cosf(trig)*PATH_SIZE/2.0;
         float y = _origin.y - sinf(trig)*PATH_SIZE/2.0;
         
@@ -94,6 +96,17 @@
     _readyForUser = NO;
     _origin = CGPointMake(CGRectGetMidX(self.bounds), CGRectGetMidY(self.bounds));
     _currentPosition = _origin;
+    
+    // Determine the number of sharers in the circle. If it is more then the max then let's insert the more sharer into the array.
+    if(_sharers.count > MAX_VISIBLE_SHARERS) {
+        _numberSharersInCircle = MAX_VISIBLE_SHARERS;
+        _moreIsActive = YES;
+        [_sharers insertObject:[[CFSharer alloc] initWithType:CFSharerTypeMore] atIndex:(MAX_VISIBLE_SHARERS - 1)];
+    } else {
+        _numberSharersInCircle = _sharers.count;
+        _moreIsActive = NO;
+    }
+    
     [self calculateImportantPoints];
     
     // Create the overlay layer for the entire screen.
@@ -114,9 +127,9 @@
     [self.layer addSublayer:_backgroundLayer];
     
     // Create the layers for all the sharing service images.
-    for(int i = 0; i < _sharers.count; i++) {
+    for(int i = 0; i < _numberSharersInCircle; i++) {
         CFSharer *sharer = [_sharers objectAtIndex:i];
-        UIImage *image = [sharer image];
+        UIImage *image = sharer.image;
         
         // Construct the base layer in which will be rotated around the origin of the circle.
         CAShapeLayer *baseLayer = [CAShapeLayer layer];
@@ -131,7 +144,7 @@
         imageLayer.shadowColor = [UIColor colorWithRed:213.0/255.0 green:213.0/255.0 blue:213.0/255.0 alpha:1.0].CGColor;
         imageLayer.shadowOffset = CGSizeMake(1, 1);
         imageLayer.shadowRadius = 0;
-        imageLayer.shadowOpacity = 1.0; 
+        imageLayer.shadowOpacity = 1.0;
         
         // Add all the layers
         [baseLayer addSublayer:imageLayer];
@@ -238,20 +251,20 @@
 }
 
 - (void)animateImagesIn {
-    for(int i = 0; i < _sharers.count; i++) {
+    for(int i = 0; i < _numberSharersInCircle; i++) {
         // Animate the base layer for the main rotation.
         CALayer* layer = [_imageLayers objectAtIndex:i];
-        layer.transform = CATransform3DMakeRotation(-i/([_sharers count]/2.0)*M_PI, 0, 0, 1);
+        layer.transform = CATransform3DMakeRotation(-i/(_numberSharersInCircle/2.0)*M_PI, 0, 0, 1);
         layer.opacity = 1.0;
         
         // Animate the image layer to get the correct orientation.
         CALayer* sub = [layer.sublayers objectAtIndex:0];
-        sub.transform = CATransform3DMakeRotation(i/([_sharers count]/2.0)*M_PI, 0, 0, 1);
+        sub.transform = CATransform3DMakeRotation(i/(_numberSharersInCircle/2.0)*M_PI, 0, 0, 1);
     }
 }
 
 - (void)animateImagesOut {
-    for(int i = 0; i < _sharers.count; i++) {
+    for(int i = 0; i < _numberSharersInCircle; i++) {
         // Animate the base layer for the main rotation.
         CALayer* layer = [_imageLayers objectAtIndex:i];
         layer.transform = CATransform3DMakeRotation(0, 0, 0, 1);
@@ -264,7 +277,7 @@
 
 - (int)indexHoveringOver {
     if(_dragging) {
-        for(int i = 0; i < [_sharers count]; i++) {
+        for(int i = 0; i < _numberSharersInCircle; i++) {
             CGPoint point = [[_sharerLocations objectAtIndex:i] CGPointValue];
             // Determine if point is inside the sharer.
             if(CGRectContainsPoint(CGRectMake(point.x, point.y, IMAGE_SIZE, IMAGE_SIZE), [self touchLocationAtPoint:_currentPosition]))
@@ -346,7 +359,7 @@
     
     if(_dragging){
         // Loop through all the rects to see if the user selected one.
-        for(int i = 0; i < [_sharers count]; i++){
+        for(int i = 0; i < _numberSharersInCircle; i++){
             CGPoint point = [[_sharerLocations objectAtIndex:i] CGPointValue];
             // Determine if point is inside rect or also account for overshooting circle so just swiping works.
             if(CGRectContainsPoint(CGRectMake(point.x, point.y, IMAGE_SIZE, IMAGE_SIZE), _currentPosition) || CGRectContainsPoint(CGRectMake(point.x, point.y, IMAGE_SIZE, IMAGE_SIZE), [self touchLocationAtPoint:_currentPosition])){
@@ -356,9 +369,17 @@
         }
     }
     
+    CALayer *hitLayer = [self.layer hitTest:[self convertPoint:_currentPosition fromView:nil]];
+    [self displayInfo:hitLayer.name];
+    
     _currentPosition = _origin;
     _dragging = NO;
-    [self updateLayers];
+    [self updateLayers];    
+}
+
+-(void)displayInfo:(NSString *)nameOfLayer
+{
+    NSLog(@"%@",nameOfLayer);
 }
 
 - (void)touchesCancelled:(NSSet *)touches withEvent:(UIEvent *)event {

@@ -58,6 +58,10 @@
                 _name = @"Twitter";
                 _image = [UIImage imageNamed:@"twitter.png"];
                 break;
+            case CFSharerTypeMore:
+                _name = @"More options";
+                _image = [UIImage imageNamed:@"more.png"];
+                break;
             default:
                 _name = @"";
                 _image = nil;

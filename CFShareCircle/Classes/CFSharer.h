@@ -18,7 +18,8 @@ typedef enum {
     CFSharerTypePinterest,
     CFSharerTypeEvernote,
     CFSharerTypePhotoLibrary,
-    CFSharerTypeMail
+    CFSharerTypeMail,
+    CFSharerTypeMore
 } CFSharerType;
 
 @interface CFSharer : NSObject
