@@ -26,15 +26,14 @@ Follow the instructions to add CFShareCircle to your project.
     ```
     #import "CFShareCircleView.h"
     
-    @interface ViewController : UIViewController <CFShareCircleViewDelegate>{    
+    @interface ViewController : UIViewController <CFShareCircleViewDelegate> {    
         CFShareCircleView *shareCircleView;        
     }
       ```
       
 4. In your viewDidLoad method instantiate the CFShareCircle, set up the delegate, and add it to your navigation controller.
 ```
-- (void)viewDidLoad
-{
+- (void)viewDidLoad {
         // Do any additional setup after loading the view, typically from a nib.
         shareCircleView = [[CFShareCircleView alloc] initWithFrame:self.view.frame];
         shareCircleView.delegate = self;
@@ -43,10 +42,10 @@ Follow the instructions to add CFShareCircle to your project.
 }
 ```
 
-5. Implement the delegate method for the view. Note: Index returned from the view is in order of the array (i.e. Starts from pi = 0 on the unit circle).
+5. Implement the delegate method for the view.
 ``` 
-    - (void)shareCircleView:(CFShareCircleView *)shareCircleView didSelectIndex:(int)index{
-        NSLog(@"Selected index: %d", index);
+    - (void)shareCircleView:(CFShareCircleView *)aShareCircleView didSelectSharer:(CFSharer *)sharer {
+        NSLog(@"Selected sharer: %@", sharer.name);
     }
 ```
 
