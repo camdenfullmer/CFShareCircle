@@ -17,7 +17,7 @@
 - (void)shareCircleView:(CFShareCircleView *)aShareCircleView didSelectSharer:(CFSharer *)sharer;
 @end
 
-@interface CFShareCircleView : UIView
+@interface CFShareCircleView : UIView<UITableViewDelegate, UITableViewDataSource>
 
 @property (assign) id <CFShareCircleViewDelegate> delegate;
 
