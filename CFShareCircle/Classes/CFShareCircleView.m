@@ -425,7 +425,7 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     [self animateMoreOptionsOut];
-    //[_sharersTableView deselectRowAtIndexPath:indexPath animated:YES];
+    [tableView deselectRowAtIndexPath:indexPath animated:YES];
     [_delegate shareCircleView:self didSelectSharer:[_sharers objectAtIndex:indexPath.row]];
 }
 
