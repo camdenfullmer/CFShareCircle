@@ -16,9 +16,10 @@
 - (void)animateImagesOut; /* Animation used to reset the images so the animation in works correctly. */
 - (void)animateMoreOptionsIn; /* Animates the table view in to show all the sharer options. */
 - (void)animateMoreOptionsOut; /* Hides the table view with all the sharers. */
-- (NSString*)sharerNameHoveringOver; /* Return the name of the sharer that the user is hovering over at this exact moment in time. */
+- (NSString *)sharerNameHoveringOver; /* Return the name of the sharer that the user is hovering over at this exact moment in time. */
 - (CGPoint)touchLocationAtPoint:(CGPoint)point; /* Determines where the touch images is going to be placed inside of the view. */
 - (BOOL)circleEnclosesPoint:(CGPoint)point; /* Returns if the point is inside the cirlce. */
+- (UIImage *)whiteOverlayedImage:(UIImage*)image;
 @end
 
 @implementation CFShareCircleView{
@@ -92,7 +93,7 @@
     } else {
         _numberSharersInCircle = _sharers.count;
     }
-        
+    
     // Create the overlay layer for the entire screen.
     _overlayLayer = [CAShapeLayer layer];
     _overlayLayer.frame = self.bounds;
@@ -181,23 +182,22 @@
     frame.origin.y += frame.size.height;
     _moreOptionsView = [[UIView alloc] initWithFrame:frame];
     _moreOptionsView.backgroundColor = [UIColor whiteColor];
-    // Add the cancel button.
-    UIButton *cancelButton = [[UIButton alloc] initWithFrame:CGRectMake(_moreOptionsView.frame.size.width - 60,10,50,25)];
-    [cancelButton setTitle:@"Cancel" forState:UIControlStateNormal];
-    [cancelButton setTitleColor:[UIColor colorWithRed:47.0/255.0 green:47.0/255.0 blue:47.0/255.0 alpha:1.0] forState:UIControlStateNormal];
-    [cancelButton setTitleColor:[UIColor colorWithRed:47.0/255.0 green:47.0/255.0 blue:47.0/255.0 alpha:1.0] forState:UIControlStateHighlighted];
-    cancelButton.titleLabel.font = [UIFont fontWithName:@"HelveticaNeue-Light" size:12.0f];
-    cancelButton.layer.borderWidth = 0.5f;
-    cancelButton.layer.borderColor = [UIColor colorWithRed:47.0/255.0 green:47.0/255.0 blue:47.0/255.0 alpha:1.0].CGColor;
-    cancelButton.layer.cornerRadius = 6.0f;
-    [cancelButton addTarget:self action:@selector(animateMoreOptionsOut) forControlEvents:UIControlEventTouchUpInside];
-    [_moreOptionsView addSubview:cancelButton];    
     
     // Add table view.
-    UITableView *tableView = [[UITableView alloc] initWithFrame:CGRectMake(0, 35, _moreOptionsView.frame.size.width, _moreOptionsView.frame.size.height-35)];
+    UITableView *tableView = [[UITableView alloc] initWithFrame:CGRectMake(0, 0, _moreOptionsView.frame.size.width, _moreOptionsView.frame.size.height)];
     tableView.delegate = self;
     tableView.dataSource = self;
+    tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
+    tableView.rowHeight = 60.0f;
     [_moreOptionsView addSubview:tableView];
+    
+    // Add the close button.
+    UIButton *closeButton = [UIButton buttonWithType:UIButtonTypeCustom];
+    closeButton.frame = CGRectMake(_moreOptionsView.frame.size.width - 40.0,20.0,20.0,20.0);
+    [closeButton setBackgroundImage:[UIImage imageNamed:@"close.png"] forState:UIControlStateNormal];
+    [closeButton setBackgroundImage:[UIImage imageNamed:@"close-pressed.png"] forState:UIControlStateHighlighted];
+    [closeButton addTarget:self action:@selector(animateMoreOptionsOut) forControlEvents:UIControlEventTouchUpInside];
+    [_moreOptionsView addSubview:closeButton];
 }
 
 - (void)updateLayers {
@@ -232,7 +232,7 @@
             _introTextLayer.opacity = 0.0;
         else
             _introTextLayer.opacity = 0.6;
-            
+        
         // Update the share title text layer
         if(sharerName) {
             _shareTitleLayer.string = sharerName;
@@ -262,7 +262,7 @@
         // Calculate the x and y coordinate. Points go around the unit circle starting at pi = 0.
         float trig = i/(_numberSharersInCircle/2.0)*M_PI;
         float x = layer.position.x + cosf(trig)*PATH_SIZE/2.0;
-        float y = layer.position.y - sinf(trig)*PATH_SIZE/2.0;        
+        float y = layer.position.y - sinf(trig)*PATH_SIZE/2.0;
         layer.position = CGPointMake(x, y);
     }
 }
@@ -271,7 +271,7 @@
     for(int i = 0; i < _numberSharersInCircle; i++) {
         // Animate the base layer for the main rotation.
         CALayer* layer = [_imageLayers objectAtIndex:i];
-        layer.position = CGPointMake(BACKGROUND_SIZE/2.0, BACKGROUND_SIZE/2.0); 
+        layer.position = CGPointMake(BACKGROUND_SIZE/2.0, BACKGROUND_SIZE/2.0);
     }
 }
 
@@ -323,7 +323,7 @@
                          _moreOptionsView.frame = self.bounds;
                      }
                      completion:^(BOOL finished){
-                     }];    
+                     }];
 }
 
 - (void)animateMoreOptionsOut {
@@ -338,6 +338,20 @@
                          self.hidden = YES;
                          [_moreOptionsView removeFromSuperview];
                      }];
+}
+
+-  (UIImage *)whiteOverlayedImage:(UIImage *)image {
+    CGRect rect = CGRectMake(0, 0, image.size.width, image.size.height);
+    UIGraphicsBeginImageContext(rect.size);
+    CGContextRef context = UIGraphicsGetCurrentContext();
+    CGContextTranslateCTM(context, 0, image.size.height);
+    CGContextScaleCTM(context, 1.0, -1.0);
+    CGContextClipToMask(context, rect, image.CGImage);
+    CGContextSetFillColorWithColor(context, [[UIColor whiteColor] CGColor]);
+    CGContextFillRect(context, rect);
+    UIImage *tempImage = UIGraphicsGetImageFromCurrentImageContext();
+    UIGraphicsEndImageContext();    
+    return tempImage;
 }
 
 #pragma mark - Animation delegate
@@ -397,7 +411,7 @@
     }
     _currentPosition = _origin;
     _dragging = NO;
-    [self updateLayers];    
+    [self updateLayers];
 }
 
 - (void)touchesCancelled:(NSSet *)touches withEvent:(UIEvent *)event {
@@ -427,12 +441,21 @@
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"SharerCell"];
     
     if (cell == nil) {
-        cell = [[UITableViewCell alloc]initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:CellIdentifier];
+        cell = [[UITableViewCell alloc]initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
     }
-
-    cell.textLabel.text = [[_sharers objectAtIndex:indexPath.row] name];
-    cell.selectionStyle = UITableViewCellSelectionStyleNone;
-    cell.textLabel.font = [UIFont fontWithName:@"HelveticaNeue-Light" size:20.0f];
+    CFSharer *sharer = [_sharers objectAtIndex:indexPath.row];
+    UILabel *nameLabel = [[UILabel alloc] initWithFrame:CGRectMake(80.0, 10.0, 150.0, 40.0)];
+    nameLabel.text = sharer.name;
+    nameLabel.font = [UIFont fontWithName:@"HelveticaNeue-Light" size:20.0f];
+    nameLabel.highlightedTextColor = [UIColor whiteColor];
+    UIImageView *imageView = [[UIImageView alloc] initWithFrame:CGRectMake(30.0, 15.0, 30.0, 30.0)];
+    imageView.image = sharer.image;
+    imageView.highlightedImage = [self whiteOverlayedImage:sharer.image];
+    
+    cell.selectedBackgroundView = [[UIView alloc] initWithFrame:cell.bounds];
+    cell.selectedBackgroundView.backgroundColor = [UIColor colorWithRed:47.0/255.0 green:47.0/255.0 blue:47.0/255.0 alpha:1.0];
+    [cell.contentView addSubview:nameLabel];
+    [cell.contentView addSubview:imageView];
     
     return cell;
 }
@@ -453,7 +476,7 @@
     animation.delegate = self;
     animation.fillMode = kCAFillModeForwards;
     animation.removedOnCompletion = NO;
-    [_backgroundLayer addAnimation:animation forKey:@"position"];    
+    [_backgroundLayer addAnimation:animation forKey:@"position"];
     [self animateImagesIn];
 }
 
@@ -468,7 +491,7 @@
     animation.delegate = self;
     animation.fillMode = kCAFillModeForwards;
     animation.removedOnCompletion = NO;
-    [_backgroundLayer addAnimation:animation forKey:@"position"];    
+    [_backgroundLayer addAnimation:animation forKey:@"position"];
     [self animateImagesOut];
 }
 
