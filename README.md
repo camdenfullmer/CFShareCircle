@@ -1,10 +1,10 @@
 #CFShareCircle
 
-CFShareCircle is a better way for app developers to let users share the content to many different services. It is a simple UIView that adds drag and share capabilities to a developers application. View was only tested on iOS 6.0, but should be 5.1+ capable.
+CFShareCircle is a better way for app developers to let users share the content to many different services. It is a simple UIView that adds drag and share capabilities to a developers application. View was only tested on iOS 6.0, but should be 5.1+ capable. It now includes an additional menu when you have more than 6 different services to share to for your users!
 
-![Demo Image 1](http://i.imgur.com/z6mKFlTl.png)
+![Demo Image 1](http://i.imgur.com/XGPKMGil.png?1).![Demo Image 2](http://i.imgur.com/UAC2nRSl.png)
 
-![Demo Image 2](http://i.imgur.com/lcfzbJwl.png)
+![Demo Image 3](http://i.imgur.com/cIVjQ4Ol.png).![Demo Image 4](http://i.imgur.com/3GCJGdHl.png)
 
 ##How To Use
 
