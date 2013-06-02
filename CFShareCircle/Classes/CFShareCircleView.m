@@ -9,8 +9,8 @@
 #import "CFShareCircleView.h"
 
 @interface CFShareCircleView()
-- (void)setUpLayers; /* Build all the layers to be displayed onto the view of the share circle. */
-- (void)setUpMoreOptionsView; /* Build the view to show all the sharers when there is too many for the circle. */
+- (void)setUpCircleLayers; /* Build all the layers to be displayed onto the view of the share circle. */
+- (void)setUpAllOptionsView; /* Build the view to show all the sharers when there is too many for the circle. */
 - (void)updateLayers; /* Updates all the layers based on the new current position of the touch input. */
 - (void)animateImagesIn; /* Animation used when the view is first presented to the user. */
 - (void)animateImagesOut; /* Animation used to reset the images so the animation in works correctly. */
@@ -45,7 +45,7 @@
     self = [super initWithFrame:frame];
     if (self) {
         _sharers = [[NSMutableArray alloc] initWithObjects: [[CFSharer alloc] initWithType:CFSharerTypePinterest], [[CFSharer alloc] initWithType:CFSharerTypeGoogleDrive], [[CFSharer alloc] initWithType:CFSharerTypeTwitter ], [[CFSharer alloc] initWithType:CFSharerTypeFacebook], [[CFSharer alloc] initWithType:CFSharerTypeEvernote], [[CFSharer alloc] initWithType:CFSharerTypeDropbox], [[CFSharer alloc] initWithType:CFSharerTypeMail], [[CFSharer alloc] initWithType:CFSharerTypePhotoLibrary], nil];
-        [self setUpLayers];
+        [self setUpCircleLayers];
     }
     return self;
 }
@@ -54,7 +54,7 @@
     self = [super initWithFrame:frame];
     if (self) {
         _sharers = [[NSMutableArray alloc] initWithArray:sharers];
-        [self setUpLayers];
+        [self setUpCircleLayers];
     }
     return self;
 }
@@ -72,9 +72,10 @@
     [self updateLayers];
 }
 
+#pragma mark -
 #pragma mark - Private methods
 
-- (void)setUpLayers {
+- (void)setUpCircleLayers {
     // Set all the defaults for the share circle.
     _imageLayers = [[NSMutableArray alloc] init];
     self.hidden = YES;
@@ -86,10 +87,10 @@
     _currentPosition = _origin;
     
     // Determine the number of sharers in the circle. If it is more then the max then let's insert the more sharer into the array.
-    // Also construct the more options view if the max has been exceeded.
+    // Also construct the all options view if the max has been exceeded.
     if(_sharers.count > MAX_VISIBLE_SHARERS) {
         _numberSharersInCircle = MAX_VISIBLE_SHARERS;
-        [self setUpMoreOptionsView];
+        [self setUpAllOptionsView];
     } else {
         _numberSharersInCircle = _sharers.count;
     }
@@ -177,14 +178,23 @@
     [_backgroundLayer addSublayer:_shareTitleLayer];
 }
 
-- (void)setUpMoreOptionsView {
+- (void)setUpAllOptionsView {
     CGRect frame = self.bounds;
     frame.origin.y += frame.size.height;
     _moreOptionsView = [[UIView alloc] initWithFrame:frame];
     _moreOptionsView.backgroundColor = [UIColor whiteColor];
     
+    // Add the label.
+    UILabel *sharingOptionsLabel = [[UILabel alloc] initWithFrame:CGRectMake(0.0f, 0.0f, _moreOptionsView.frame.size.width, 45.0f)];
+    sharingOptionsLabel.text = @"Sharing Options";
+    sharingOptionsLabel.textAlignment = NSTextAlignmentCenter;
+    sharingOptionsLabel.textColor = [UIColor whiteColor];
+    sharingOptionsLabel.font = [UIFont fontWithName:@"HelveticaNeue-Regular" size:15.0f];
+    sharingOptionsLabel.backgroundColor = [UIColor colorWithRed:47.0/255.0 green:47.0/255.0 blue:47.0/255.0 alpha:1.0];
+    [_moreOptionsView addSubview:sharingOptionsLabel];
+    
     // Add table view.
-    UITableView *tableView = [[UITableView alloc] initWithFrame:CGRectMake(0, 0, _moreOptionsView.frame.size.width, _moreOptionsView.frame.size.height)];
+    UITableView *tableView = [[UITableView alloc] initWithFrame:CGRectMake(0.0f, 45.0f, _moreOptionsView.frame.size.width, _moreOptionsView.frame.size.height)];
     tableView.delegate = self;
     tableView.dataSource = self;
     tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
@@ -193,9 +203,25 @@
     
     // Add the close button.
     UIButton *closeButton = [UIButton buttonWithType:UIButtonTypeCustom];
-    closeButton.frame = CGRectMake(_moreOptionsView.frame.size.width - 40.0,20.0,20.0,20.0);
-    [closeButton setBackgroundImage:[UIImage imageNamed:@"close.png"] forState:UIControlStateNormal];
-    [closeButton setBackgroundImage:[UIImage imageNamed:@"close-pressed.png"] forState:UIControlStateHighlighted];
+    closeButton.frame = CGRectMake(_moreOptionsView.frame.size.width - 45.f,0.0f,45.0f,45.0f);
+    // Create an image for the button when highlighted.
+    CGRect rect = CGRectMake(0.0f, 0.0f, 45.0f, 45.0f);
+    UIImage *closeButtonImage = [UIImage imageNamed:@"close.png"];
+    UIGraphicsBeginImageContext(rect.size);
+    CGContextRef context = UIGraphicsGetCurrentContext();    
+    CGContextSetFillColorWithColor(context, [[UIColor colorWithRed:35.0/255.0 green:35.0/255.0 blue:35.0/255.0 alpha:1.0] CGColor]);
+    CGContextFillRect(context, rect);
+    [closeButtonImage drawInRect:CGRectMake(15.0f,15.0f,closeButtonImage.size.width,closeButtonImage.size.height) blendMode:kCGBlendModeNormal alpha:1.0];
+    UIImage *highlightedButtonImage = UIGraphicsGetImageFromCurrentImageContext();
+    UIGraphicsEndImageContext();
+    [closeButton setBackgroundImage:highlightedButtonImage forState:UIControlStateHighlighted];
+    // Create the normal image for the button.
+    UIGraphicsBeginImageContext(rect.size);
+    context = UIGraphicsGetCurrentContext();
+    [closeButtonImage drawInRect:CGRectMake(15.0f,15.0f,closeButtonImage.size.width,closeButtonImage.size.height) blendMode:kCGBlendModeNormal alpha:0.5];
+    UIImage *normalButtonImage = UIGraphicsGetImageFromCurrentImageContext();
+    UIGraphicsEndImageContext();
+    [closeButton setBackgroundImage:normalButtonImage forState:UIControlStateNormal];
     [closeButton addTarget:self action:@selector(animateMoreOptionsOut) forControlEvents:UIControlEventTouchUpInside];
     [_moreOptionsView addSubview:closeButton];
 }
@@ -354,6 +380,7 @@
     return tempImage;
 }
 
+#pragma mark -
 #pragma mark - Animation delegate
 
 - (void)animationDidStop:(CAAnimation *)anim finished:(BOOL)flag {
@@ -367,6 +394,7 @@
     }
 }
 
+#pragma mark -
 #pragma mark - Touch delegate
 
 - (void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event {
@@ -396,11 +424,10 @@
     
     if(_dragging && hitLayer.name) {
         // Return the sharer that was selected and then animate out.
-        if([hitLayer.name isEqualToString:@"More options"]) {
+        if([hitLayer.name isEqualToString:@"All options"]) {
             [self animateMoreOptionsIn];
         } else {
             for(CFSharer *sharer in _sharers) {
-                // Check to see if we have more options.
                 if([sharer.name isEqualToString:hitLayer.name]) {
                     [_delegate shareCircleView:self didSelectSharer:sharer];
                     break;
@@ -464,6 +491,7 @@
     return _sharers.count;
 }
 
+#pragma mark -
 #pragma mark - Public methods
 
 - (void)animateIn {
