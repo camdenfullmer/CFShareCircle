@@ -10,7 +10,7 @@
 
 @interface CFShareCircleView()
 - (void)setUpCircleLayers; /* Build all the layers to be displayed onto the view of the share circle. */
-- (void)setUpAllOptionsView; /* Build the view to show all the sharers when there is too many for the circle. */
+- (void)setUpSharingOptionsView; /* Build the view to show all the sharers when there is too many for the circle. */
 - (void)updateLayers; /* Updates all the layers based on the new current position of the touch input. */
 - (void)animateImagesIn; /* Animation used when the view is first presented to the user. */
 - (void)animateImagesOut; /* Animation used to reset the images so the animation in works correctly. */
@@ -24,13 +24,13 @@
 
 @implementation CFShareCircleView{
     CGPoint _currentPosition, _origin;
-    BOOL _dragging, _circleIsVisible, _moreOptionsIsVisible;
+    BOOL _dragging, _circleIsVisible, _sharingOptionsIsVisible;
     CALayer *_closeButtonLayer, *_overlayLayer;
     CAShapeLayer *_backgroundLayer, *_touchLayer;
     CATextLayer *_introTextLayer, *_shareTitleLayer;
     NSMutableArray *_imageLayers, *_sharers;
     NSUInteger _numberSharersInCircle;
-    UIView *_moreOptionsView;
+    UIView *_sharingOptionsView;
 }
 
 #define BACKGROUND_SIZE 275
@@ -69,6 +69,8 @@
     } else {
         _backgroundLayer.position = CGPointMake(self.bounds.size.width + BACKGROUND_SIZE/2.0, CGRectGetMidY(self.bounds));
     }
+    if(_sharingOptionsIsVisible)
+        _sharingOptionsView.frame = self.bounds;
     [self updateLayers];
 }
 
@@ -82,7 +84,7 @@
     self.backgroundColor = [UIColor clearColor];
     self.autoresizingMask = UIViewAutoresizingFlexibleWidth|UIViewAutoresizingFlexibleHeight;
     _circleIsVisible = NO;
-    _moreOptionsIsVisible = NO;
+    _sharingOptionsIsVisible = NO;
     _origin = CGPointMake(CGRectGetMidX(self.bounds), CGRectGetMidY(self.bounds));
     _currentPosition = _origin;
     
@@ -90,7 +92,7 @@
     // Also construct the all options view if the max has been exceeded.
     if(_sharers.count > MAX_VISIBLE_SHARERS) {
         _numberSharersInCircle = MAX_VISIBLE_SHARERS;
-        [self setUpAllOptionsView];
+        [self setUpSharingOptionsView];
     } else {
         _numberSharersInCircle = _sharers.count;
     }
@@ -178,32 +180,36 @@
     [_backgroundLayer addSublayer:_shareTitleLayer];
 }
 
-- (void)setUpAllOptionsView {
+- (void)setUpSharingOptionsView {
     CGRect frame = self.bounds;
     frame.origin.y += frame.size.height;
-    _moreOptionsView = [[UIView alloc] initWithFrame:frame];
-    _moreOptionsView.backgroundColor = [UIColor whiteColor];
+    _sharingOptionsView = [[UIView alloc] initWithFrame:frame];
+    _sharingOptionsView.backgroundColor = [UIColor whiteColor];
+    _sharingOptionsView.autoresizingMask = UIViewAutoresizingFlexibleWidth|UIViewAutoresizingFlexibleHeight;
     
     // Add the label.
-    UILabel *sharingOptionsLabel = [[UILabel alloc] initWithFrame:CGRectMake(0.0f, 0.0f, _moreOptionsView.frame.size.width, 45.0f)];
+    UILabel *sharingOptionsLabel = [[UILabel alloc] initWithFrame:CGRectMake(0.0f, 0.0f, _sharingOptionsView.frame.size.width, 45.0f)];
+    sharingOptionsLabel.autoresizingMask = UIViewAutoresizingFlexibleWidth;
     sharingOptionsLabel.text = @"Sharing Options";
     sharingOptionsLabel.textAlignment = NSTextAlignmentCenter;
     sharingOptionsLabel.textColor = [UIColor whiteColor];
     sharingOptionsLabel.font = [UIFont fontWithName:@"HelveticaNeue-Regular" size:15.0f];
     sharingOptionsLabel.backgroundColor = [UIColor colorWithRed:47.0/255.0 green:47.0/255.0 blue:47.0/255.0 alpha:1.0];
-    [_moreOptionsView addSubview:sharingOptionsLabel];
+    [_sharingOptionsView addSubview:sharingOptionsLabel];
     
     // Add table view.
-    UITableView *tableView = [[UITableView alloc] initWithFrame:CGRectMake(0.0f, 45.0f, _moreOptionsView.frame.size.width, _moreOptionsView.frame.size.height)];
+    UITableView *tableView = [[UITableView alloc] initWithFrame:CGRectMake(0.0f, 45.0f, _sharingOptionsView.frame.size.width, _sharingOptionsView.frame.size.height)];
+    tableView.autoresizingMask = UIViewAutoresizingFlexibleWidth|UIViewAutoresizingFlexibleHeight;
     tableView.delegate = self;
     tableView.dataSource = self;
     tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
     tableView.rowHeight = 60.0f;
-    [_moreOptionsView addSubview:tableView];
+    [_sharingOptionsView addSubview:tableView];
     
     // Add the close button.
     UIButton *closeButton = [UIButton buttonWithType:UIButtonTypeCustom];
-    closeButton.frame = CGRectMake(_moreOptionsView.frame.size.width - 45.f,0.0f,45.0f,45.0f);
+    closeButton.frame = CGRectMake(_sharingOptionsView.frame.size.width - 45.f,0.0f,45.0f,45.0f);
+    closeButton.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin;
     // Create an image for the button when highlighted.
     CGRect rect = CGRectMake(0.0f, 0.0f, 45.0f, 45.0f);
     UIImage *closeButtonImage = [UIImage imageNamed:@"close.png"];
@@ -223,7 +229,7 @@
     UIGraphicsEndImageContext();
     [closeButton setBackgroundImage:normalButtonImage forState:UIControlStateNormal];
     [closeButton addTarget:self action:@selector(animateMoreOptionsOut) forControlEvents:UIControlEventTouchUpInside];
-    [_moreOptionsView addSubview:closeButton];
+    [_sharingOptionsView addSubview:closeButton];
 }
 
 - (void)updateLayers {
@@ -342,11 +348,11 @@
 }
 
 - (void)animateMoreOptionsIn {
-    _moreOptionsIsVisible = YES;
-    [self addSubview:_moreOptionsView];
+    _sharingOptionsIsVisible = YES;
+    [self addSubview:_sharingOptionsView];
     [UIView animateWithDuration:0.5
                      animations:^{
-                         _moreOptionsView.frame = self.bounds;
+                         _sharingOptionsView.frame = self.bounds;
                      }
                      completion:^(BOOL finished){
                      }];
@@ -355,14 +361,14 @@
 - (void)animateMoreOptionsOut {
     [UIView animateWithDuration:0.5
                      animations:^{
-                         CGRect frame = _moreOptionsView.frame;
+                         CGRect frame = _sharingOptionsView.frame;
                          frame.origin.y += self.bounds.size.height;
-                         _moreOptionsView.frame = frame;
+                         _sharingOptionsView.frame = frame;
                      }
                      completion:^(BOOL finished){
-                         _moreOptionsIsVisible = NO;
+                         _sharingOptionsIsVisible = NO;
                          self.hidden = YES;
-                         [_moreOptionsView removeFromSuperview];
+                         [_sharingOptionsView removeFromSuperview];
                      }];
 }
 
@@ -386,7 +392,7 @@
 - (void)animationDidStop:(CAAnimation *)anim finished:(BOOL)flag {
     if([[anim valueForKey:@"id"] isEqual:@"animateOut"]) {
         _backgroundLayer.position = CGPointMake(self.bounds.size.width + BACKGROUND_SIZE/2.0, CGRectGetMidY(self.bounds)); // Needed for Core Animation fix??
-        if(!_circleIsVisible && !_moreOptionsIsVisible) self.hidden = YES;
+        if(!_circleIsVisible && !_sharingOptionsIsVisible) self.hidden = YES;
     } else if([[anim valueForKey:@"id"] isEqual:@"animateIn"]) {
         _backgroundLayer.position = CGPointMake(CGRectGetMidX(self.bounds), CGRectGetMidY(self.bounds)); // Needed for Core Animation fix??
         _circleIsVisible = YES;
@@ -463,6 +469,8 @@
     return 1;
 }
 
+#define LABEL_TAG 13
+#define IMAGE_VIEW_TAG 14
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     static NSString *CellIdentifier = @"SharerCell";
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"SharerCell"];
@@ -470,20 +478,31 @@
     if (cell == nil) {
         cell = [[UITableViewCell alloc]initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
     }
-    CFSharer *sharer = [_sharers objectAtIndex:indexPath.row];
-    UILabel *nameLabel = [[UILabel alloc] initWithFrame:CGRectMake(80.0, 10.0, 150.0, 40.0)];
-    nameLabel.text = sharer.name;
-    nameLabel.font = [UIFont fontWithName:@"HelveticaNeue-Light" size:20.0f];
-    nameLabel.highlightedTextColor = [UIColor whiteColor];
-    UIImageView *imageView = [[UIImageView alloc] initWithFrame:CGRectMake(30.0, 15.0, 30.0, 30.0)];
-    imageView.image = sharer.image;
-    imageView.highlightedImage = [self whiteOverlayedImage:sharer.image];
     
     cell.selectedBackgroundView = [[UIView alloc] initWithFrame:cell.bounds];
     cell.selectedBackgroundView.backgroundColor = [UIColor colorWithRed:47.0/255.0 green:47.0/255.0 blue:47.0/255.0 alpha:1.0];
-    [cell.contentView addSubview:nameLabel];
-    [cell.contentView addSubview:imageView];
     
+    CFSharer *sharer = [_sharers objectAtIndex:indexPath.row];
+    // Determine if the label or imageview have already been created.
+    UILabel *nameLabel = (UILabel *)[cell viewWithTag:LABEL_TAG];;
+    UIImageView *imageView = (UIImageView *)[cell viewWithTag:IMAGE_VIEW_TAG];
+    if(nameLabel == nil) {
+        nameLabel = [[UILabel alloc] initWithFrame:CGRectMake(80.0, 10.0, 150.0, 40.0)];
+        nameLabel.font = [UIFont fontWithName:@"HelveticaNeue-Light" size:20.0f];
+        nameLabel.highlightedTextColor = [UIColor whiteColor];
+        nameLabel.tag = LABEL_TAG;
+        [cell.contentView addSubview:nameLabel];
+    }
+    if(imageView == nil)  {
+        imageView = [[UIImageView alloc] initWithFrame:CGRectMake(30.0, 15.0, 30.0, 30.0)];
+        imageView.tag = IMAGE_VIEW_TAG;
+        [cell.contentView addSubview:imageView];
+    }   
+    
+    // Set the label and image properties.
+    nameLabel.text = sharer.name;
+    imageView.image = sharer.image;
+    imageView.highlightedImage = [self whiteOverlayedImage:sharer.image];
     return cell;
 }
 
