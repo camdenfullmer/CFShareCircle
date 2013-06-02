@@ -207,7 +207,7 @@
     // Create an image for the button when highlighted.
     CGRect rect = CGRectMake(0.0f, 0.0f, 45.0f, 45.0f);
     UIImage *closeButtonImage = [UIImage imageNamed:@"close.png"];
-    UIGraphicsBeginImageContext(rect.size);
+    UIGraphicsBeginImageContextWithOptions(rect.size, NO, 0.0f);
     CGContextRef context = UIGraphicsGetCurrentContext();    
     CGContextSetFillColorWithColor(context, [[UIColor colorWithRed:35.0/255.0 green:35.0/255.0 blue:35.0/255.0 alpha:1.0] CGColor]);
     CGContextFillRect(context, rect);
@@ -216,7 +216,7 @@
     UIGraphicsEndImageContext();
     [closeButton setBackgroundImage:highlightedButtonImage forState:UIControlStateHighlighted];
     // Create the normal image for the button.
-    UIGraphicsBeginImageContext(rect.size);
+    UIGraphicsBeginImageContextWithOptions(rect.size, NO, 0.0f);
     context = UIGraphicsGetCurrentContext();
     [closeButtonImage drawInRect:CGRectMake(15.0f,15.0f,closeButtonImage.size.width,closeButtonImage.size.height) blendMode:kCGBlendModeNormal alpha:0.5];
     UIImage *normalButtonImage = UIGraphicsGetImageFromCurrentImageContext();
