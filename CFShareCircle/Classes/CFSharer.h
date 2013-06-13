@@ -10,18 +10,6 @@
 #import <UIKit/UIKit.h>
 #import <QuartzCore/QuartzCore.h>
 
-typedef enum {
-    CFSharerTypeFacebook,
-    CFSharerTypeTwitter,
-    CFSharerTypeDropbox,
-    CFSharerTypeGoogleDrive,
-    CFSharerTypePinterest,
-    CFSharerTypeEvernote,
-    CFSharerTypePhotoLibrary,
-    CFSharerTypeMail,
-    CFSharerTypeMore
-} CFSharerType;
-
 @interface CFSharer : NSObject
 
 @property NSString *name;
@@ -32,9 +20,13 @@ typedef enum {
  */
 - (id)initWithName:(NSString *)name imageName:(NSString *)imageName;
 
-/**
- Initialize a sharer with a predefined type.
- */
-- (id)initWithType:(NSInteger)type;
++ (CFSharer *)mail;
++ (CFSharer *)photoLibrary;
++ (CFSharer *)dropbox;
++ (CFSharer *)evernote;
++ (CFSharer *)facebook;
++ (CFSharer *)googleDrive;
++ (CFSharer *)pinterest;
++ (CFSharer *)twitter;
 
 @end

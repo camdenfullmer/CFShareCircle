@@ -45,7 +45,7 @@
 - (id)initWithFrame:(CGRect)frame {
     self = [super initWithFrame:frame];
     if (self) {
-        _sharers = [[NSMutableArray alloc] initWithObjects: [[CFSharer alloc] initWithType:CFSharerTypePinterest], [[CFSharer alloc] initWithType:CFSharerTypeGoogleDrive], [[CFSharer alloc] initWithType:CFSharerTypeTwitter ], [[CFSharer alloc] initWithType:CFSharerTypeFacebook], [[CFSharer alloc] initWithType:CFSharerTypeEvernote], [[CFSharer alloc] initWithType:CFSharerTypeDropbox], [[CFSharer alloc] initWithType:CFSharerTypeMail], [[CFSharer alloc] initWithType:CFSharerTypePhotoLibrary], nil];
+        _sharers = [[NSMutableArray alloc] initWithObjects: [CFSharer pinterest], [CFSharer googleDrive], [CFSharer twitter], [CFSharer facebook], [CFSharer evernote], [CFSharer dropbox], [CFSharer mail], [CFSharer photoLibrary], nil];
         [self setUpCircleLayers];
     }
     return self;
@@ -119,7 +119,7 @@
     for(int i = 0; i < _numberSharersInCircle; i++) {
         CFSharer *sharer;
         if(i == 5 && _sharers.count > 6)
-            sharer = [[CFSharer alloc] initWithType:CFSharerTypeMore];
+            sharer = [[CFSharer alloc] initWithName:@"More" imageName:@"more.png"];
         else
             sharer = [_sharers objectAtIndex:i];
         UIImage *image = sharer.image;

@@ -22,52 +22,36 @@
     return self;    
 }
 
-- (id)initWithType:(NSInteger)type {
-    self = [super init];
-    if (self) {
-        switch(type) {
-            case CFSharerTypeMail:
-                _name = @"Mail";
-                _image = [UIImage imageNamed:@"mail.png"];
-                break;
-            case CFSharerTypePhotoLibrary:
-                _name = @"Photos";
-                _image = [UIImage imageNamed:@"photo_library.png"];
-                break;
-            case CFSharerTypeDropbox:
-                _name = @"Dropbox";
-                _image = [UIImage imageNamed:@"dropbox.png"];
-                break;
-            case CFSharerTypeEvernote:
-                _name = @"Evernote";
-                _image = [UIImage imageNamed:@"evernote.png"];
-                break;
-            case CFSharerTypeFacebook:
-                _name = @"Facebook";
-                _image = [UIImage imageNamed:@"facebook.png"];
-                break;
-            case CFSharerTypeGoogleDrive:
-                _name = @"Google Drive";
-                _image = [UIImage imageNamed:@"google_drive.png"];
-                break;
-            case CFSharerTypePinterest:
-                _name = @"Pinterest";
-                _image = [UIImage imageNamed:@"pinterest.png"];
-                break;
-            case CFSharerTypeTwitter:
-                _name = @"Twitter";
-                _image = [UIImage imageNamed:@"twitter.png"];
-                break;
-            case CFSharerTypeMore:
-                _name = @"All options";
-                _image = [UIImage imageNamed:@"more.png"];
-                break;
-            default:
-                _name = @"";
-                _image = nil;
-        }
-    }
-    return self;
++ (CFSharer *)mail {
+    return [[CFSharer alloc] initWithName:@"Mail" imageName:@"mail.png"];
+}
+
++ (CFSharer *)photoLibrary {
+    return [[CFSharer alloc] initWithName:@"Photos" imageName:@"photo_library.png"];
+}
+
++ (CFSharer *)dropbox {
+    return [[CFSharer alloc] initWithName:@"Dropbox" imageName:@"dropbox.png"];
+}
+
++ (CFSharer *)evernote {
+    return [[CFSharer alloc] initWithName:@"Evernote" imageName:@"evernote.png"];
+}
+
++ (CFSharer *)facebook {
+    return [[CFSharer alloc] initWithName:@"Facebook" imageName:@"facebook.png"];
+}
+
++ (CFSharer *)googleDrive {
+    return [[CFSharer alloc] initWithName:@"Google Drive" imageName:@"google_drive.png"];
+}
+
++ (CFSharer *)pinterest {
+    return [[CFSharer alloc] initWithName:@"Pinterest" imageName:@"pinterest.png"];
+}
+
++ (CFSharer *)twitter {
+    return [[CFSharer alloc] initWithName:@"Twitter" imageName:@"twitter.png"];
 }
 
 @end
