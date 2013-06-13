@@ -13,10 +13,10 @@ Pod::Spec.new do |s|
   s.homepage     = "https://github.com/camdenfullmer/CFShareCircle"
   s.license      = 'MIT'
   s.author       = { "Camden Fullmer" => "camdenfullmer@gmail.com" }
-  s.source       = { :git => "https://github.com/camdenfullmer/CFShareCircle", :tag => "1.0.0" }
-  s.platform     = :ios, '5.1'
-  s.source_files = 'CFShareCircle/Classes', 'CFShareCircle/Classes/**/*.{h,m}'
-  s.resources = "CFShareCircle/Resources/*.png"
+  s.source       = { :git => "https://github.com/camdenfullmer/CFShareCircle.git", :tag => "1.0.0" }
+  s.platform     = :ios, '5.0'
+  s.source_files = 'Classes', 'CFShareCircle/Classes/**/*.{h,m}'
+  s.resources = "Resources/*"
   s.frameworks = 'UIKit', 'QuartzCore', 'Foundation', 'CoreGraphics'
   s.requires_arc = true
 end
