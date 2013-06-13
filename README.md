@@ -58,7 +58,7 @@ Follow the instructions to add CFShareCircle to your project.
 If you would like to determine what the CFShareCircle view shows, all you have to do is intialize your own array of sharers.
 
 ```
-shareCircleView = [[CFShareCircleView alloc] initWithFrame:self.view.frame sharers:[[NSMutableArray alloc] initWithObjects: [[CFSharer alloc] initWithType:CFSharerTypeTwitter ], [[CFSharer alloc] initWithType:CFSharerTypeFacebook], nil]];
+shareCircleView = [[CFShareCircleView alloc] initWithFrame:self.view.frame sharers:[[NSMutableArray alloc] initWithObjects: [CFSharer twitter], [CFSharer facebook], [CFSharer dropbox], nil]];
 ```
 
 Then to extend this you can create your own CFSharer objects, just provide your own name for the sharer and image. Note that icons should be 100px by 100px for @2x and 50px by 50px for standard.
