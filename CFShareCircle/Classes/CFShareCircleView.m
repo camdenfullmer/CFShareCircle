@@ -31,6 +31,7 @@
     NSMutableArray *_imageLayers, *_sharers;
     NSUInteger _numberSharersInCircle;
     UIView *_sharingOptionsView;
+    NSMutableArray *_sharerLocations;
 }
 
 #define BACKGROUND_SIZE 275
@@ -125,6 +126,7 @@
         
         // Construct the image layer which will contain our image.
         CALayer *imageLayer = [CALayer layer];
+        imageLayer.bounds = CGRectMake(0, 0, IMAGE_SIZE+30, IMAGE_SIZE+30);
         imageLayer.frame = CGRectMake(0, 0, IMAGE_SIZE, IMAGE_SIZE);
         imageLayer.position = CGPointMake(BACKGROUND_SIZE/2.0, BACKGROUND_SIZE/2.0);
         imageLayer.contents = (id)image.CGImage;
@@ -287,15 +289,25 @@
 }
 
 - (void)animateImagesIn {
-    for(int i = 0; i < _numberSharersInCircle; i++) {
-        // Animate the base layer for the main rotation.
-        CALayer* layer = [_imageLayers objectAtIndex:i];
-        
-        // Calculate the x and y coordinate. Points go around the unit circle starting at pi = 0.
-        float trig = i/(_numberSharersInCircle/2.0)*M_PI;
-        float x = layer.position.x + cosf(trig)*PATH_SIZE/2.0;
-        float y = layer.position.y - sinf(trig)*PATH_SIZE/2.0;
-        layer.position = CGPointMake(x, y);
+    if(_sharerLocations == nil) {
+        _sharerLocations = [[NSMutableArray alloc] init];
+        for(int i = 0; i < _numberSharersInCircle; i++) {
+            // Animate the base layer for the main rotation.
+            CALayer* layer = [_imageLayers objectAtIndex:i];
+            
+            // Calculate the x and y coordinate. Points go around the unit circle starting at pi = 0.
+            float trig = i/(_numberSharersInCircle/2.0)*M_PI;
+            float x = layer.position.x + cosf(trig)*PATH_SIZE/2.0;
+            float y = layer.position.y - sinf(trig)*PATH_SIZE/2.0;
+            [_sharerLocations addObject:[NSValue valueWithCGPoint:CGPointMake(x, y)]];
+            layer.position = [[_sharerLocations objectAtIndex:i] CGPointValue];
+        }  
+    } else {
+        for(int i = 0; i < _numberSharersInCircle; i++) {
+            // Animate the base layer for the main rotation.
+            CALayer* layer = [_imageLayers objectAtIndex:i];
+            layer.position = [[_sharerLocations objectAtIndex:i] CGPointValue];
+        }
     }
 }
 
@@ -336,6 +348,9 @@
         point.x = _origin.x - (BACKGROUND_SIZE/2.0 - TOUCH_SIZE/2.0) * cos(angle);
         point.y = _origin.y + (BACKGROUND_SIZE/2.0 - TOUCH_SIZE/2.0) * sin(angle);
     }
+    
+    // Add the gravitation physics effect.
+    
     
     return point;
 }
