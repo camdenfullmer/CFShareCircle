@@ -1,0 +1,22 @@
+#
+# Be sure to run `pod spec lint Example.podspec.podspec' to ensure this is a
+# valid spec.
+#
+# Remove all comments before submitting the spec. Optional attributes are commented.
+#
+# For details see: https://github.com/CocoaPods/CocoaPods/wiki/The-podspec-format
+#
+Pod::Spec.new do |s|
+  s.name         = "CFShareCircle"
+  s.version      = "1.0.0"
+  s.summary      = "CFShareCircle is a user interface component for iOS that can be integrated into an app as a sharing mechanism for any kind of content."
+  s.homepage     = "https://github.com/camdenfullmer/CFShareCircle"
+  s.license      = 'MIT'
+  s.author       = { "Camden Fullmer" => "camdenfullmer@gmail.com" }
+  s.source       = { :git => "https://github.com/camdenfullmer/CFShareCircle", :tag => "1.0.0" }
+  s.platform     = :ios, '5.1'
+  s.source_files = 'CFShareCircle/Classes', 'CFShareCircle/Classes/**/*.{h,m}'
+  s.resources = "CFShareCircle/Resources/*.png"
+  s.frameworks = 'UIKit', 'QuartzCore', 'Foundation', 'CoreGraphics'
+  s.requires_arc = true
+end

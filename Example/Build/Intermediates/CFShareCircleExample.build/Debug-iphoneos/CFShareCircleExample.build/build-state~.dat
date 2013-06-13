@@ -1,0 +1,537 @@
+TCFShareCircleExample
+v5
+r1
+cCheck dependencies
+cCpResource /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS6.1.sdk/ResourceRules.plist Build/Products/Debug-iphoneos/CFShareCircleExample.app/ResourceRules.plist
+cProcessInfoPlistFile /Users/camdenfullmer/Dropbox/Workspace/iOS/CFShareCircle/Example/Build/Products/Debug-iphoneos/CFShareCircleExample.app/Info.plist CFShareCircleExample/CFShareCircleExample-Info.plist
+cProcessPCH "/Users/camdenfullmer/Dropbox/Workspace/iOS/CFShareCircle/Example/Build/Intermediates/PrecompiledHeaders/CFShareCircle Example-Prefix-gkfdjenkicgihyelzhrjdmkcpwiw/CFShareCircle Example-Prefix.pch.pth" "CFShareCircle/CFShareCircle Example-Prefix.pch" normal armv7 objective-c com.apple.compilers.llvm.clang.1_0.compiler
+
+N/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS6.1.sdk
+c00000000517D7B1F0000000000000110
+t1367178015
+s272
+
+N/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS6.1.sdk/Entitlements.plist
+c0000000051081A8400000000000001A7
+t1359485572
+s423
+
+N/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS6.1.sdk/ResourceRules.plist
+c0000000051081A8400000000000001E5
+t1359485572
+s485
+
+N/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS6.1.sdk/System/Library/Frameworks/CoreGraphics.framework/CoreGraphics
+c0000000051081A870000000000322700
+t1359485575
+s3286784
+
+N/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS6.1.sdk/System/Library/Frameworks/CoreImage.framework/CoreImage
+c0000000051081A870000000000228E60
+t1359485575
+s2264672
+
+N/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS6.1.sdk/System/Library/Frameworks/Foundation.framework/Foundation
+c0000000051081A89000000000062AD10
+t1359485577
+s6466832
+
+N/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS6.1.sdk/System/Library/Frameworks/QuartzCore.framework/QuartzCore
+c0000000051081A8A00000000003596B0
+t1359485578
+s3511984
+
+N/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS6.1.sdk/System/Library/Frameworks/UIKit.framework/UIKit
+c0000000051081A8D00000000011BCDF0
+t1359485581
+s18599408
+
+N/Users/camdenfullmer/Dropbox/Workspace/iOS/CFShareCircle/Example/../Classes/ios/CFShareCircleView.m
+c0000000051B95AA100000000000061B4
+t1371101857
+s25012
+
+N/Users/camdenfullmer/Dropbox/Workspace/iOS/CFShareCircle/Example/../Classes/ios/CFSharer.m
+c0000000051B9466F0000000000000532
+t1371096687
+s1330
+
+N/Users/camdenfullmer/Dropbox/Workspace/iOS/CFShareCircle/Example/../Resources/close.png
+c0000000051AB6FB00000000000000479
+t1370189744
+s1145
+
+N/Users/camdenfullmer/Dropbox/Workspace/iOS/CFShareCircle/Example/../Resources/close@2x.png
+c0000000051AB6F9100000000000004E5
+t1370189713
+s1253
+
+N/Users/camdenfullmer/Dropbox/Workspace/iOS/CFShareCircle/Example/../Resources/dropbox.png
+c0000000051894F8B0000000000000795
+t1367953291
+s1941
+
+N/Users/camdenfullmer/Dropbox/Workspace/iOS/CFShareCircle/Example/../Resources/dropbox@2x.png
+c0000000051894F7E0000000000000BC7
+t1367953278
+s3015
+
+N/Users/camdenfullmer/Dropbox/Workspace/iOS/CFShareCircle/Example/../Resources/evernote.png
+c0000000051894FAA00000000000006B1
+t1367953322
+s1713
+
+N/Users/camdenfullmer/Dropbox/Workspace/iOS/CFShareCircle/Example/../Resources/evernote@2x.png
+c0000000051894FA30000000000000974
+t1367953315
+s2420
+
+N/Users/camdenfullmer/Dropbox/Workspace/iOS/CFShareCircle/Example/../Resources/facebook.png
+c0000000051894F9200000000000004D7
+t1367953298
+s1239
+
+N/Users/camdenfullmer/Dropbox/Workspace/iOS/CFShareCircle/Example/../Resources/facebook@2x.png
+c0000000051894F9C00000000000005A2
+t1367953308
+s1442
+
+N/Users/camdenfullmer/Dropbox/Workspace/iOS/CFShareCircle/Example/../Resources/google_drive.png
+c0000000051894F51000000000000064D
+t1367953233
+s1613
+
+N/Users/camdenfullmer/Dropbox/Workspace/iOS/CFShareCircle/Example/../Resources/google_drive@2x.png
+c0000000051894F4300000000000008A5
+t1367953219
+s2213
+
+N/Users/camdenfullmer/Dropbox/Workspace/iOS/CFShareCircle/Example/../Resources/mail.png
+c0000000051A6603E00000000000005AE
+t1369858110
+s1454
+
+N/Users/camdenfullmer/Dropbox/Workspace/iOS/CFShareCircle/Example/../Resources/mail@2x.png
+c0000000051A672D40000000000000751
+t1369862868
+s1873
+
+N/Users/camdenfullmer/Dropbox/Workspace/iOS/CFShareCircle/Example/../Resources/more.png
+c0000000051A672C3000000000000051A
+t1369862851
+s1306
+
+N/Users/camdenfullmer/Dropbox/Workspace/iOS/CFShareCircle/Example/../Resources/more@2x.png
+c0000000051A672BA000000000000070E
+t1369862842
+s1806
+
+N/Users/camdenfullmer/Dropbox/Workspace/iOS/CFShareCircle/Example/../Resources/photo_library.png
+c0000000051A662B30000000000000870
+t1369858739
+s2160
+
+N/Users/camdenfullmer/Dropbox/Workspace/iOS/CFShareCircle/Example/../Resources/photo_library@2x.png
+c0000000051A662A50000000000000D9A
+t1369858725
+s3482
+
+N/Users/camdenfullmer/Dropbox/Workspace/iOS/CFShareCircle/Example/../Resources/pinterest.png
+c00000000518950210000000000000723
+t1367953441
+s1827
+
+N/Users/camdenfullmer/Dropbox/Workspace/iOS/CFShareCircle/Example/../Resources/pinterest@2x.png
+c000000005189502C0000000000000A6A
+t1367953452
+s2666
+
+N/Users/camdenfullmer/Dropbox/Workspace/iOS/CFShareCircle/Example/../Resources/twitter.png
+c0000000051894FEF0000000000000662
+t1367953391
+s1634
+
+N/Users/camdenfullmer/Dropbox/Workspace/iOS/CFShareCircle/Example/../Resources/twitter@2x.png
+c0000000051894F620000000000000970
+t1367953250
+s2416
+
+N/Users/camdenfullmer/Dropbox/Workspace/iOS/CFShareCircle/Example/Build/Intermediates/CFShareCircleExample.build/Debug-iphoneos/CFShareCircleExample.build/CFShareCircleExample.xcent
+t2
+s0
+
+N/Users/camdenfullmer/Dropbox/Workspace/iOS/CFShareCircle/Example/Build/Intermediates/CFShareCircleExample.build/Debug-iphoneos/CFShareCircleExample.build/Objects-normal/armv7/AppDelegate.o
+t2
+s0
+
+N/Users/camdenfullmer/Dropbox/Workspace/iOS/CFShareCircle/Example/Build/Intermediates/CFShareCircleExample.build/Debug-iphoneos/CFShareCircleExample.build/Objects-normal/armv7/CFShareCircleExample.LinkFileList
+c0000000051B9DB9300000000000003B0
+t1371134867
+s944
+
+N/Users/camdenfullmer/Dropbox/Workspace/iOS/CFShareCircle/Example/Build/Intermediates/CFShareCircleExample.build/Debug-iphoneos/CFShareCircleExample.build/Objects-normal/armv7/CFShareCircleView.o
+t2
+s0
+
+N/Users/camdenfullmer/Dropbox/Workspace/iOS/CFShareCircle/Example/Build/Intermediates/CFShareCircleExample.build/Debug-iphoneos/CFShareCircleExample.build/Objects-normal/armv7/CFSharer.o
+t2
+s0
+
+N/Users/camdenfullmer/Dropbox/Workspace/iOS/CFShareCircle/Example/Build/Intermediates/CFShareCircleExample.build/Debug-iphoneos/CFShareCircleExample.build/Objects-normal/armv7/ViewController.o
+t2
+s0
+
+N/Users/camdenfullmer/Dropbox/Workspace/iOS/CFShareCircle/Example/Build/Intermediates/CFShareCircleExample.build/Debug-iphoneos/CFShareCircleExample.build/Objects-normal/armv7/main.o
+t2
+s0
+
+N/Users/camdenfullmer/Dropbox/Workspace/iOS/CFShareCircle/Example/Build/Intermediates/PrecompiledHeaders/CFShareCircle Example-Prefix-gkfdjenkicgihyelzhrjdmkcpwiw/CFShareCircle Example-Prefix.pch.pth
+t2
+s0
+
+N/Users/camdenfullmer/Dropbox/Workspace/iOS/CFShareCircle/Example/Build/Products/Debug-iphoneos/CFShareCircleExample.app
+t2
+s0
+
+N/Users/camdenfullmer/Dropbox/Workspace/iOS/CFShareCircle/Example/Build/Products/Debug-iphoneos/CFShareCircleExample.app.dSYM
+t2
+s0
+
+N/Users/camdenfullmer/Dropbox/Workspace/iOS/CFShareCircle/Example/Build/Products/Debug-iphoneos/CFShareCircleExample.app/CFShareCircleExample
+t2
+s0
+
+N/Users/camdenfullmer/Dropbox/Workspace/iOS/CFShareCircle/Example/Build/Products/Debug-iphoneos/CFShareCircleExample.app/Default-568h@2x.png
+t2
+s0
+
+N/Users/camdenfullmer/Dropbox/Workspace/iOS/CFShareCircle/Example/Build/Products/Debug-iphoneos/CFShareCircleExample.app/Default.png
+t2
+s0
+
+N/Users/camdenfullmer/Dropbox/Workspace/iOS/CFShareCircle/Example/Build/Products/Debug-iphoneos/CFShareCircleExample.app/Default@2x.png
+t2
+s0
+
+N/Users/camdenfullmer/Dropbox/Workspace/iOS/CFShareCircle/Example/Build/Products/Debug-iphoneos/CFShareCircleExample.app/Info.plist
+t2
+s0
+
+N/Users/camdenfullmer/Dropbox/Workspace/iOS/CFShareCircle/Example/Build/Products/Debug-iphoneos/CFShareCircleExample.app/PkgInfo
+t2
+s0
+
+N/Users/camdenfullmer/Dropbox/Workspace/iOS/CFShareCircle/Example/Build/Products/Debug-iphoneos/CFShareCircleExample.app/ResourceRules.plist
+t2
+s0
+
+N/Users/camdenfullmer/Dropbox/Workspace/iOS/CFShareCircle/Example/Build/Products/Debug-iphoneos/CFShareCircleExample.app/close.png
+t2
+s0
+
+N/Users/camdenfullmer/Dropbox/Workspace/iOS/CFShareCircle/Example/Build/Products/Debug-iphoneos/CFShareCircleExample.app/close@2x.png
+t2
+s0
+
+N/Users/camdenfullmer/Dropbox/Workspace/iOS/CFShareCircle/Example/Build/Products/Debug-iphoneos/CFShareCircleExample.app/dropbox.png
+t2
+s0
+
+N/Users/camdenfullmer/Dropbox/Workspace/iOS/CFShareCircle/Example/Build/Products/Debug-iphoneos/CFShareCircleExample.app/dropbox@2x.png
+t2
+s0
+
+N/Users/camdenfullmer/Dropbox/Workspace/iOS/CFShareCircle/Example/Build/Products/Debug-iphoneos/CFShareCircleExample.app/embedded.mobileprovision
+t2
+s0
+
+N/Users/camdenfullmer/Dropbox/Workspace/iOS/CFShareCircle/Example/Build/Products/Debug-iphoneos/CFShareCircleExample.app/en.lproj/MainStoryboard_iPad.storyboardc
+t2
+s0
+
+N/Users/camdenfullmer/Dropbox/Workspace/iOS/CFShareCircle/Example/Build/Products/Debug-iphoneos/CFShareCircleExample.app/en.lproj/MainStoryboard_iPhone.storyboardc
+t2
+s0
+
+N/Users/camdenfullmer/Dropbox/Workspace/iOS/CFShareCircle/Example/Build/Products/Debug-iphoneos/CFShareCircleExample.app/evernote.png
+t2
+s0
+
+N/Users/camdenfullmer/Dropbox/Workspace/iOS/CFShareCircle/Example/Build/Products/Debug-iphoneos/CFShareCircleExample.app/evernote@2x.png
+t2
+s0
+
+N/Users/camdenfullmer/Dropbox/Workspace/iOS/CFShareCircle/Example/Build/Products/Debug-iphoneos/CFShareCircleExample.app/facebook.png
+t2
+s0
+
+N/Users/camdenfullmer/Dropbox/Workspace/iOS/CFShareCircle/Example/Build/Products/Debug-iphoneos/CFShareCircleExample.app/facebook@2x.png
+t2
+s0
+
+N/Users/camdenfullmer/Dropbox/Workspace/iOS/CFShareCircle/Example/Build/Products/Debug-iphoneos/CFShareCircleExample.app/google_drive.png
+t2
+s0
+
+N/Users/camdenfullmer/Dropbox/Workspace/iOS/CFShareCircle/Example/Build/Products/Debug-iphoneos/CFShareCircleExample.app/google_drive@2x.png
+t2
+s0
+
+N/Users/camdenfullmer/Dropbox/Workspace/iOS/CFShareCircle/Example/Build/Products/Debug-iphoneos/CFShareCircleExample.app/mail.png
+t2
+s0
+
+N/Users/camdenfullmer/Dropbox/Workspace/iOS/CFShareCircle/Example/Build/Products/Debug-iphoneos/CFShareCircleExample.app/mail@2x.png
+t2
+s0
+
+N/Users/camdenfullmer/Dropbox/Workspace/iOS/CFShareCircle/Example/Build/Products/Debug-iphoneos/CFShareCircleExample.app/more.png
+t2
+s0
+
+N/Users/camdenfullmer/Dropbox/Workspace/iOS/CFShareCircle/Example/Build/Products/Debug-iphoneos/CFShareCircleExample.app/more@2x.png
+t2
+s0
+
+N/Users/camdenfullmer/Dropbox/Workspace/iOS/CFShareCircle/Example/Build/Products/Debug-iphoneos/CFShareCircleExample.app/photo_library.png
+t2
+s0
+
+N/Users/camdenfullmer/Dropbox/Workspace/iOS/CFShareCircle/Example/Build/Products/Debug-iphoneos/CFShareCircleExample.app/photo_library@2x.png
+t2
+s0
+
+N/Users/camdenfullmer/Dropbox/Workspace/iOS/CFShareCircle/Example/Build/Products/Debug-iphoneos/CFShareCircleExample.app/pinterest.png
+t2
+s0
+
+N/Users/camdenfullmer/Dropbox/Workspace/iOS/CFShareCircle/Example/Build/Products/Debug-iphoneos/CFShareCircleExample.app/pinterest@2x.png
+t2
+s0
+
+N/Users/camdenfullmer/Dropbox/Workspace/iOS/CFShareCircle/Example/Build/Products/Debug-iphoneos/CFShareCircleExample.app/twitter.png
+t2
+s0
+
+N/Users/camdenfullmer/Dropbox/Workspace/iOS/CFShareCircle/Example/Build/Products/Debug-iphoneos/CFShareCircleExample.app/twitter@2x.png
+t2
+s0
+
+N/Users/camdenfullmer/Dropbox/Workspace/iOS/CFShareCircle/Example/CFShareCircle/CFShareCircle Example-Prefix.pch
+c00000000000000000000000000000000
+t2
+s0
+
+N/Users/camdenfullmer/Dropbox/Workspace/iOS/CFShareCircle/Example/CFShareCircleExample/AppDelegate.m
+c00000000518A848B00000000000007D4
+t1368032395
+s2004
+
+N/Users/camdenfullmer/Dropbox/Workspace/iOS/CFShareCircle/Example/CFShareCircleExample/Default-568h@2x.png
+c0000000050748B2300000000000048A2
+t1349815075
+s18594
+
+N/Users/camdenfullmer/Dropbox/Workspace/iOS/CFShareCircle/Example/CFShareCircleExample/Default.png
+c0000000050748B23000000000000198C
+t1349815075
+s6540
+
+N/Users/camdenfullmer/Dropbox/Workspace/iOS/CFShareCircle/Example/CFShareCircleExample/Default@2x.png
+c0000000050748B230000000000003EEB
+t1349815075
+s16107
+
+N/Users/camdenfullmer/Dropbox/Workspace/iOS/CFShareCircle/Example/CFShareCircleExample/ViewController.m
+c0000000051A77FE5000000000000037D
+t1369931749
+s893
+
+N/Users/camdenfullmer/Dropbox/Workspace/iOS/CFShareCircle/Example/CFShareCircleExample/en.lproj/MainStoryboard_iPad.storyboard
+c0000000050EB3E110000000000000766
+t1357594129
+s1894
+
+N/Users/camdenfullmer/Dropbox/Workspace/iOS/CFShareCircle/Example/CFShareCircleExample/en.lproj/MainStoryboard_iPhone.storyboard
+c0000000050EC74B7000000000000103D
+t1357673655
+s4157
+
+N/Users/camdenfullmer/Dropbox/Workspace/iOS/CFShareCircle/Example/CFShareCircleExample/main.m
+c0000000050D0A874000000000000014D
+t1355851892
+s333
+
+N/Users/camdenfullmer/Library/MobileDevice/Provisioning Profiles/C3CA7B41-63CA-4288-BE10-81B8A5FDB519.mobileprovision
+c00000000518930F1000000000000297E
+t1367945457
+s10622
+
+NCFShareCircleExample/CFShareCircleExample-Info.plist
+c0000000051B9C0230000000000000748
+t1371127843
+s1864
+
+CBuild AST from /Users/camdenfullmer/Dropbox/Workspace/iOS/CFShareCircle/Example/../Classes/ios/CFShareCircleView.m
+r0
+
+CBuild AST from /Users/camdenfullmer/Dropbox/Workspace/iOS/CFShareCircle/Example/../Classes/ios/CFSharer.m
+r0
+
+CBuild AST from /Users/camdenfullmer/Dropbox/Workspace/iOS/CFShareCircle/Example/CFShareCircleExample/AppDelegate.m
+r0
+
+CBuild AST from /Users/camdenfullmer/Dropbox/Workspace/iOS/CFShareCircle/Example/CFShareCircleExample/ViewController.m
+r0
+
+CBuild AST from /Users/camdenfullmer/Dropbox/Workspace/iOS/CFShareCircle/Example/CFShareCircleExample/main.m
+r0
+
+CCheck dependencies
+r0
+lSLF05#21%IDEActivityLogSection1@2#32"com.apple.dt.IDE.BuildLogSection18"Check dependenciesdd422b13136ab741^c7f54313136ab741^-504"Code Sign warning: code-signing identity 'iPhone Developer' matches multiple identities : 'iPhone Developer: Camden Fullmer (B3936K9Z8U)', 'iPhone Developer: Duane Marhefka (5E4565G5ER)' -- 'iPhone Developer: Camden Fullmer (B3936K9Z8U)' will be used.Code Sign warning: code-signing identity 'iPhone Developer' matches multiple identities : 'iPhone Developer: Camden Fullmer (B3936K9Z8U)', 'iPhone Developer: Duane Marhefka (5E4565G5ER)' -- 'iPhone Developer: Camden Fullmer (B3936K9Z8U)' will be used.2(21%IDEActivityLogMessage2@232"Code-signing identity 'iPhone Developer' matches multiple identities : 'iPhone Developer: Camden Fullmer (B3936K9Z8U)', 'iPhone Developer: Duane Marhefka (5E4565G5ER)' -- 'iPhone Developer: Camden Fullmer (B3936K9Z8U)' will be used.-392827667#18446744073709551615#0#-1#27"com.apple.dt.IDE.LogMessage-20"Code Signing Warning--2@232"Code-signing identity 'iPhone Developer' matches multiple identities : 'iPhone Developer: Camden Fullmer (B3936K9Z8U)', 'iPhone Developer: Duane Marhefka (5E4565G5ER)' -- 'iPhone Developer: Camden Fullmer (B3936K9Z8U)' will be used.-392827667#18446744073709551615#0#-1#27"com.apple.dt.IDE.LogMessage-20"Code Signing Warning--0#1#0#--18"Check dependencies36"8AEAC0B0-CF44-4966-863D-D6D89AD04005-
+
+CCodeSign /Users/camdenfullmer/Dropbox/Workspace/iOS/CFShareCircle/Example/Build/Products/Debug-iphoneos/CFShareCircleExample.app
+r0
+
+CCompileC Build/Intermediates/CFShareCircleExample.build/Debug-iphoneos/CFShareCircleExample.build/Objects-normal/armv7/AppDelegate.o /Users/camdenfullmer/Dropbox/Workspace/iOS/CFShareCircle/Example/CFShareCircleExample/AppDelegate.m normal armv7 objective-c com.apple.compilers.llvm.clang.1_0.compiler
+r0
+
+CCompileC Build/Intermediates/CFShareCircleExample.build/Debug-iphoneos/CFShareCircleExample.build/Objects-normal/armv7/CFShareCircleView.o /Users/camdenfullmer/Dropbox/Workspace/iOS/CFShareCircle/Example/../Classes/ios/CFShareCircleView.m normal armv7 objective-c com.apple.compilers.llvm.clang.1_0.compiler
+r0
+
+CCompileC Build/Intermediates/CFShareCircleExample.build/Debug-iphoneos/CFShareCircleExample.build/Objects-normal/armv7/CFSharer.o /Users/camdenfullmer/Dropbox/Workspace/iOS/CFShareCircle/Example/../Classes/ios/CFSharer.m normal armv7 objective-c com.apple.compilers.llvm.clang.1_0.compiler
+r0
+
+CCompileC Build/Intermediates/CFShareCircleExample.build/Debug-iphoneos/CFShareCircleExample.build/Objects-normal/armv7/ViewController.o /Users/camdenfullmer/Dropbox/Workspace/iOS/CFShareCircle/Example/CFShareCircleExample/ViewController.m normal armv7 objective-c com.apple.compilers.llvm.clang.1_0.compiler
+r0
+
+CCompileC Build/Intermediates/CFShareCircleExample.build/Debug-iphoneos/CFShareCircleExample.build/Objects-normal/armv7/main.o /Users/camdenfullmer/Dropbox/Workspace/iOS/CFShareCircle/Example/CFShareCircleExample/main.m normal armv7 objective-c com.apple.compilers.llvm.clang.1_0.compiler
+r0
+
+CCompileStoryboard /Users/camdenfullmer/Dropbox/Workspace/iOS/CFShareCircle/Example/CFShareCircleExample/en.lproj/MainStoryboard_iPad.storyboard
+r0
+
+CCompileStoryboard /Users/camdenfullmer/Dropbox/Workspace/iOS/CFShareCircle/Example/CFShareCircleExample/en.lproj/MainStoryboard_iPhone.storyboard
+r0
+
+CCopyPNGFile /Users/camdenfullmer/Dropbox/Workspace/iOS/CFShareCircle/Example/Build/Products/Debug-iphoneos/CFShareCircleExample.app/Default-568h@2x.png CFShareCircleExample/Default-568h@2x.png
+r0
+
+CCopyPNGFile /Users/camdenfullmer/Dropbox/Workspace/iOS/CFShareCircle/Example/Build/Products/Debug-iphoneos/CFShareCircleExample.app/Default.png CFShareCircleExample/Default.png
+r0
+
+CCopyPNGFile /Users/camdenfullmer/Dropbox/Workspace/iOS/CFShareCircle/Example/Build/Products/Debug-iphoneos/CFShareCircleExample.app/Default@2x.png CFShareCircleExample/Default@2x.png
+r0
+
+CCopyPNGFile /Users/camdenfullmer/Dropbox/Workspace/iOS/CFShareCircle/Example/Build/Products/Debug-iphoneos/CFShareCircleExample.app/close.png ../Resources/close.png
+r0
+
+CCopyPNGFile /Users/camdenfullmer/Dropbox/Workspace/iOS/CFShareCircle/Example/Build/Products/Debug-iphoneos/CFShareCircleExample.app/close@2x.png ../Resources/close@2x.png
+r0
+
+CCopyPNGFile /Users/camdenfullmer/Dropbox/Workspace/iOS/CFShareCircle/Example/Build/Products/Debug-iphoneos/CFShareCircleExample.app/dropbox.png ../Resources/dropbox.png
+r0
+
+CCopyPNGFile /Users/camdenfullmer/Dropbox/Workspace/iOS/CFShareCircle/Example/Build/Products/Debug-iphoneos/CFShareCircleExample.app/dropbox@2x.png ../Resources/dropbox@2x.png
+r0
+
+CCopyPNGFile /Users/camdenfullmer/Dropbox/Workspace/iOS/CFShareCircle/Example/Build/Products/Debug-iphoneos/CFShareCircleExample.app/evernote.png ../Resources/evernote.png
+r0
+
+CCopyPNGFile /Users/camdenfullmer/Dropbox/Workspace/iOS/CFShareCircle/Example/Build/Products/Debug-iphoneos/CFShareCircleExample.app/evernote@2x.png ../Resources/evernote@2x.png
+r0
+
+CCopyPNGFile /Users/camdenfullmer/Dropbox/Workspace/iOS/CFShareCircle/Example/Build/Products/Debug-iphoneos/CFShareCircleExample.app/facebook.png ../Resources/facebook.png
+r0
+
+CCopyPNGFile /Users/camdenfullmer/Dropbox/Workspace/iOS/CFShareCircle/Example/Build/Products/Debug-iphoneos/CFShareCircleExample.app/facebook@2x.png ../Resources/facebook@2x.png
+r0
+
+CCopyPNGFile /Users/camdenfullmer/Dropbox/Workspace/iOS/CFShareCircle/Example/Build/Products/Debug-iphoneos/CFShareCircleExample.app/google_drive.png ../Resources/google_drive.png
+r0
+
+CCopyPNGFile /Users/camdenfullmer/Dropbox/Workspace/iOS/CFShareCircle/Example/Build/Products/Debug-iphoneos/CFShareCircleExample.app/google_drive@2x.png ../Resources/google_drive@2x.png
+r0
+
+CCopyPNGFile /Users/camdenfullmer/Dropbox/Workspace/iOS/CFShareCircle/Example/Build/Products/Debug-iphoneos/CFShareCircleExample.app/mail.png ../Resources/mail.png
+r0
+
+CCopyPNGFile /Users/camdenfullmer/Dropbox/Workspace/iOS/CFShareCircle/Example/Build/Products/Debug-iphoneos/CFShareCircleExample.app/mail@2x.png ../Resources/mail@2x.png
+r0
+
+CCopyPNGFile /Users/camdenfullmer/Dropbox/Workspace/iOS/CFShareCircle/Example/Build/Products/Debug-iphoneos/CFShareCircleExample.app/more.png ../Resources/more.png
+r0
+
+CCopyPNGFile /Users/camdenfullmer/Dropbox/Workspace/iOS/CFShareCircle/Example/Build/Products/Debug-iphoneos/CFShareCircleExample.app/more@2x.png ../Resources/more@2x.png
+r0
+
+CCopyPNGFile /Users/camdenfullmer/Dropbox/Workspace/iOS/CFShareCircle/Example/Build/Products/Debug-iphoneos/CFShareCircleExample.app/photo_library.png ../Resources/photo_library.png
+r0
+
+CCopyPNGFile /Users/camdenfullmer/Dropbox/Workspace/iOS/CFShareCircle/Example/Build/Products/Debug-iphoneos/CFShareCircleExample.app/photo_library@2x.png ../Resources/photo_library@2x.png
+r0
+
+CCopyPNGFile /Users/camdenfullmer/Dropbox/Workspace/iOS/CFShareCircle/Example/Build/Products/Debug-iphoneos/CFShareCircleExample.app/pinterest.png ../Resources/pinterest.png
+r0
+
+CCopyPNGFile /Users/camdenfullmer/Dropbox/Workspace/iOS/CFShareCircle/Example/Build/Products/Debug-iphoneos/CFShareCircleExample.app/pinterest@2x.png ../Resources/pinterest@2x.png
+r0
+
+CCopyPNGFile /Users/camdenfullmer/Dropbox/Workspace/iOS/CFShareCircle/Example/Build/Products/Debug-iphoneos/CFShareCircleExample.app/twitter.png ../Resources/twitter.png
+r0
+
+CCopyPNGFile /Users/camdenfullmer/Dropbox/Workspace/iOS/CFShareCircle/Example/Build/Products/Debug-iphoneos/CFShareCircleExample.app/twitter@2x.png ../Resources/twitter@2x.png
+r0
+
+CCpResource /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS6.1.sdk/ResourceRules.plist Build/Products/Debug-iphoneos/CFShareCircleExample.app/ResourceRules.plist
+s392827667.274999
+e392827667.280024
+r1
+xCpResource
+x/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS6.1.sdk/ResourceRules.plist
+xBuild/Products/Debug-iphoneos/CFShareCircleExample.app/ResourceRules.plist
+lSLF05#21%IDEActivityLogSection1@2#32"com.apple.dt.IDE.BuildLogSection79"Copy Build/Products/Debug-iphoneos/CFShareCircleExample.app/ResourceRules.plist34854613136ab741^67b64713136ab741^---0#0#0#-19%DVTDocumentLocation2@155"file://localhost/Users/camdenfullmer/Dropbox/Workspace/iOS/CFShareCircle/Example/Build/Products/Debug-iphoneos/CFShareCircleExample.app/ResourceRules.plist000000000080d041^822"CpResource /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS6.1.sdk/ResourceRules.plist Build/Products/Debug-iphoneos/CFShareCircleExample.app/ResourceRules.plist    cd /Users/camdenfullmer/Dropbox/Workspace/iOS/CFShareCircle/Example    setenv PATH "/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/usr/bin:/Applications/Xcode.app/Contents/Developer/usr/bin:/usr/bin:/bin:/usr/sbin:/sbin"    builtin-copy -exclude .DS_Store -exclude CVS -exclude .svn -exclude .git -exclude .hg -resolve-src-symlinks /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS6.1.sdk/ResourceRules.plist /Users/camdenfullmer/Dropbox/Workspace/iOS/CFShareCircle/Example/Build/Products/Debug-iphoneos/CFShareCircleExample.app36"6EF86E23-A284-40CB-A6FA-62BD4AEC25BE-
+
+CGenerateDSYMFile /Users/camdenfullmer/Dropbox/Workspace/iOS/CFShareCircle/Example/Build/Products/Debug-iphoneos/CFShareCircleExample.app.dSYM /Users/camdenfullmer/Dropbox/Workspace/iOS/CFShareCircle/Example/Build/Products/Debug-iphoneos/CFShareCircleExample.app/CFShareCircleExample
+r0
+
+CLd /Users/camdenfullmer/Dropbox/Workspace/iOS/CFShareCircle/Example/Build/Products/Debug-iphoneos/CFShareCircleExample.app/CFShareCircleExample normal armv7
+r0
+
+CProcessInfoPlistFile /Users/camdenfullmer/Dropbox/Workspace/iOS/CFShareCircle/Example/Build/Products/Debug-iphoneos/CFShareCircleExample.app/Info.plist CFShareCircleExample/CFShareCircleExample-Info.plist
+s392827667.275038
+e392827667.279601
+r1
+xProcessInfoPlistFile
+x/Users/camdenfullmer/Dropbox/Workspace/iOS/CFShareCircle/Example/Build/Products/Debug-iphoneos/CFShareCircleExample.app/Info.plist
+xCFShareCircleExample/CFShareCircleExample-Info.plist
+lSLF05#21%IDEActivityLogSection1@2#32"com.apple.dt.IDE.BuildLogSection60"Process CFShareCircleExample/CFShareCircleExample-Info.plist49844613136ab741^caa74713136ab741^---0#0#0#-19%DVTDocumentLocation2@133"file://localhost/Users/camdenfullmer/Dropbox/Workspace/iOS/CFShareCircle/Example/CFShareCircleExample/CFShareCircleExample-Info.plist0000000000000000^970"ProcessInfoPlistFile Build/Products/Debug-iphoneos/CFShareCircleExample.app/Info.plist CFShareCircleExample/CFShareCircleExample-Info.plist    cd /Users/camdenfullmer/Dropbox/Workspace/iOS/CFShareCircle/Example    setenv PATH "/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/usr/bin:/Applications/Xcode.app/Contents/Developer/usr/bin:/usr/bin:/bin:/usr/sbin:/sbin"    builtin-infoPlistUtility CFShareCircleExample/CFShareCircleExample-Info.plist -genpkginfo /Users/camdenfullmer/Dropbox/Workspace/iOS/CFShareCircle/Example/Build/Products/Debug-iphoneos/CFShareCircleExample.app/PkgInfo -expandbuildsettings -format binary -platform iphoneos -resourcerulesfile /Users/camdenfullmer/Dropbox/Workspace/iOS/CFShareCircle/Example/Build/Products/Debug-iphoneos/CFShareCircleExample.app/ResourceRules.plist -o /Users/camdenfullmer/Dropbox/Workspace/iOS/CFShareCircle/Example/Build/Products/Debug-iphoneos/CFShareCircleExample.app/Info.plist36"53C70B53-C1A9-4377-BD0B-E10080A36B18-
+
+CProcessPCH "/Users/camdenfullmer/Dropbox/Workspace/iOS/CFShareCircle/Example/Build/Intermediates/PrecompiledHeaders/CFShareCircle Example-Prefix-gkfdjenkicgihyelzhrjdmkcpwiw/CFShareCircle Example-Prefix.pch.pth" "CFShareCircle/CFShareCircle Example-Prefix.pch" normal armv7 objective-c com.apple.compilers.llvm.clang.1_0.compiler
+s392827667.298359
+e392827667.318508
+r0
+xProcessPCH
+x/Users/camdenfullmer/Dropbox/Workspace/iOS/CFShareCircle/Example/Build/Intermediates/PrecompiledHeaders/CFShareCircle Example-Prefix-gkfdjenkicgihyelzhrjdmkcpwiw/CFShareCircle Example-Prefix.pch.pth
+xCFShareCircle/CFShareCircle Example-Prefix.pch
+xnormal
+xarmv7
+xobjective-c
+xcom.apple.compilers.llvm.clang.1_0.compiler
+oclang: error: no such file or directory: '/Users/camdenfullmer/Dropbox/Workspace/iOS/CFShareCircle/Example/CFShareCircle/CFShareCircle Example-Prefix.pch'
+oclang: error: no input files
+lSLF05#21%IDEActivityLogSection1@2#32"com.apple.dt.IDE.BuildLogSection57"Precompile CFShareCircle/CFShareCircle Example-Prefix.pchfca84e13136ab741^7f845113136ab741^-309"clang: error: no such file or directory: '/Users/camdenfullmer/Dropbox/Workspace/iOS/CFShareCircle/Example/CFShareCircle/CFShareCircle Example-Prefix.pch'clang: error: no input filesCommand /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/clang failed with exit code 11(21%IDEActivityLogMessage2@124"Command /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/clang failed with exit code 1-392827667#18446744073709551615#0#-2#--29"Apple LLVM compiler 4.2 Error--0#0#0#-19%DVTDocumentLocation3@129"file://localhost/Users/camdenfullmer/Dropbox/Workspace/iOS/CFShareCircle/Example/CFShareCircle/CFShareCircle%20Example-Prefix.pch000000000080d041^4018"ProcessPCH "Build/Intermediates/PrecompiledHeaders/CFShareCircle Example-Prefix-gkfdjenkicgihyelzhrjdmkcpwiw/CFShareCircle Example-Prefix.pch.pth" "CFShareCircle/CFShareCircle Example-Prefix.pch" normal armv7 objective-c com.apple.compilers.llvm.clang.1_0.compiler    cd /Users/camdenfullmer/Dropbox/Workspace/iOS/CFShareCircle/Example    setenv LANG en_US.US-ASCII    setenv PATH "/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/usr/bin:/Applications/Xcode.app/Contents/Developer/usr/bin:/usr/bin:/bin:/usr/sbin:/sbin"    /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/clang -x objective-c-header -arch armv7 -fmessage-length=0 -std=gnu99 -fobjc-arc -Wno-trigraphs -fpascal-strings -O0 -Wno-missing-field-initializers -Wno-missing-prototypes -Wreturn-type -Wno-implicit-atomic-properties -Wno-receiver-is-weak -Wduplicate-method-match -Wformat -Wno-missing-braces -Wparentheses -Wswitch -Wno-unused-function -Wno-unused-label -Wno-unused-parameter -Wunused-variable -Wunused-value -Wempty-body -Wuninitialized -Wno-unknown-pragmas -Wno-shadow -Wno-four-char-constants -Wno-conversion -Wno-constant-conversion -Wno-int-conversion -Wno-enum-conversion -Wno-shorten-64-to-32 -Wpointer-sign -Wno-newline-eof -Wno-selector -Wno-strict-selector-match -Wno-undeclared-selector -Wno-deprecated-implementations -DDEBUG=1 -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS6.1.sdk -fstrict-aliasing -Wprotocol -Wdeprecated-declarations -g -Wno-sign-conversion -miphoneos-version-min=6.0 -iquote /Users/camdenfullmer/Dropbox/Workspace/iOS/CFShareCircle/Example/Build/Intermediates/CFShareCircleExample.build/Debug-iphoneos/CFShareCircleExample.build/CFShareCircleExample-generated-files.hmap -I/Users/camdenfullmer/Dropbox/Workspace/iOS/CFShareCircle/Example/Build/Intermediates/CFShareCircleExample.build/Debug-iphoneos/CFShareCircleExample.build/CFShareCircleExample-own-target-headers.hmap -I/Users/camdenfullmer/Dropbox/Workspace/iOS/CFShareCircle/Example/Build/Intermediates/CFShareCircleExample.build/Debug-iphoneos/CFShareCircleExample.build/CFShareCircleExample-all-target-headers.hmap -iquote /Users/camdenfullmer/Dropbox/Workspace/iOS/CFShareCircle/Example/Build/Intermediates/CFShareCircleExample.build/Debug-iphoneos/CFShareCircleExample.build/CFShareCircleExample-project-headers.hmap -I/Users/camdenfullmer/Dropbox/Workspace/iOS/CFShareCircle/Example/Build/Products/Debug-iphoneos/include -I/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include -I/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include -I/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include -I/Users/camdenfullmer/Dropbox/Workspace/iOS/CFShareCircle/Example/Build/Intermediates/CFShareCircleExample.build/Debug-iphoneos/CFShareCircleExample.build/DerivedSources/armv7 -I/Users/camdenfullmer/Dropbox/Workspace/iOS/CFShareCircle/Example/Build/Intermediates/CFShareCircleExample.build/Debug-iphoneos/CFShareCircleExample.build/DerivedSources -F/Users/camdenfullmer/Dropbox/Workspace/iOS/CFShareCircle/Example/Build/Products/Debug-iphoneos --serialize-diagnostics "/Users/camdenfullmer/Dropbox/Workspace/iOS/CFShareCircle/Example/Build/Intermediates/PrecompiledHeaders/CFShareCircle Example-Prefix-gkfdjenkicgihyelzhrjdmkcpwiw/CFShareCircle Example-Prefix.pch.dia" -c "/Users/camdenfullmer/Dropbox/Workspace/iOS/CFShareCircle/Example/CFShareCircle/CFShareCircle Example-Prefix.pch" -o "/Users/camdenfullmer/Dropbox/Workspace/iOS/CFShareCircle/Example/Build/Intermediates/PrecompiledHeaders/CFShareCircle Example-Prefix-gkfdjenkicgihyelzhrjdmkcpwiw/CFShareCircle Example-Prefix.pch.pth" -MMD -MT dependencies -MF "/Users/camdenfullmer/Dropbox/Workspace/iOS/CFShareCircle/Example/Build/Intermediates/PrecompiledHeaders/CFShareCircle Example-Prefix-gkfdjenkicgihyelzhrjdmkcpwiw/CFShareCircle Example-Prefix.pch.d"36"E97BC087-A749-4A51-AD52-19B2AF401482-
+
+CProcessPCH "/Users/camdenfullmer/Library/Developer/Xcode/DerivedData/CFShareCircleExample-goddswbahyrsjlharzrcoavdovon/Index/PrecompiledHeaders/CFShareCircle Example-Prefix-cyxgrmwxkoclmffhahdlesovquqs_ast/CFShareCircle Example-Prefix.pch.pth" "CFShareCircle/CFShareCircle Example-Prefix.pch" normal armv7 objective-c com.apple.compilers.llvm.clang.1_0.astbuilder
+r0
+
+CProcessProductPackaging "/Users/camdenfullmer/Library/MobileDevice/Provisioning Profiles/C3CA7B41-63CA-4288-BE10-81B8A5FDB519.mobileprovision" /Users/camdenfullmer/Dropbox/Workspace/iOS/CFShareCircle/Example/Build/Products/Debug-iphoneos/CFShareCircleExample.app/embedded.mobileprovision
+r0
+
+CProcessProductPackaging /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS6.1.sdk/Entitlements.plist /Users/camdenfullmer/Dropbox/Workspace/iOS/CFShareCircle/Example/Build/Intermediates/CFShareCircleExample.build/Debug-iphoneos/CFShareCircleExample.build/CFShareCircleExample.xcent
+r0
+
+CTouch /Users/camdenfullmer/Dropbox/Workspace/iOS/CFShareCircle/Example/Build/Products/Debug-iphoneos/CFShareCircleExample.app
+r0
+

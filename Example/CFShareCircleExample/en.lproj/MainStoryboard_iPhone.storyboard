@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="2.0" toolsVersion="2844" systemVersion="11G63" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" initialViewController="NHQ-ow-ZlO">
+    <dependencies>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="1930"/>
+    </dependencies>
+    <scenes>
+        <!--View Controller - CFShareCircle Demo-->
+        <scene sceneID="5">
+            <objects>
+                <viewController id="2" customClass="ViewController" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="3">
+                        <rect key="frame" x="0.0" y="64" width="320" height="504"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                        <subviews>
+                            <toolbar opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="tm6-Qg-mNj">
+                                <items>
+                                    <barButtonItem systemItem="action" id="64e-Ee-eZp">
+                                        <connections>
+                                            <action selector="shareButtonClicked:" destination="2" id="Jdu-os-beg"/>
+                                        </connections>
+                                    </barButtonItem>
+                                </items>
+                            </toolbar>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstItem="tm6-Qg-mNj" firstAttribute="leading" secondItem="3" secondAttribute="leading" type="default" id="A5u-ph-Nqj"/>
+                            <constraint firstItem="tm6-Qg-mNj" firstAttribute="bottom" secondItem="3" secondAttribute="bottom" type="default" id="hzB-Ts-FMh"/>
+                            <constraint firstItem="tm6-Qg-mNj" firstAttribute="trailing" secondItem="3" secondAttribute="trailing" type="default" id="o4L-7f-rLy"/>
+                        </constraints>
+                    </view>
+                    <navigationItem key="navigationItem" title="CFShareCircle Demo" id="MF8-pq-sSd"/>
+                    <connections>
+                        <outlet property="shareCircleView" destination="3" id="hoN-Cj-zqr"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="4" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="793" y="28"/>
+        </scene>
+        <!--Navigation Controller-->
+        <scene sceneID="zj7-Xg-0jb">
+            <objects>
+                <navigationController id="NHQ-ow-ZlO" sceneMemberID="viewController">
+                    <toolbarItems/>
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="bsa-U5-hA8">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                    </navigationBar>
+                    <nil name="viewControllers"/>
+                    <connections>
+                        <segue destination="2" kind="relationship" relationship="rootViewController" id="9HH-53-806"/>
+                    </connections>
+                </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="IXO-9e-FNz" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="250" y="696"/>
+        </scene>
+    </scenes>
+    <simulatedMetricsContainer key="defaultSimulatedMetrics">
+        <simulatedStatusBarMetrics key="statusBar"/>
+        <simulatedOrientationMetrics key="orientation"/>
+        <simulatedScreenMetrics key="destination" type="retina4"/>
+    </simulatedMetricsContainer>
+</document>
