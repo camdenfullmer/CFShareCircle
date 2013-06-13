@@ -10,7 +10,6 @@
 		4103D8621680DFF4008AFCFC /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4103D8611680DFF4008AFCFC /* UIKit.framework */; };
 		4103D8641680DFF4008AFCFC /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4103D8631680DFF4008AFCFC /* Foundation.framework */; };
 		4103D8661680DFF4008AFCFC /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4103D8651680DFF4008AFCFC /* CoreGraphics.framework */; };
-		41A09ECE16A5FACF008C8933 /* CoreImage.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 41A09ECD16A5FACF008C8933 /* CoreImage.framework */; };
 		41BDD7FC176A10970035C785 /* CFShareCircleView.m in Sources */ = {isa = PBXBuildFile; fileRef = 41BDD7E4176A10970035C785 /* CFShareCircleView.m */; };
 		41BDD7FD176A10970035C785 /* CFSharer.m in Sources */ = {isa = PBXBuildFile; fileRef = 41BDD7E6176A10970035C785 /* CFSharer.m */; };
 		41BDD7FE176A10970035C785 /* close.png in Resources */ = {isa = PBXBuildFile; fileRef = 41BDD7E8176A10970035C785 /* close.png */; };
@@ -49,7 +48,6 @@
 		4103D8611680DFF4008AFCFC /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		4103D8631680DFF4008AFCFC /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		4103D8651680DFF4008AFCFC /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
-		41A09ECD16A5FACF008C8933 /* CoreImage.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreImage.framework; path = System/Library/Frameworks/CoreImage.framework; sourceTree = SDKROOT; };
 		41BDD7E3176A10970035C785 /* CFShareCircleView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CFShareCircleView.h; sourceTree = "<group>"; };
 		41BDD7E4176A10970035C785 /* CFShareCircleView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CFShareCircleView.m; sourceTree = "<group>"; };
 		41BDD7E5176A10970035C785 /* CFSharer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CFSharer.h; sourceTree = "<group>"; };
@@ -95,7 +93,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				41A09ECE16A5FACF008C8933 /* CoreImage.framework in Frameworks */,
 				41FC1038169B6FD9007DF1E3 /* QuartzCore.framework in Frameworks */,
 				4103D8621680DFF4008AFCFC /* UIKit.framework in Frameworks */,
 				4103D8641680DFF4008AFCFC /* Foundation.framework in Frameworks */,
@@ -127,7 +124,6 @@
 		4103D8601680DFF4008AFCFC /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				41A09ECD16A5FACF008C8933 /* CoreImage.framework */,
 				41FC1037169B6FD9007DF1E3 /* QuartzCore.framework */,
 				4103D8611680DFF4008AFCFC /* UIKit.framework */,
 				4103D8631680DFF4008AFCFC /* Foundation.framework */,
