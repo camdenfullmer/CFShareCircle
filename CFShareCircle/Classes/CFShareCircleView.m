@@ -463,7 +463,7 @@
     
     if(_dragging && hitLayer.name) {
         // Return the sharer that was selected and then animate out.
-        if([hitLayer.name isEqualToString:@"All options"]) {
+        if([hitLayer.name isEqualToString:@"More"]) {
             [self animateMoreOptionsIn];
         } else {
             for(CFSharer *sharer in _sharers) {
