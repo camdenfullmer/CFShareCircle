@@ -234,14 +234,21 @@
     [_sharingOptionsView addSubview:closeButton];
 }
 
+#define SUBSTANTIAL_MARGIN 20.0
+
 - (void)updateLayers {
     // Only update if the circle is presented to the user.
     if(_circleIsVisible) {
-        // Update the touch layer without waiting for an animation.
-        [CATransaction begin];
-        [CATransaction setValue: (id) kCFBooleanTrue forKey: kCATransactionDisableActions];
-        _touchLayer.position = [self touchLocationAtPoint:_currentPosition];
-        [CATransaction commit];
+        // Update the touch layer without waiting for an animation if the difference is not substantial.
+        CGPoint newTouchLocation = [self touchLocationAtPoint:_currentPosition];
+        if(MAX(ABS(newTouchLocation.x - _touchLayer.position.x),ABS(newTouchLocation.y - _touchLayer.position.y)) > SUBSTANTIAL_MARGIN) {
+            _touchLayer.position = newTouchLocation;
+        } else {
+            [CATransaction begin];
+            [CATransaction setValue: (id) kCFBooleanTrue forKey: kCATransactionDisableActions];
+            _touchLayer.position = newTouchLocation;
+            [CATransaction commit];
+        }
         
         NSString *sharerName = [self sharerNameHoveringOver];
         // Update the images.
@@ -321,12 +328,14 @@
 
 - (NSString*)sharerNameHoveringOver {
     NSString *name = nil;
-    CALayer *hitLayer = [_backgroundLayer hitTest:_currentPosition];
+    CALayer *hitLayer = [_backgroundLayer hitTest:_touchLayer.position];
     if(_dragging && hitLayer.name) {
         return hitLayer.name;
     }
     return name;
 }
+
+#define GRAVITATIONAL_PULL 30.0
 
 - (CGPoint)touchLocationAtPoint:(CGPoint)point {
     
@@ -350,7 +359,16 @@
     }
     
     // Add the gravitation physics effect.
-    
+    for(NSValue *value in _sharerLocations) {
+        CGPoint sharerLocation = [value CGPointValue];
+        
+        // Convert the sharer location to the full screen bounds location.
+        sharerLocation.x += _backgroundLayer.frame.origin.x;
+        sharerLocation.y += _backgroundLayer.frame.origin.y;
+        
+        if(MAX(ABS(sharerLocation.x - point.x),ABS(sharerLocation.y - point.y)) < GRAVITATIONAL_PULL)
+            point = sharerLocation;
+    }
     
     return point;
 }
@@ -441,7 +459,7 @@
 - (void)touchesEnded:(NSSet *)touches withEvent:(UIEvent *)event {
     UITouch *touch = (UITouch *)[[touches allObjects] objectAtIndex:0];
     _currentPosition = [touch locationInView:self];
-    CALayer *hitLayer = [_backgroundLayer hitTest:_currentPosition];
+    CALayer *hitLayer = [_backgroundLayer hitTest:_touchLayer.position];
     
     if(_dragging && hitLayer.name) {
         // Return the sharer that was selected and then animate out.
