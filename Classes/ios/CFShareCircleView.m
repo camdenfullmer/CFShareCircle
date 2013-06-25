@@ -78,7 +78,7 @@
 #pragma mark -
 #pragma mark - Private methods
 
-- (void)setUpCircleLayers {
+- (void)setUpCircleLayers {  
     // Set all the defaults for the share circle.
     _imageLayers = [[NSMutableArray alloc] init];
     self.hidden = YES;
@@ -88,6 +88,12 @@
     _sharingOptionsIsVisible = NO;
     _origin = CGPointMake(CGRectGetMidX(self.bounds), CGRectGetMidY(self.bounds));
     _currentPosition = _origin;
+    
+    // Create the CGFont that is to be used on the layers.
+    NSString *fontName = @"HelveticaNeue-Light";
+    CFStringRef cfFontName = (CFStringRef)CFBridgingRetain(fontName);
+    CGFontRef font = CGFontCreateWithFontName(cfFontName);
+    CFRelease(cfFontName);
     
     // Determine the number of sharers in the circle. If it is more then the max then let's insert the more sharer into the array.
     // Also construct the all options view if the max has been exceeded.
@@ -113,6 +119,7 @@
     CGRect backgroundRect = CGRectMake(0,0,BACKGROUND_SIZE,BACKGROUND_SIZE);
     CGPathAddEllipseInRect(backgroundPath, nil, backgroundRect);
     _backgroundLayer.path = backgroundPath;
+    CGPathRelease(backgroundPath);
     [self.layer addSublayer:_backgroundLayer];
     
     // Create the layers for all the sharing service images.
@@ -146,7 +153,8 @@
     CGMutablePathRef circularPath = CGPathCreateMutable();
     CGPathAddEllipseInRect(circularPath, NULL, CGRectMake(0, 0, TOUCH_SIZE, TOUCH_SIZE));
     _touchLayer.path = circularPath;
-    _touchLayer.position = CGPointMake(CGRectGetMidX(_backgroundLayer.bounds), CGRectGetMidY(_backgroundLayer.bounds));
+    CGPathRelease(circularPath);
+    _touchLayer.position = CGPointMake(CGRectGetMidX(self.layer.bounds), CGRectGetMidY(self.layer   .bounds));
     _touchLayer.opacity = 0.0;
     _touchLayer.fillColor = [UIColor clearColor].CGColor;
     _touchLayer.strokeColor = [UIColor blackColor].CGColor;
@@ -159,7 +167,7 @@
     _introTextLayer.wrapped = YES;
     _introTextLayer.alignmentMode = kCAAlignmentCenter;
     _introTextLayer.fontSize = 14.0;
-    _introTextLayer.font = CFBridgingRetain([UIFont fontWithName:@"HelveticaNeue-Light" size:14.0f].fontName);
+    _introTextLayer.font = font;
     _introTextLayer.foregroundColor = [UIColor blackColor].CGColor;
     _introTextLayer.frame = CGRectMake(0, 0, 60, 31);
     _introTextLayer.position = CGPointMake(CGRectGetMidX(_backgroundLayer.bounds), CGRectGetMidY(_backgroundLayer.bounds));
@@ -173,13 +181,16 @@
     _shareTitleLayer.wrapped = YES;
     _shareTitleLayer.alignmentMode = kCAAlignmentCenter;
     _shareTitleLayer.fontSize = 20.0;
-    _shareTitleLayer.font = CFBridgingRetain([UIFont fontWithName:@"HelveticaNeue-Light" size:14.0f].fontName);
-    _shareTitleLayer.foregroundColor = [UIColor blackColor].CGColor;
+    _shareTitleLayer.font = font;
+    _shareTitleLayer.foregroundColor = [[UIColor blackColor] CGColor];
     _shareTitleLayer.frame = CGRectMake(0, 0, 120, 28);
     _shareTitleLayer.position = CGPointMake(CGRectGetMidX(_backgroundLayer.bounds), CGRectGetMidY(_backgroundLayer.bounds));
     _shareTitleLayer.contentsScale = [[UIScreen mainScreen] scale];
     _shareTitleLayer.opacity = 0.0;
     [_backgroundLayer addSublayer:_shareTitleLayer];
+    
+    // Release the font.
+    CGFontRelease(font);
 }
 
 - (void)setUpSharingOptionsView {
@@ -225,7 +236,7 @@
     [closeButton setBackgroundImage:highlightedButtonImage forState:UIControlStateHighlighted];
     // Create the normal image for the button.
     UIGraphicsBeginImageContextWithOptions(rect.size, NO, 0.0f);
-    context = UIGraphicsGetCurrentContext();
+    UIGraphicsGetCurrentContext();
     [closeButtonImage drawInRect:CGRectMake(15.0f,15.0f,closeButtonImage.size.width,closeButtonImage.size.height) blendMode:kCGBlendModeNormal alpha:0.5];
     UIImage *normalButtonImage = UIGraphicsGetImageFromCurrentImageContext();
     UIGraphicsEndImageContext();
