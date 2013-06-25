@@ -1,5 +1,5 @@
 # Exclude the build directory
-build/*
+Example/Build/*
   
 # Exclude temp nibs and swap files
 *~.nib
