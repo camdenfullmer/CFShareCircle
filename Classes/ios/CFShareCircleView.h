@@ -29,11 +29,11 @@
 /**
  Animates the share circle into view. 
  */
-- (void)animateIn;
+- (void)show;
 
 /**
  Animates the share circle out of view.
  */
-- (void)animateOut;
+- (void)hide;
 
 @end

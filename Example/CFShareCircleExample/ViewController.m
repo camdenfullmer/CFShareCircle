@@ -32,6 +32,6 @@
 
 
 - (IBAction)shareButtonClicked:(id)sender {
-    [shareCircleView animateIn];
+    [shareCircleView show];
 }
 @end

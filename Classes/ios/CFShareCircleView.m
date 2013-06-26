@@ -456,7 +456,7 @@
         _dragging = YES;
         [self updateLayers];
     } else {
-        [self animateOut];
+        [self hide];
     }
 }
 
@@ -484,7 +484,7 @@
                 }
             }
         }
-        [self animateOut];
+        [self hide];
     }
     _currentPosition = _origin;
     _dragging = NO;
@@ -557,7 +557,7 @@
 #pragma mark -
 #pragma mark - Public methods
 
-- (void)animateIn {
+- (void)show {
     self.hidden = NO;
     CABasicAnimation *animation = [CABasicAnimation animationWithKeyPath:@"position"];
     [animation setValue:@"animateIn" forKey:@"id"];
@@ -571,7 +571,7 @@
     [self animateImagesIn];
 }
 
-- (void)animateOut {
+- (void)hide {
     _circleIsVisible = NO;
     [self updateLayers];
     CABasicAnimation *animation = [CABasicAnimation animationWithKeyPath:@"position"];

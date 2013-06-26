@@ -41,9 +41,9 @@ Follow the instructions to add CFShareCircle to your project.
     }
 ```
 
-4. Finally just animate in the view whenever you want it pop up for the user.
+4. Finally just show the view whenever you want it pop up for the user.
 ```
-    [shareCircleView animateIn];
+    [shareCircleView show];
 ```
 
 ###Customize CFShareCirlce
