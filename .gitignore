@@ -17,3 +17,6 @@ Example/Build/*
 *.pbxuser
 *.xcworkspace
 xcuserdata
+
+# Project files
+"Project Files"/
