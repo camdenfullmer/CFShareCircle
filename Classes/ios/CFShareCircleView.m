@@ -12,12 +12,13 @@
 - (void)setUpCircleLayers; /* Build all the layers to be displayed onto the view of the share circle. */
 - (void)setUpSharingOptionsView; /* Build the view to show all the sharers when there is too many for the circle. */
 - (void)updateLayers; /* Updates all the layers based on the new current position of the touch input. */
-- (void)animateMoreOptionsIn; /* Animates the table view in to show all the sharer options. */
-- (void)animateMoreOptionsOut; /* Hides the table view with all the sharers. */
-- (NSString *)sharerNameHoveringOver; /* Return the name of the sharer that the user is hovering over at this exact moment in time. */
+- (void)showMoreOptions; /* Animates the table view in to show all the sharer options. */
+- (void)hideMoreOptions; /* Hides the table view with all the sharers. */
+- (CALayer *)sharerLayerBeingTouched; /* Returns the sharer currently being touched. */
 - (CGPoint)touchLocationAtPoint:(CGPoint)point; /* Determines where the touch images is going to be placed inside of the view. */
 - (BOOL)circleEnclosesPoint:(CGPoint)point; /* Returns if the point is inside the cirlce. */
 - (UIImage *)whiteOverlayedImage:(UIImage*)image;
+- (NSUInteger)numberOfSharersInCircle; /* Determine the number of sharers in the circle. If it is more then the max then let's insert the more sharer into the array. */
 @end
 
 @implementation CFShareCircleView{
@@ -26,10 +27,8 @@
     CALayer *_closeButtonLayer, *_overlayLayer;
     CAShapeLayer *_backgroundLayer, *_touchLayer;
     CATextLayer *_introTextLayer, *_shareTitleLayer;
-    NSMutableArray *_sharerLayers, *_sharers;
-    NSUInteger _numberSharersInCircle;
+    NSMutableArray *_sharers, *_sharerLayers;
     UIView *_sharingOptionsView;
-    NSMutableArray *_sharerLocations;
 }
 
 #define BACKGROUND_SIZE 275
@@ -76,6 +75,14 @@
 #pragma mark -
 #pragma mark - Private methods
 
+- (NSUInteger)numberOfSharersInCircle {
+    if(_sharers.count > MAX_VISIBLE_SHARERS) {
+        return MAX_VISIBLE_SHARERS;
+    } else {
+        return _sharers.count;
+    }
+}
+
 - (void)setUpCircleLayers {
     // Set all the defaults for the share circle.
     _sharerLayers = [[NSMutableArray alloc] init];
@@ -92,15 +99,6 @@
     CFStringRef cfFontName = (CFStringRef)CFBridgingRetain(fontName);
     CGFontRef font = CGFontCreateWithFontName(cfFontName);
     CFRelease(cfFontName);
-    
-    // Determine the number of sharers in the circle. If it is more then the max then let's insert the more sharer into the array.
-    // Also construct the all options view if the max has been exceeded.
-    if(_sharers.count > MAX_VISIBLE_SHARERS) {
-        _numberSharersInCircle = MAX_VISIBLE_SHARERS;
-        [self setUpSharingOptionsView];
-    } else {
-        _numberSharersInCircle = _sharers.count;
-    }
     
     // Create the overlay layer for the entire screen.
     _overlayLayer = [CAShapeLayer layer];
@@ -121,8 +119,7 @@
     [self.layer addSublayer:_backgroundLayer];
     
     // Create the layers for all the sharing service images.
-    _sharerLocations = [[NSMutableArray alloc] init];
-    for(int i = 0; i < _numberSharersInCircle; i++) {
+    for(int i = 0; i < [self numberOfSharersInCircle]; i++) {
         CFSharer *sharer;
         if(i == 5 && _sharers.count > 6)
             sharer = [[CFSharer alloc] initWithName:@"More" imageName:@"more.png"];
@@ -136,19 +133,16 @@
         imageLayer.frame = CGRectMake(0, 0, IMAGE_SIZE, IMAGE_SIZE);
 
         // Calculate the x and y coordinate. Points go around the unit circle starting at pi = 0.
-        float trig = i/(_numberSharersInCircle/2.0)*M_PI;
+        float trig = i/([self numberOfSharersInCircle]/2.0)*M_PI;
         float x = BACKGROUND_SIZE/2.0 + cosf(trig)*PATH_SIZE/2.0;
         float y = BACKGROUND_SIZE/2.0 - sinf(trig)*PATH_SIZE/2.0;
-        [_sharerLocations addObject:[NSValue valueWithCGPoint:CGPointMake(x, y)]];
-        imageLayer.position = [[_sharerLocations objectAtIndex:i] CGPointValue];
-        
+        imageLayer.position = CGPointMake(x, y);
         imageLayer.contents = (id)image.CGImage;
         imageLayer.shadowColor = [UIColor colorWithRed:213.0/255.0 green:213.0/255.0 blue:213.0/255.0 alpha:1.0].CGColor;
         imageLayer.shadowOffset = CGSizeMake(1, 1);
         imageLayer.shadowRadius = 0;
         imageLayer.shadowOpacity = 1.0;
-        imageLayer.name = sharer.name;
-        
+        imageLayer.name = sharer.name;        
         [_sharerLayers addObject:imageLayer];
         [_backgroundLayer addSublayer:[_sharerLayers objectAtIndex:i]];
     }
@@ -160,12 +154,12 @@
     CGPathAddEllipseInRect(circularPath, NULL, CGRectMake(0, 0, TOUCH_SIZE, TOUCH_SIZE));
     _touchLayer.path = circularPath;
     CGPathRelease(circularPath);
-    _touchLayer.position = CGPointMake(CGRectGetMidX(self.layer.bounds), CGRectGetMidY(self.layer   .bounds));
+    _touchLayer.position = CGPointMake(CGRectGetMidX(_backgroundLayer.bounds), CGRectGetMidY(_backgroundLayer.bounds));
     _touchLayer.opacity = 0.0;
     _touchLayer.fillColor = [UIColor clearColor].CGColor;
     _touchLayer.strokeColor = [UIColor blackColor].CGColor;
     _touchLayer.lineWidth = 2.0f;
-    [self.layer addSublayer:_touchLayer];
+    [_backgroundLayer addSublayer:_touchLayer];
     
     // Create the intro text layer to help the user.
     _introTextLayer = [CATextLayer layer];
@@ -194,6 +188,10 @@
     _shareTitleLayer.contentsScale = [[UIScreen mainScreen] scale];
     _shareTitleLayer.opacity = 0.0;
     [_backgroundLayer addSublayer:_shareTitleLayer];
+    
+    // Create the sharing options view if we need it.
+    if(_sharers.count > MAX_VISIBLE_SHARERS)
+        [self setUpSharingOptionsView];
     
     // Release the font.
     CGFontRelease(font);
@@ -247,8 +245,11 @@
     UIImage *normalButtonImage = UIGraphicsGetImageFromCurrentImageContext();
     UIGraphicsEndImageContext();
     [closeButton setBackgroundImage:normalButtonImage forState:UIControlStateNormal];
-    [closeButton addTarget:self action:@selector(animateMoreOptionsOut) forControlEvents:UIControlEventTouchUpInside];
+    [closeButton addTarget:self action:@selector(hideMoreOptions) forControlEvents:UIControlEventTouchUpInside];
     [_sharingOptionsView addSubview:closeButton];
+    
+    // Add the view.
+    [self addSubview:_sharingOptionsView];
 }
 
 #define SUBSTANTIAL_MARGIN 20.0
@@ -267,18 +268,25 @@
             [CATransaction commit];
         }
         
-        NSString *sharerName = [self sharerNameHoveringOver];
+        CALayer *selectedSharerLayer = nil;
+        for(CALayer *layer in _sharerLayers) {
+            if(CGRectContainsPoint(layer.frame, _touchLayer.position)) {
+                selectedSharerLayer = layer;
+                break;
+            }
+        }
+        
         // Update the images.
         for(int i = 0; i < [_sharerLayers count]; i++) {
             CALayer *layer = [_sharerLayers objectAtIndex:i];
-            if(!_dragging || [sharerName isEqualToString:layer.name])
+            if(!_dragging || [selectedSharerLayer.name isEqualToString:layer.name])
                 layer.opacity = 1.0;
             else
                 layer.opacity = 0.6;
         }
         
         // Update the touch layer.
-        if(sharerName)
+        if(selectedSharerLayer)
             _touchLayer.opacity = 1.0;
         else if(_dragging)
             _touchLayer.opacity = 0.5;
@@ -292,8 +300,8 @@
             _introTextLayer.opacity = 0.6;
         
         // Update the share title text layer
-        if(sharerName) {
-            _shareTitleLayer.string = sharerName;
+        if(selectedSharerLayer) {
+            _shareTitleLayer.string = selectedSharerLayer.name;
             _shareTitleLayer.opacity = 0.6;
         } else {
             _shareTitleLayer.opacity = 0.0;
@@ -306,19 +314,18 @@
         [CATransaction begin];
         [CATransaction setValue: (id) kCFBooleanTrue forKey: kCATransactionDisableActions];
         _touchLayer.opacity = 0.0;
+        _touchLayer.position = CGPointMake(CGRectGetMidX(_backgroundLayer.bounds), CGRectGetMidY(_backgroundLayer.bounds));
         _introTextLayer.opacity = 0.0;
         _shareTitleLayer.opacity = 0.0;
+        _currentPosition = _origin;
+        _dragging = NO;
+        // Update the images.
+        for(int i = 0; i < [_sharerLayers count]; i++) {
+            CALayer *layer = [_sharerLayers objectAtIndex:i];
+            layer.opacity = 0.6;
+        }
         [CATransaction commit];
     }
-}
-
-- (NSString*)sharerNameHoveringOver {
-    NSString *name = nil;
-    CALayer *hitLayer = [_backgroundLayer hitTest:_touchLayer.position];
-    if(_dragging && hitLayer.name) {
-        return hitLayer.name;
-    }
-    return name;
 }
 
 #define GRAVITATIONAL_PULL 30.0
@@ -344,17 +351,17 @@
         point.y = _origin.y + (BACKGROUND_SIZE/2.0 - TOUCH_SIZE/2.0) * sin(angle);
     }
     
+    // Put the point in terms of the background layers position.
+    point.x -= _backgroundLayer.frame.origin.x;
+    point.y -= _backgroundLayer.frame.origin.y;
+    
     // Add the gravitation physics effect.
-    for(NSValue *value in _sharerLocations) {
-        CGPoint sharerLocation = [value CGPointValue];
-        
-        // Convert the sharer location to the full screen bounds location.
-        sharerLocation.x += _backgroundLayer.frame.origin.x;
-        sharerLocation.y += _backgroundLayer.frame.origin.y;
-        
+    for(CALayer *layer in _sharerLayers) {
+        CGPoint sharerLocation = layer.position;
+               
         if(MAX(ABS(sharerLocation.x - point.x),ABS(sharerLocation.y - point.y)) < GRAVITATIONAL_PULL)
             point = sharerLocation;
-    }
+    }    
     
     return point;
 }
@@ -366,18 +373,16 @@
         return YES;
 }
 
-- (void)animateMoreOptionsIn {
+- (void)showMoreOptions {
     _sharingOptionsIsVisible = YES;
-    [self addSubview:_sharingOptionsView];
     [UIView animateWithDuration:0.5
                      animations:^{
                          _sharingOptionsView.frame = self.bounds;
                      }
-                     completion:^(BOOL finished){
-                     }];
+                     completion:nil];
 }
 
-- (void)animateMoreOptionsOut {
+- (void)hideMoreOptions {
     [UIView animateWithDuration:0.5
                      animations:^{
                          CGRect frame = _sharingOptionsView.frame;
@@ -387,7 +392,6 @@
                      completion:^(BOOL finished){
                          _sharingOptionsIsVisible = NO;
                          self.hidden = YES;
-                         [_sharingOptionsView removeFromSuperview];
                      }];
 }
 
@@ -405,12 +409,41 @@
     return tempImage;
 }
 
+- (CALayer *)sharerLayerBeingTouched {
+    for(CALayer *layer in _sharerLayers) {
+        if(CGRectContainsPoint(layer.frame, _touchLayer.position)) {
+            return layer;
+        }
+    }
+    return nil;
+}
+
+- (void)hideCircle {
+    CABasicAnimation *animation = [CABasicAnimation animationWithKeyPath:@"position"];
+    
+    // Set delegate and key/value to know when animation ends.
+    animation.delegate = self;
+    [animation setValue:@"animateOut" forKey:@"id"];
+    
+    // Construct the animation.
+    animation.fromValue = [_backgroundLayer valueForKey:@"position"];
+    animation.toValue = [NSValue valueWithCGPoint:CGPointMake(self.bounds.size.width + BACKGROUND_SIZE/2.0, CGRectGetMidY(self.bounds))];
+    animation.duration = 0.3;
+    animation.timingFunction = [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseIn];
+    
+    // Intiate the animation.
+    _backgroundLayer.position = CGPointMake(self.bounds.size.width + BACKGROUND_SIZE/2.0, CGRectGetMidY(self.bounds));
+    [_backgroundLayer addAnimation:animation forKey:@"position"];
+}
+
 #pragma mark -
 #pragma mark - Animation delegate
 
 - (void)animationDidStop:(CAAnimation *)anim finished:(BOOL)flag {
     if([[anim valueForKey:@"id"] isEqual:@"animateOut"]) {
+        _circleIsVisible = NO;
         if(!_circleIsVisible && !_sharingOptionsIsVisible) self.hidden = YES;
+        [self updateLayers];
     } else if([[anim valueForKey:@"id"] isEqual:@"animateIn"]) {
         _circleIsVisible = YES;
         [self updateLayers];
@@ -429,7 +462,7 @@
         _dragging = YES;
         [self updateLayers];
     } else {
-        [self hide];
+        [self hideCircle];
     }
 }
 
@@ -443,25 +476,21 @@
 - (void)touchesEnded:(NSSet *)touches withEvent:(UIEvent *)event {
     UITouch *touch = (UITouch *)[[touches allObjects] objectAtIndex:0];
     _currentPosition = [touch locationInView:self];
-    CALayer *hitLayer = [_backgroundLayer hitTest:_touchLayer.position];
-    
-    if(_dragging && hitLayer.name) {
-        // Return the sharer that was selected and then animate out.
-        if([hitLayer.name isEqualToString:@"More"]) {
-            [self animateMoreOptionsIn];
+    CALayer *sharerLayer = [self sharerLayerBeingTouched];
+        
+    if(_dragging && sharerLayer) {
+        if([sharerLayer.name isEqualToString:@"More"]) {
+            [self showMoreOptions];
         } else {
-            for(CFSharer *sharer in _sharers) {
-                if([sharer.name isEqualToString:hitLayer.name]) {
-                    [_delegate shareCircleView:self didSelectSharer:sharer];
-                    break;
-                }
-            }
+            [_delegate shareCircleView:self didSelectSharer:[_sharers objectAtIndex:[_sharerLayers indexOfObject:sharerLayer]]];
         }
-        [self hide];
+        [self hideCircle];
+    } else {
+        // Reset values.
+        _currentPosition = _origin;
+        _dragging = NO;
+        [self updateLayers];
     }
-    _currentPosition = _origin;
-    _dragging = NO;
-    [self updateLayers];
 }
 
 - (void)touchesCancelled:(NSSet *)touches withEvent:(UIEvent *)event {
@@ -474,7 +503,7 @@
 #pragma mark - Table View Delegate
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-    [self animateMoreOptionsOut];
+    [self hideMoreOptions];
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
     [_delegate shareCircleView:self didSelectSharer:[_sharers objectAtIndex:indexPath.row]];
 }
@@ -557,23 +586,10 @@
 }
 
 - (void)hide {
-    _circleIsVisible = NO;
-    [self updateLayers];
-    CABasicAnimation *animation = [CABasicAnimation animationWithKeyPath:@"position"];
-    
-    // Set delegate and key/value to know when animation ends.
-    animation.delegate = self;
-    [animation setValue:@"animateOut" forKey:@"id"];
-    
-    // Construct the animation.
-    animation.fromValue = [_backgroundLayer valueForKey:@"position"];
-    animation.toValue = [NSValue valueWithCGPoint:CGPointMake(self.bounds.size.width + BACKGROUND_SIZE/2.0, CGRectGetMidY(self.bounds))];
-    animation.duration = 0.4;
-    animation.timingFunction = [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseIn];
-    
-    // Intiate the animation.
-    _backgroundLayer.position = CGPointMake(self.bounds.size.width + BACKGROUND_SIZE/2.0, CGRectGetMidY(self.bounds));
-    [_backgroundLayer addAnimation:animation forKey:@"position"];
+    if(_circleIsVisible)
+       [self hideCircle];
+    else if(_sharingOptionsIsVisible)
+        [self hideMoreOptions];
 }
 
 # pragma mark - 
