@@ -435,10 +435,8 @@
 
 - (void)animationDidStop:(CAAnimation *)anim finished:(BOOL)flag {
     if([[anim valueForKey:@"id"] isEqual:@"animateOut"]) {
-        _backgroundLayer.position = CGPointMake(self.bounds.size.width + BACKGROUND_SIZE/2.0, CGRectGetMidY(self.bounds)); // Needed for Core Animation fix??
         if(!_circleIsVisible && !_sharingOptionsIsVisible) self.hidden = YES;
     } else if([[anim valueForKey:@"id"] isEqual:@"animateIn"]) {
-        _backgroundLayer.position = CGPointMake(CGRectGetMidX(self.bounds), CGRectGetMidY(self.bounds)); // Needed for Core Animation fix??
         _circleIsVisible = YES;
         [self updateLayers];
     }
@@ -559,15 +557,24 @@
 
 - (void)show {
     self.hidden = NO;
+    // Set up the animation for the background layer to come in.
     CABasicAnimation *animation = [CABasicAnimation animationWithKeyPath:@"position"];
+    
+    // Set delegate and key/value to know when animation ends.
+    animation.delegate = self;
     [animation setValue:@"animateIn" forKey:@"id"];
-    animation.fromValue = [NSValue valueWithCGPoint:_backgroundLayer.position];
+    
+    // Construct the animation.
+    animation.fromValue = [_backgroundLayer valueForKey:@"position"];
     animation.toValue = [NSValue valueWithCGPoint:CGPointMake(CGRectGetMidX(self.bounds), CGRectGetMidY(self.bounds))];
     animation.duration = 0.3;
-    animation.delegate = self;
-    animation.fillMode = kCAFillModeForwards;
-    animation.removedOnCompletion = NO;
+    animation.timingFunction = [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseOut];
+    
+    // Intiate the animation and ensure the layer stays there.
+    _backgroundLayer.position = CGPointMake(CGRectGetMidX(self.bounds), CGRectGetMidY(self.bounds));
     [_backgroundLayer addAnimation:animation forKey:@"position"];
+    
+    // Move the sharer images.
     [self animateImagesIn];
 }
 
@@ -575,14 +582,21 @@
     _circleIsVisible = NO;
     [self updateLayers];
     CABasicAnimation *animation = [CABasicAnimation animationWithKeyPath:@"position"];
+    
+    // Set delegate and key/value to know when animation ends.
+    animation.delegate = self;
     [animation setValue:@"animateOut" forKey:@"id"];
-    animation.fromValue = [NSValue valueWithCGPoint:_backgroundLayer.position];
+    
+    // Construct the animation.
+    animation.fromValue = [_backgroundLayer valueForKey:@"position"];
     animation.toValue = [NSValue valueWithCGPoint:CGPointMake(self.bounds.size.width + BACKGROUND_SIZE/2.0, CGRectGetMidY(self.bounds))];
     animation.duration = 0.3;
-    animation.delegate = self;
-    animation.fillMode = kCAFillModeForwards;
-    animation.removedOnCompletion = NO;
+    animation.timingFunction = [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseIn];
+    
+    // Intiate the animation.
+    _backgroundLayer.position = CGPointMake(self.bounds.size.width + BACKGROUND_SIZE/2.0, CGRectGetMidY(self.bounds));
     [_backgroundLayer addAnimation:animation forKey:@"position"];
+    
     [self animateImagesOut];
 }
 
