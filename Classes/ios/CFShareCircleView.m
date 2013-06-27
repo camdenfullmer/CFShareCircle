@@ -12,8 +12,6 @@
 - (void)setUpCircleLayers; /* Build all the layers to be displayed onto the view of the share circle. */
 - (void)setUpSharingOptionsView; /* Build the view to show all the sharers when there is too many for the circle. */
 - (void)updateLayers; /* Updates all the layers based on the new current position of the touch input. */
-- (void)animateImagesIn; /* Animation used when the view is first presented to the user. */
-- (void)animateImagesOut; /* Animation used to reset the images so the animation in works correctly. */
 - (void)animateMoreOptionsIn; /* Animates the table view in to show all the sharer options. */
 - (void)animateMoreOptionsOut; /* Hides the table view with all the sharers. */
 - (NSString *)sharerNameHoveringOver; /* Return the name of the sharer that the user is hovering over at this exact moment in time. */
@@ -28,7 +26,7 @@
     CALayer *_closeButtonLayer, *_overlayLayer;
     CAShapeLayer *_backgroundLayer, *_touchLayer;
     CATextLayer *_introTextLayer, *_shareTitleLayer;
-    NSMutableArray *_imageLayers, *_sharers;
+    NSMutableArray *_sharerLayers, *_sharers;
     NSUInteger _numberSharersInCircle;
     UIView *_sharingOptionsView;
     NSMutableArray *_sharerLocations;
@@ -78,9 +76,9 @@
 #pragma mark -
 #pragma mark - Private methods
 
-- (void)setUpCircleLayers {  
+- (void)setUpCircleLayers {
     // Set all the defaults for the share circle.
-    _imageLayers = [[NSMutableArray alloc] init];
+    _sharerLayers = [[NSMutableArray alloc] init];
     self.hidden = YES;
     self.backgroundColor = [UIColor clearColor];
     self.autoresizingMask = UIViewAutoresizingFlexibleWidth|UIViewAutoresizingFlexibleHeight;
@@ -123,6 +121,7 @@
     [self.layer addSublayer:_backgroundLayer];
     
     // Create the layers for all the sharing service images.
+    _sharerLocations = [[NSMutableArray alloc] init];
     for(int i = 0; i < _numberSharersInCircle; i++) {
         CFSharer *sharer;
         if(i == 5 && _sharers.count > 6)
@@ -135,7 +134,14 @@
         CALayer *imageLayer = [CALayer layer];
         imageLayer.bounds = CGRectMake(0, 0, IMAGE_SIZE+30, IMAGE_SIZE+30);
         imageLayer.frame = CGRectMake(0, 0, IMAGE_SIZE, IMAGE_SIZE);
-        imageLayer.position = CGPointMake(BACKGROUND_SIZE/2.0, BACKGROUND_SIZE/2.0);
+
+        // Calculate the x and y coordinate. Points go around the unit circle starting at pi = 0.
+        float trig = i/(_numberSharersInCircle/2.0)*M_PI;
+        float x = BACKGROUND_SIZE/2.0 + cosf(trig)*PATH_SIZE/2.0;
+        float y = BACKGROUND_SIZE/2.0 - sinf(trig)*PATH_SIZE/2.0;
+        [_sharerLocations addObject:[NSValue valueWithCGPoint:CGPointMake(x, y)]];
+        imageLayer.position = [[_sharerLocations objectAtIndex:i] CGPointValue];
+        
         imageLayer.contents = (id)image.CGImage;
         imageLayer.shadowColor = [UIColor colorWithRed:213.0/255.0 green:213.0/255.0 blue:213.0/255.0 alpha:1.0].CGColor;
         imageLayer.shadowOffset = CGSizeMake(1, 1);
@@ -143,8 +149,8 @@
         imageLayer.shadowOpacity = 1.0;
         imageLayer.name = sharer.name;
         
-        [_imageLayers addObject:imageLayer];
-        [_backgroundLayer addSublayer:[_imageLayers objectAtIndex:i]];
+        [_sharerLayers addObject:imageLayer];
+        [_backgroundLayer addSublayer:[_sharerLayers objectAtIndex:i]];
     }
     
     // Create the touch layer for the Share Circle.
@@ -227,7 +233,7 @@
     CGRect rect = CGRectMake(0.0f, 0.0f, 45.0f, 45.0f);
     UIImage *closeButtonImage = [UIImage imageNamed:@"close.png"];
     UIGraphicsBeginImageContextWithOptions(rect.size, NO, 0.0f);
-    CGContextRef context = UIGraphicsGetCurrentContext();    
+    CGContextRef context = UIGraphicsGetCurrentContext();
     CGContextSetFillColorWithColor(context, [[UIColor colorWithRed:35.0/255.0 green:35.0/255.0 blue:35.0/255.0 alpha:1.0] CGColor]);
     CGContextFillRect(context, rect);
     [closeButtonImage drawInRect:CGRectMake(15.0f,15.0f,closeButtonImage.size.width,closeButtonImage.size.height) blendMode:kCGBlendModeNormal alpha:1.0];
@@ -263,8 +269,8 @@
         
         NSString *sharerName = [self sharerNameHoveringOver];
         // Update the images.
-        for(int i = 0; i < [_imageLayers count]; i++) {
-            CALayer *layer = [_imageLayers objectAtIndex:i];
+        for(int i = 0; i < [_sharerLayers count]; i++) {
+            CALayer *layer = [_sharerLayers objectAtIndex:i];
             if(!_dragging || [sharerName isEqualToString:layer.name])
                 layer.opacity = 1.0;
             else
@@ -303,37 +309,6 @@
         _introTextLayer.opacity = 0.0;
         _shareTitleLayer.opacity = 0.0;
         [CATransaction commit];
-    }
-}
-
-- (void)animateImagesIn {
-    if(_sharerLocations == nil) {
-        _sharerLocations = [[NSMutableArray alloc] init];
-        for(int i = 0; i < _numberSharersInCircle; i++) {
-            // Animate the base layer for the main rotation.
-            CALayer* layer = [_imageLayers objectAtIndex:i];
-            
-            // Calculate the x and y coordinate. Points go around the unit circle starting at pi = 0.
-            float trig = i/(_numberSharersInCircle/2.0)*M_PI;
-            float x = layer.position.x + cosf(trig)*PATH_SIZE/2.0;
-            float y = layer.position.y - sinf(trig)*PATH_SIZE/2.0;
-            [_sharerLocations addObject:[NSValue valueWithCGPoint:CGPointMake(x, y)]];
-            layer.position = [[_sharerLocations objectAtIndex:i] CGPointValue];
-        }  
-    } else {
-        for(int i = 0; i < _numberSharersInCircle; i++) {
-            // Animate the base layer for the main rotation.
-            CALayer* layer = [_imageLayers objectAtIndex:i];
-            layer.position = [[_sharerLocations objectAtIndex:i] CGPointValue];
-        }
-    }
-}
-
-- (void)animateImagesOut {
-    for(int i = 0; i < _numberSharersInCircle; i++) {
-        // Animate the base layer for the main rotation.
-        CALayer* layer = [_imageLayers objectAtIndex:i];
-        layer.position = CGPointMake(BACKGROUND_SIZE/2.0, BACKGROUND_SIZE/2.0);
     }
 }
 
@@ -426,7 +401,7 @@
     CGContextSetFillColorWithColor(context, [[UIColor whiteColor] CGColor]);
     CGContextFillRect(context, rect);
     UIImage *tempImage = UIGraphicsGetImageFromCurrentImageContext();
-    UIGraphicsEndImageContext();    
+    UIGraphicsEndImageContext();
     return tempImage;
 }
 
@@ -539,7 +514,7 @@
         imageView = [[UIImageView alloc] initWithFrame:CGRectMake(30.0, 15.0, 30.0, 30.0)];
         imageView.tag = IMAGE_VIEW_TAG;
         [cell.contentView addSubview:imageView];
-    }   
+    }
     
     // Set the label and image properties.
     nameLabel.text = sharer.name;
@@ -557,25 +532,28 @@
 
 - (void)show {
     self.hidden = NO;
-    // Set up the animation for the background layer to come in.
-    CABasicAnimation *animation = [CABasicAnimation animationWithKeyPath:@"position"];
+        
+    int keyframeCount = 60;
+    CGFloat toValue = CGRectGetMidX(self.bounds);
+    CGFloat fromValue = _backgroundLayer.position.x;
     
-    // Set delegate and key/value to know when animation ends.
+    // Calculate the values for the keyframe animation.
+    NSMutableArray *values = [NSMutableArray arrayWithCapacity:keyframeCount];
+	for(size_t frame = 0; frame < keyframeCount; ++frame) {
+        CGFloat value = EaseOutBack(frame, fromValue, toValue - fromValue, keyframeCount);
+		[values addObject:[NSNumber numberWithFloat:(float)value]];
+	}
+	
+    // Construct the animation.
+	CAKeyframeAnimation *animation = [CAKeyframeAnimation animationWithKeyPath:@"position.x"];
+	[animation setValues:values];
     animation.delegate = self;
     [animation setValue:@"animateIn" forKey:@"id"];
-    
-    // Construct the animation.
-    animation.fromValue = [_backgroundLayer valueForKey:@"position"];
-    animation.toValue = [NSValue valueWithCGPoint:CGPointMake(CGRectGetMidX(self.bounds), CGRectGetMidY(self.bounds))];
-    animation.duration = 0.3;
-    animation.timingFunction = [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseOut];
+    animation.duration = 0.5;
     
     // Intiate the animation and ensure the layer stays there.
     _backgroundLayer.position = CGPointMake(CGRectGetMidX(self.bounds), CGRectGetMidY(self.bounds));
-    [_backgroundLayer addAnimation:animation forKey:@"position"];
-    
-    // Move the sharer images.
-    [self animateImagesIn];
+    [_backgroundLayer addAnimation:animation forKey:@"position.x"];
 }
 
 - (void)hide {
@@ -590,14 +568,42 @@
     // Construct the animation.
     animation.fromValue = [_backgroundLayer valueForKey:@"position"];
     animation.toValue = [NSValue valueWithCGPoint:CGPointMake(self.bounds.size.width + BACKGROUND_SIZE/2.0, CGRectGetMidY(self.bounds))];
-    animation.duration = 0.3;
+    animation.duration = 0.4;
     animation.timingFunction = [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseIn];
     
     // Intiate the animation.
     _backgroundLayer.position = CGPointMake(self.bounds.size.width + BACKGROUND_SIZE/2.0, CGRectGetMidY(self.bounds));
     [_backgroundLayer addAnimation:animation forKey:@"position"];
-    
-    [self animateImagesOut];
+}
+
+# pragma mark - 
+# pragma mark - C Functions
+
+/*
+ 
+ Open source under the BSD License.
+ 
+ Copyright © 2001 Robert Penner
+ All rights reserved.
+ 
+ // back easing out - moving towards target, overshooting it slightly, then reversing and coming back to target
+ // t: current time, b: beginning value, c: change in value, d: duration, s: overshoot amount (optional)
+ // t and d can be in frames or seconds/milliseconds
+ // s controls the amount of overshoot: higher s means greater overshoot
+ // s has a default value of 1.70158, which produces an overshoot of 10 percent
+ // s==0 produces cubic easing with no overshoot
+ 
+ Math.easeOutBack = function (t, b, c, d, s) {
+ if (s == undefined) s = 1.70158;
+ return c*((t=t/d-1)*t*((s+1)*t + s) + 1) + b;
+ };
+ 
+ */
+
+#define OVERSHOOT 1.5
+
+float EaseOutBack(float currentTime, float startValue, float changeValue, float duration) {
+    return changeValue * ((currentTime = currentTime/duration-1)*currentTime*((OVERSHOOT+1)*currentTime + OVERSHOOT) + 1) + startValue;
 }
 
 @end
