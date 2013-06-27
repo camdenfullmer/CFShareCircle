@@ -215,7 +215,7 @@
     [_sharingOptionsView addSubview:sharingOptionsLabel];
     
     // Add table view.
-    UITableView *tableView = [[UITableView alloc] initWithFrame:CGRectMake(0.0f, 45.0f, _sharingOptionsView.frame.size.width, _sharingOptionsView.frame.size.height)];
+    UITableView *tableView = [[UITableView alloc] initWithFrame:CGRectMake(0.0f, 45.0f, _sharingOptionsView.frame.size.width, _sharingOptionsView.frame.size.height - 45.0f)];
     tableView.autoresizingMask = UIViewAutoresizingFlexibleWidth|UIViewAutoresizingFlexibleHeight;
     tableView.delegate = self;
     tableView.dataSource = self;
