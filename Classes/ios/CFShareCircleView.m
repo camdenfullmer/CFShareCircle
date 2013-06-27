@@ -397,7 +397,7 @@
 
 -  (UIImage *)whiteOverlayedImage:(UIImage *)image {
     CGRect rect = CGRectMake(0, 0, image.size.width, image.size.height);
-    UIGraphicsBeginImageContext(rect.size);
+    UIGraphicsBeginImageContextWithOptions(rect.size, NO, 0.0f);
     CGContextRef context = UIGraphicsGetCurrentContext();
     CGContextTranslateCTM(context, 0, image.size.height);
     CGContextScaleCTM(context, 1.0, -1.0);
