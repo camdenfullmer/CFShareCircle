@@ -31,7 +31,7 @@
     UIView *_sharingOptionsView;
 }
 
-#define BACKGROUND_SIZE 275
+#define CIRCLE_SIZE 275
 #define PATH_SIZE 200
 #define IMAGE_SIZE 45
 #define TOUCH_SIZE 70
@@ -65,7 +65,7 @@
     if(_circleIsVisible) {
         _backgroundLayer.position = CGPointMake(CGRectGetMidX(self.bounds), CGRectGetMidY(self.bounds));
     } else {
-        _backgroundLayer.position = CGPointMake(self.bounds.size.width + BACKGROUND_SIZE/2.0, CGRectGetMidY(self.bounds));
+        _backgroundLayer.position = CGPointMake(self.bounds.size.width + CIRCLE_SIZE/2.0, CGRectGetMidY(self.bounds));
     }
     if(_sharingOptionsIsVisible)
         _sharingOptionsView.frame = self.bounds;
@@ -108,11 +108,11 @@
     
     // Create a larger circle layer for the background of the Share Circle.
     _backgroundLayer = [CAShapeLayer layer];
-    _backgroundLayer.frame = CGRectMake(CGRectGetMidX(self.bounds) - BACKGROUND_SIZE/2.0, CGRectGetMidY(self.bounds) - BACKGROUND_SIZE/2.0, BACKGROUND_SIZE, BACKGROUND_SIZE);
-    _backgroundLayer.position = CGPointMake(self.bounds.size.width + BACKGROUND_SIZE/2.0, CGRectGetMidY(self.bounds));
+    _backgroundLayer.frame = CGRectMake(CGRectGetMidX(self.bounds) - CIRCLE_SIZE/2.0, CGRectGetMidY(self.bounds) - CIRCLE_SIZE/2.0, CIRCLE_SIZE, CIRCLE_SIZE);
+    _backgroundLayer.position = CGPointMake(self.bounds.size.width + CIRCLE_SIZE/2.0, CGRectGetMidY(self.bounds));
     _backgroundLayer.fillColor = [[UIColor whiteColor] CGColor];
     CGMutablePathRef backgroundPath = CGPathCreateMutable();
-    CGRect backgroundRect = CGRectMake(0,0,BACKGROUND_SIZE,BACKGROUND_SIZE);
+    CGRect backgroundRect = CGRectMake(0,0,CIRCLE_SIZE,CIRCLE_SIZE);
     CGPathAddEllipseInRect(backgroundPath, nil, backgroundRect);
     _backgroundLayer.path = backgroundPath;
     CGPathRelease(backgroundPath);
@@ -134,8 +134,8 @@
 
         // Calculate the x and y coordinate. Points go around the unit circle starting at pi = 0.
         float trig = i/([self numberOfSharersInCircle]/2.0)*M_PI;
-        float x = BACKGROUND_SIZE/2.0 + cosf(trig)*PATH_SIZE/2.0;
-        float y = BACKGROUND_SIZE/2.0 - sinf(trig)*PATH_SIZE/2.0;
+        float x = CIRCLE_SIZE/2.0 + cosf(trig)*PATH_SIZE/2.0;
+        float y = CIRCLE_SIZE/2.0 - sinf(trig)*PATH_SIZE/2.0;
         imageLayer.position = CGPointMake(x, y);
         imageLayer.contents = (id)image.CGImage;
         imageLayer.shadowColor = [UIColor colorWithRed:213.0/255.0 green:213.0/255.0 blue:213.0/255.0 alpha:1.0].CGColor;
@@ -337,7 +337,7 @@
         point = _origin;
     
     // See if the new point is outside of the circle's radius.
-    else if(pow(BACKGROUND_SIZE/2.0 - TOUCH_SIZE/2.0,2) < (pow(point.x - _origin.x,2) + pow(point.y - _origin.y,2))) {
+    else if(pow(CIRCLE_SIZE/2.0 - TOUCH_SIZE/2.0,2) < (pow(point.x - _origin.x,2) + pow(point.y - _origin.y,2))) {
         
         // Determine x and y from the center of the circle.
         point.x = _origin.x - point.x;
@@ -347,8 +347,8 @@
         double angle = atan2(point.y, point.x);
         
         // Get the new x and y from the point on the edge of the circle subtracting the size of the touch image.
-        point.x = _origin.x - (BACKGROUND_SIZE/2.0 - TOUCH_SIZE/2.0) * cos(angle);
-        point.y = _origin.y + (BACKGROUND_SIZE/2.0 - TOUCH_SIZE/2.0) * sin(angle);
+        point.x = _origin.x - (CIRCLE_SIZE/2.0 - TOUCH_SIZE/2.0) * cos(angle);
+        point.y = _origin.y + (CIRCLE_SIZE/2.0 - TOUCH_SIZE/2.0) * sin(angle);
     }
     
     // Put the point in terms of the background layers position.
@@ -367,7 +367,7 @@
 }
 
 - (BOOL)circleEnclosesPoint:(CGPoint)point {
-    if(pow(BACKGROUND_SIZE/2.0,2) < (pow(point.x - _origin.x,2) + pow(point.y - _origin.y,2)))
+    if(pow(CIRCLE_SIZE/2.0,2) < (pow(point.x - _origin.x,2) + pow(point.y - _origin.y,2)))
         return NO;
     else
         return YES;
@@ -427,12 +427,12 @@
     
     // Construct the animation.
     animation.fromValue = [_backgroundLayer valueForKey:@"position"];
-    animation.toValue = [NSValue valueWithCGPoint:CGPointMake(self.bounds.size.width + BACKGROUND_SIZE/2.0, CGRectGetMidY(self.bounds))];
+    animation.toValue = [NSValue valueWithCGPoint:CGPointMake(self.bounds.size.width + CIRCLE_SIZE/2.0, CGRectGetMidY(self.bounds))];
     animation.duration = 0.3;
     animation.timingFunction = [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseIn];
     
     // Intiate the animation.
-    _backgroundLayer.position = CGPointMake(self.bounds.size.width + BACKGROUND_SIZE/2.0, CGRectGetMidY(self.bounds));
+    _backgroundLayer.position = CGPointMake(self.bounds.size.width + CIRCLE_SIZE/2.0, CGRectGetMidY(self.bounds));
     [_backgroundLayer addAnimation:animation forKey:@"position"];
 }
 
