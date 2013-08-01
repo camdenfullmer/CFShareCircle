@@ -21,7 +21,7 @@
 - (id)initWithName:(NSString *)name imageName:(NSString *)imageName;
 
 + (CFSharer *)mail;
-+ (CFSharer *)photoLibrary;
++ (CFSharer *)cameraRoll;
 + (CFSharer *)dropbox;
 + (CFSharer *)evernote;
 + (CFSharer *)facebook;

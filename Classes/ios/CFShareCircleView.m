@@ -42,7 +42,7 @@
 - (id)initWithFrame:(CGRect)frame {
     self = [super initWithFrame:frame];
     if (self) {
-        _sharers = [[NSMutableArray alloc] initWithObjects: [CFSharer pinterest], [CFSharer googleDrive], [CFSharer twitter], [CFSharer facebook], [CFSharer evernote], [CFSharer dropbox], [CFSharer mail], [CFSharer photoLibrary], nil];
+        _sharers = [[NSMutableArray alloc] initWithObjects: [CFSharer pinterest], [CFSharer dropbox], [CFSharer mail], [CFSharer cameraRoll], nil];
         [self setUpCircleLayers];
     }
     return self;

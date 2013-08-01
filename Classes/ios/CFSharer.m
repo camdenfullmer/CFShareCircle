@@ -26,8 +26,8 @@
     return [[CFSharer alloc] initWithName:@"Mail" imageName:@"mail.png"];
 }
 
-+ (CFSharer *)photoLibrary {
-    return [[CFSharer alloc] initWithName:@"Photos" imageName:@"photo_library.png"];
++ (CFSharer *)cameraRoll {
+    return [[CFSharer alloc] initWithName:@"Camera Roll" imageName:@"camera_roll.png"];
 }
 
 + (CFSharer *)dropbox {
