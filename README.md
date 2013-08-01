@@ -68,7 +68,7 @@ Types of CFSharers included:
     - Facebook
     - Pinterest
     - Dropbox
-    - Photos
+    - Camera Roll
     - Mail
     
 ##Requirments
