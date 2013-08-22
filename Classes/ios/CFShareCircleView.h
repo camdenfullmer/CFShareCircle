@@ -21,19 +21,8 @@
 
 @property (assign) id <CFShareCircleViewDelegate> delegate;
 
-/** 
- Initialize the share circle with a custom list of sharers.
-  */
-- (id)initWithFrame:(CGRect) frame sharers:(NSArray *)sharers;
-
-/**
- Animates the share circle into view. 
- */
+- (id)initWithSharers:(NSArray *)sharers;
 - (void)show;
-
-/**
- Animates the share circle out of view.
- */
-- (void)hide;
+- (void)dismissAnimated:(BOOL)animated;
 
 @end

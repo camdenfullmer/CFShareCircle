@@ -10,15 +10,16 @@
 
 @interface ViewController ()
 
+@property (nonatomic, strong) CFShareCircleView *shareCircleView;
+
 @end
 
 @implementation ViewController
 
 - (void)viewDidLoad {    
 	// Do any additional setup after loading the view, typically from a nib.
-    shareCircleView = [[CFShareCircleView alloc] initWithFrame:self.view.frame];
-    shareCircleView.delegate = self;
-    [self.navigationController.view addSubview:shareCircleView];    
+    self.shareCircleView = [[CFShareCircleView alloc] init];
+    self.shareCircleView.delegate = self;
     [super viewDidLoad];
 }
 
@@ -30,8 +31,7 @@
     NSLog(@"Share circle view was canceled.");
 }
 
-
 - (IBAction)shareButtonClicked:(id)sender {
-    [shareCircleView show];
+    [self.shareCircleView show];
 }
 @end

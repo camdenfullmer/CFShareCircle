@@ -9,9 +9,7 @@
 #import <UIKit/UIKit.h>
 #import "CFShareCircleView.h"
 
-@interface ViewController : UIViewController <CFShareCircleViewDelegate>{
-    CFShareCircleView *shareCircleView;
-}
+@interface ViewController : UIViewController <CFShareCircleViewDelegate>
 
 - (IBAction)shareButtonClicked:(id)sender;
 
