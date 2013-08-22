@@ -174,7 +174,7 @@ static const UIWindowLevel UIWindowLevelCFShareCircle = 1999.0;  // Don't overla
     [self addSubview:self.sharingOptionsView];
 }*/
 
-#define SUBSTANTIAL_MARGIN 20.0
+
 
 /*- (void)updateLayers {
     // Only update if the circle is presented to the user.
@@ -265,22 +265,22 @@ static const UIWindowLevel UIWindowLevelCFShareCircle = 1999.0;  // Don't overla
     
     // If not dragging make sure we redraw the touch image at the origin.
     if(!self.isDragging) {
-        point = self.origin;
+        point = CGPointMake(CGRectGetMidX(self.frame), CGRectGetMidY(self.frame));
     }
     
     // See if the new point is outside of the circle's radius.
     else if(pow(CIRCLE_SIZE/2.0 - TOUCH_SIZE/2.0,2) < (pow(point.x - CGRectGetMidX(self.frame),2) + pow(point.y - CGRectGetMidY(self.frame),2))) {
         
         // Determine x and y from the center of the circle.
-        point.x = self.origin.x - point.x;
-        point.y -= self.origin.y;
+        point.x = CGRectGetMidX(self.frame) - point.x;
+        point.y -= CGRectGetMidY(self.frame);
         
         // Calculate the angle on the around the circle.
         double angle = atan2(point.y, point.x);
         
         // Get the new x and y from the point on the edge of the circle subtracting the size of the touch image.
-        point.x = self.origin.x - (CIRCLE_SIZE/2.0 - TOUCH_SIZE/2.0) * cos(angle);
-        point.y = self.origin.y + (CIRCLE_SIZE/2.0 - TOUCH_SIZE/2.0) * sin(angle);
+        point.x = CGRectGetMidX(self.frame) - (CIRCLE_SIZE/2.0 - TOUCH_SIZE/2.0) * cos(angle);
+        point.y = CGRectGetMidY(self.frame) + (CIRCLE_SIZE/2.0 - TOUCH_SIZE/2.0) * sin(angle);
     }
     
     // Put the point in terms of the background layers position.
@@ -353,24 +353,6 @@ static const UIWindowLevel UIWindowLevelCFShareCircle = 1999.0;  // Don't overla
     return nil;
 }
 
-/*- (void)hideCircle {
-    CABasicAnimation *animation = [CABasicAnimation animationWithKeyPath:@"position"];
-    
-    // Set delegate and key/value to know when animation ends.
-    animation.delegate = self;
-    [animation setValue:@"animateOut" forKey:@"id"];
-    
-    // Construct the animation.
-    animation.fromValue = [self.backgroundLayer valueForKey:@"position"];
-    animation.toValue = [NSValue valueWithCGPoint:CGPointMake(CGRectGetWidth(self.bounds) + CIRCLE_SIZE/2.0, CGRectGetMidY(self.bounds))];
-    animation.duration = 0.3;
-    animation.timingFunction = [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseIn];
-    
-    // Intiate the animation.
-    self.backgroundLayer.position = CGPointMake(CGRectGetWidth(self.bounds) + CIRCLE_SIZE/2.0, CGRectGetMidY(self.bounds));
-    [self.backgroundLayer addAnimation:animation forKey:@"position"];
-}*/
-
 #pragma mark -
 #pragma mark - Animation delegate
 
@@ -393,8 +375,7 @@ static const UIWindowLevel UIWindowLevelCFShareCircle = 1999.0;  // Don't overla
     UITouch *touch = (UITouch *)[[touches allObjects] objectAtIndex:0];
     self.currentPosition = [touch locationInView:self.window];
     
-    // Make sure the user starts with touch inside the circle.
-    if([self circleEnclosesPoint:[touch locationInView:self.window]]) {
+    if([self circleEnclosesPoint:self.currentPosition]) {
         self.dragging = YES;
         [self invalidateLayout];
     }
@@ -405,32 +386,34 @@ static const UIWindowLevel UIWindowLevelCFShareCircle = 1999.0;  // Don't overla
 
 - (void)touchesMoved:(NSSet *)touches withEvent:(UIEvent *)event {
     UITouch *touch = (UITouch *)[[touches allObjects] objectAtIndex:0];
-    self.currentPosition = [touch locationInView:self];
+    self.currentPosition = [touch locationInView:self.window];
     
     if(self.isDragging) {
-      //[self updateLayers];
+        [self invalidateLayout];
     }
 }
 
 - (void)touchesEnded:(NSSet *)touches withEvent:(UIEvent *)event {
     UITouch *touch = (UITouch *)[[touches allObjects] objectAtIndex:0];
-    self.currentPosition = [touch locationInView:self];
+    self.currentPosition = [touch locationInView:self.window];
     CALayer *sharerLayer = [self touchedSharerLayer];
-        
-    if(self.isDragging && sharerLayer) {
-        if([sharerLayer.name isEqualToString:@"More"]) {
-            //[self showMoreOptions];
+    
+    if(self.isDragging) {
+        if(sharerLayer) {
+            if([sharerLayer.name isEqualToString:@"More"]) {
+                //[self showMoreOptions];
+            }
+            else {
+                [_delegate shareCircleView:self didSelectSharer:[self.sharers objectAtIndex:[self.sharerLayers indexOfObject:sharerLayer]]];
+            }
+            [self dismissAnimated:YES];
         }
         else {
-            [_delegate shareCircleView:self didSelectSharer:[self.sharers objectAtIndex:[self.sharerLayers indexOfObject:sharerLayer]]];
+            // Reset values.
+            self.currentPosition = self.origin;
+            self.dragging = NO;
+            [self invalidateLayout];
         }
-        [self dismissAnimated:YES];
-    }
-    else {
-        // Reset values.
-        self.currentPosition = self.origin;
-        self.dragging = NO;
-        //[self updateLayers];
     }
 }
 
@@ -598,11 +581,50 @@ static const UIWindowLevel UIWindowLevelCFShareCircle = 1999.0;  // Don't overla
     self.shareTitleLayer.position = center;
     
     if(self.isDragging) {
-        self.touchLayer.position = [self touchLocationAtPoint:self.currentPosition];
-        self.introTextLayer.hidden = YES;
+        // Removes animation on small change and adds it back in on a substantial change.
+        CGPoint newTouchLocation = [self touchLocationAtPoint:self.currentPosition];
+        if(MAX(ABS(newTouchLocation.x - self.touchLayer.position.x),ABS(newTouchLocation.y - self.touchLayer.position.y)) > 20.0f) {
+            self.touchLayer.position = newTouchLocation;
+        }
+        else {
+            [CATransaction begin];
+            [CATransaction setValue: (id) kCFBooleanTrue forKey: kCATransactionDisableActions];
+            self.touchLayer.position = newTouchLocation;
+            [CATransaction commit];
+        }
+        
+        self.introTextLayer.opacity = 0.0;
+        self.touchLayer.opacity = 1.0;
+        
+        CALayer *selectedSharerLayer = nil;
+        for(CALayer *layer in self.sharerLayers) {
+            if(CGRectContainsPoint(layer.frame, self.touchLayer.position)) {
+                selectedSharerLayer = layer;
+                break;
+            }
+        }
+        
+        for(CALayer *layer in self.sharerLayers) {
+            if([layer isEqual:selectedSharerLayer]) {
+                layer.opacity = 1.0;
+                self.shareTitleLayer.string = selectedSharerLayer.name;
+            }
+            else {
+                layer.opacity = 0.6;
+            }
+        }
+        
+        if(!selectedSharerLayer) {
+            self.shareTitleLayer.string = @"";
+        }
     } else {
         self.touchLayer.position = center;
-        self.introTextLayer.hidden = NO;        
+        self.introTextLayer.opacity = 1.0;
+        self.touchLayer.opacity = 0.2;
+        
+        for(CALayer *layer in self.sharerLayers) {
+            layer.opacity = 1.0;
+        }
     }
 }
 
