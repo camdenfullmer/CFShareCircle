@@ -16,12 +16,6 @@
 
 static const UIWindowLevel UIWindowLevelCFShareCircle = 1999.0;  // Don't overlap system's alert.
 
-@interface CFShareCircleViewController : UIViewController
-
-@property (nonatomic, strong) CFShareCircleView *shareCircleView;
-
-@end
-
 @interface CFShareCircleView()
 
 - (void)setupShareCircleContainerView;
@@ -58,6 +52,12 @@ static const UIWindowLevel UIWindowLevelCFShareCircle = 1999.0;  // Don't overla
 
 #pragma mark - CFShareCircleViewController
 
+@interface CFShareCircleViewController : UIViewController
+
+@property (nonatomic, strong) CFShareCircleView *shareCircleView;
+
+@end
+
 @implementation CFShareCircleViewController
 
 #pragma mark - View life cycle
@@ -90,6 +90,45 @@ static const UIWindowLevel UIWindowLevelCFShareCircle = 1999.0;  // Don't overla
 
 @end
 
+#pragma mark - CFShareCircleBackgroundWindow
+
+@interface CFShareCircleBackgroundWindow : UIWindow
+
+@end
+
+@interface CFShareCircleBackgroundWindow ()
+
+@end
+
+@implementation CFShareCircleBackgroundWindow
+
+- (id)initWithFrame:(CGRect)frame {
+    self = [super initWithFrame:frame];
+    if (self) {
+        self.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
+        self.opaque = NO;
+        self.windowLevel = UIWindowLevelCFShareCircle;
+    }
+    return self;
+}
+
+- (void)drawRect:(CGRect)rect {
+    CGContextRef context = UIGraphicsGetCurrentContext();
+    size_t locationsCount = 2;
+    CGFloat locations[2] = {0.0f, 1.0f};
+    CGFloat colors[8] = {0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 1.0f};
+    CGColorSpaceRef colorSpace = CGColorSpaceCreateDeviceRGB();
+    CGGradientRef gradient = CGGradientCreateWithColorComponents(colorSpace, colors, locations, locationsCount);
+    CGColorSpaceRelease(colorSpace);
+    
+    CGPoint center = CGPointMake(self.bounds.size.width / 2, self.bounds.size.height / 2);
+    CGFloat radius = MIN(self.bounds.size.width, self.bounds.size.height) ;
+    CGContextDrawRadialGradient (context, gradient, center, 0, center, radius, kCGGradientDrawsAfterEndLocation);
+    CGGradientRelease(gradient);
+}
+
+@end
+
 #pragma mark - CFShareCircleView
 
 @implementation CFShareCircleView
@@ -116,12 +155,8 @@ static const UIWindowLevel UIWindowLevelCFShareCircle = 1999.0;  // Don't overla
     viewController.shareCircleView = self;
     
     if (!self.shareCircleWindow) {
-        UIWindow *window = [[UIWindow alloc] initWithFrame:[UIScreen mainScreen].bounds];
-        window.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
-        window.opaque = NO;
-        window.windowLevel = UIWindowLevelCFShareCircle;
+        CFShareCircleBackgroundWindow *window = [[CFShareCircleBackgroundWindow alloc] initWithFrame:[UIScreen mainScreen].bounds];
         window.rootViewController = viewController;
-        window.backgroundColor = [UIColor whiteColor];
         self.shareCircleWindow = window;
     }
     [self.shareCircleWindow makeKeyAndVisible];
@@ -510,7 +545,7 @@ static const UIWindowLevel UIWindowLevelCFShareCircle = 1999.0;  // Don't overla
 }
 
 - (BOOL)circleEnclosesPoint:(CGPoint)point {
-    if(pow(CIRCLE_SIZE/2.0,2) < (pow(point.x - CGRectGetMidX(self.shareCircleContainerView.frame),2) + pow(point.y - CGRectGetMidY(self.shareCircleContainerView.frame),2))) {
+    if(pow(CIRCLE_SIZE/2.0,2) < (pow(point.x - CGRectGetMidX(self.shareCircleContainerView.bounds),2) + pow(point.y - CGRectGetMidY(self.shareCircleContainerView.bounds),2))) {
         return NO;
     }
     else {
