@@ -8,7 +8,6 @@
 
 #import <UIKit/UIKit.h>
 #import <QuartzCore/QuartzCore.h>
-#import <CoreImage/CoreImage.h>
 #import "CFSharer.h"
 
 @class CFShareCircleView;
@@ -17,7 +16,7 @@
 - (void)shareCircleView:(CFShareCircleView *)aShareCircleView didSelectSharer:(CFSharer *)sharer;
 @end
 
-@interface CFShareCircleView : UIView<UITableViewDelegate, UITableViewDataSource>
+@interface CFShareCircleView : UIView
 
 @property (assign) id <CFShareCircleViewDelegate> delegate;
 

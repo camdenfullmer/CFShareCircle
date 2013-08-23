@@ -22,19 +22,17 @@ static const UIWindowLevel UIWindowLevelCFShareCircle = 1999.0;  // Don't overla
 - (void)setupSharers;
 - (void)transitionIn;
 - (void)transitionOutCompletion:(void(^)(void))completion;
-//- (void)createSharingOptionsView;
-//- (void)showMoreOptions;
-//- (void)hideMoreOptions;
 - (CALayer *)touchedSharerLayer;
 - (CGPoint)touchLocationAtPoint:(CGPoint)point;
 - (BOOL)circleEnclosesPoint:(CGPoint)point;
-- (UIImage *)whiteOverlayedImage:(UIImage*)image;
 - (void)setup;
 - (void)invalidateLayout;
 - (void)validateLayout;
+- (int)numberOfVisibleSharers;
+- (void)showMoreSharers;
 
 @property CGPoint currentPosition;
-@property CGPoint origin;
+@property NSUInteger startingIndex;
 @property (nonatomic, assign, getter = isDragging) BOOL dragging;
 @property (nonatomic, assign, getter = isLayoutDirty) BOOL layoutDirty;
 @property (nonatomic, strong) CALayer *closeButtonLayer;
@@ -43,7 +41,6 @@ static const UIWindowLevel UIWindowLevelCFShareCircle = 1999.0;  // Don't overla
 @property (nonatomic, strong) CATextLayer *shareTitleLayer;
 @property (nonatomic, strong) NSArray *sharers;
 @property (nonatomic, strong) NSMutableArray *sharerLayers;
-//@property (nonatomic, strong) UIView *moreSharersView;
 @property (nonatomic, strong) UIView *shareCircleContainerView;
 @property (nonatomic, strong) UIWindow *oldKeyWindow;
 @property (nonatomic, strong) UIWindow *shareCircleWindow;
@@ -72,7 +69,6 @@ static const UIWindowLevel UIWindowLevelCFShareCircle = 1999.0;  // Don't overla
 }
 
 - (void)willRotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration {
-    //[self.shareCircleView resetTransition];
     [self.shareCircleView invalidateLayout];
 }
 
@@ -134,7 +130,7 @@ static const UIWindowLevel UIWindowLevelCFShareCircle = 1999.0;  // Don't overla
 @implementation CFShareCircleView
 
 - (id)init {
-    return [self initWithSharers:@[[CFSharer pinterest], [CFSharer dropbox], [CFSharer mail], [CFSharer cameraRoll], [CFSharer facebook], [CFSharer twitter]]];
+    return [self initWithSharers:@[[CFSharer pinterest], [CFSharer dropbox], [CFSharer mail], [CFSharer cameraRoll], [CFSharer facebook], [CFSharer twitter], [CFSharer googleDrive]]];
 }
 
 - (id)initWithSharers:(NSArray *)sharers {
@@ -144,6 +140,14 @@ static const UIWindowLevel UIWindowLevelCFShareCircle = 1999.0;  // Don't overla
         self.autoresizingMask = UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleWidth;
     }
     return self;
+}
+
+- (int)numberOfVisibleSharers {
+    if(self.sharers.count > MAX_VISIBLE_SHARERS) {
+        return MAX_VISIBLE_SHARERS;
+    } else {
+        return self.sharers.count;
+    }
 }
 
 #pragma mark - Public methods
@@ -258,7 +262,7 @@ static const UIWindowLevel UIWindowLevelCFShareCircle = 1999.0;  // Don't overla
         
         CALayer *selectedSharerLayer = nil;
         for(CALayer *layer in self.sharerLayers) {
-            if(CGRectContainsPoint(layer.frame, self.touchLayer.position)) {
+            if(CGRectContainsPoint(layer.frame, newTouchLocation)) {
                 selectedSharerLayer = layer;
                 break;
             }
@@ -273,7 +277,7 @@ static const UIWindowLevel UIWindowLevelCFShareCircle = 1999.0;  // Don't overla
                 layer.opacity = 0.6;
             }
         }
-        
+
         if(!selectedSharerLayer) {
             self.shareTitleLayer.string = @"";
         }
@@ -281,10 +285,50 @@ static const UIWindowLevel UIWindowLevelCFShareCircle = 1999.0;  // Don't overla
         self.touchLayer.position = center;
         self.introTextLayer.opacity = 1.0;
         self.touchLayer.opacity = 0.2;
+        self.shareTitleLayer.string = @"";
         
         for(CALayer *layer in self.sharerLayers) {
             layer.opacity = 1.0;
         }
+    }
+}
+
+- (void)showMoreSharers {
+    // Cleanup everything.
+    for(CALayer *layer in self.sharerLayers) {
+        [layer removeFromSuperlayer];
+    }
+    [self.sharerLayers removeAllObjects];
+    self.startingIndex = 5;
+    
+    // Create the layers for all the sharing service images.
+    for(int i = self.startingIndex; i < self.sharers.count; i++) {
+        CFSharer *sharer = nil;
+        if(i == self.sharers.count) {
+            sharer = [[CFSharer alloc] initWithName:@"More" imageName:@"more.png"];
+        } else {
+            sharer = [self.sharers objectAtIndex:i];
+        }
+        UIImage *image = sharer.image;
+        
+        // Construct the image layer which will contain our image.
+        CALayer *imageLayer = [CALayer layer];
+        imageLayer.bounds = CGRectMake(0, 0, IMAGE_SIZE+30, IMAGE_SIZE+30);
+        imageLayer.frame = CGRectMake(0, 0, IMAGE_SIZE, IMAGE_SIZE);
+        
+        // Calculate the x and y coordinate. Points go around the unit circle starting at pi = 0.
+        float trig = (i-self.startingIndex)/((self.sharers.count - 5)/2.0)*M_PI;
+        float x = CIRCLE_SIZE/2.0 + cosf(trig)*PATH_SIZE/2.0;
+        float y = CIRCLE_SIZE/2.0 - sinf(trig)*PATH_SIZE/2.0;
+        imageLayer.position = CGPointMake(x, y);
+        imageLayer.contents = (id)image.CGImage;
+        imageLayer.shadowColor = [UIColor colorWithRed:213.0/255.0 green:213.0/255.0 blue:213.0/255.0 alpha:1.0].CGColor;
+        imageLayer.shadowOffset = CGSizeMake(1, 1);
+        imageLayer.shadowRadius = 0;
+        imageLayer.shadowOpacity = 1.0;
+        imageLayer.name = sharer.name;
+        [self.sharerLayers addObject:imageLayer];
+        [self.shareCircleContainerView.layer addSublayer:[self.sharerLayers objectAtIndex:(i-self.startingIndex)]];
     }
 }
 
@@ -302,6 +346,9 @@ static const UIWindowLevel UIWindowLevelCFShareCircle = 1999.0;  // Don't overla
     [self.shareCircleWindow removeFromSuperview];
     self.shareCircleWindow = nil;
     self.layoutDirty = NO;
+    [self.sharerLayers removeAllObjects];
+    self.startingIndex = 0;
+    self.dragging = NO;
 }
 
 - (void)setupShareCircleContainerView {
@@ -316,6 +363,7 @@ static const UIWindowLevel UIWindowLevelCFShareCircle = 1999.0;  // Don't overla
 - (void)setupSharers {
     // Set all the defaults for the share circle.
     self.sharerLayers = [[NSMutableArray alloc] init];
+    self.startingIndex = 0;
     
     // Create the CGFont that is to be used on the layers.
     NSString *fontName = @"HelveticaNeue-Light";
@@ -324,8 +372,13 @@ static const UIWindowLevel UIWindowLevelCFShareCircle = 1999.0;  // Don't overla
     CFRelease(cfFontName);
     
     // Create the layers for all the sharing service images.
-    for(int i = 0; i < self.sharers.count; i++) {
-        CFSharer *sharer = [self.sharers objectAtIndex:i];
+    for(int i = 0; i < [self numberOfVisibleSharers]; i++) {
+        CFSharer *sharer = nil;
+        if(self.sharers.count > [self numberOfVisibleSharers] && i == 5) {
+            sharer = [[CFSharer alloc] initWithName:@"More" imageName:@"more.png"];
+        } else {
+            sharer = [self.sharers objectAtIndex:i];
+        }
         UIImage *image = sharer.image;
         
         // Construct the image layer which will contain our image.
@@ -334,7 +387,7 @@ static const UIWindowLevel UIWindowLevelCFShareCircle = 1999.0;  // Don't overla
         imageLayer.frame = CGRectMake(0, 0, IMAGE_SIZE, IMAGE_SIZE);
         
         // Calculate the x and y coordinate. Points go around the unit circle starting at pi = 0.
-        float trig = i/(self.sharers.count/2.0)*M_PI;
+        float trig = i/([self numberOfVisibleSharers]/2.0)*M_PI;
         float x = CIRCLE_SIZE/2.0 + cosf(trig)*PATH_SIZE/2.0;
         float y = CIRCLE_SIZE/2.0 - sinf(trig)*PATH_SIZE/2.0;
         imageLayer.position = CGPointMake(x, y);
@@ -343,6 +396,7 @@ static const UIWindowLevel UIWindowLevelCFShareCircle = 1999.0;  // Don't overla
         imageLayer.shadowOffset = CGSizeMake(1, 1);
         imageLayer.shadowRadius = 0;
         imageLayer.shadowOpacity = 1.0;
+        imageLayer.opacity = 1.0;
         imageLayer.name = sharer.name;
         [self.sharerLayers addObject:imageLayer];
         [self.shareCircleContainerView.layer addSublayer:[self.sharerLayers objectAtIndex:i]];
@@ -364,6 +418,7 @@ static const UIWindowLevel UIWindowLevelCFShareCircle = 1999.0;  // Don't overla
     // Create the intro text layer to help the user.
     self.introTextLayer = [CATextLayer layer];
     self.introTextLayer.string = @"Drag to\nShare";
+    self.introTextLayer.opacity = 1.0;
     self.introTextLayer.wrapped = YES;
     self.introTextLayer.alignmentMode = kCAAlignmentCenter;
     self.introTextLayer.fontSize = 14.0;
@@ -388,102 +443,11 @@ static const UIWindowLevel UIWindowLevelCFShareCircle = 1999.0;  // Don't overla
     CGFontRelease(font);
 }
 
-/*- (void)createSharingOptionsView {
-    CGRect frame = self.bounds;
-    frame.origin.y += CGRectGetHeight(frame);
-    self.sharingOptionsView = [[UIView alloc] initWithFrame:frame];
-    self.sharingOptionsView.backgroundColor = [UIColor whiteColor];
-    self.sharingOptionsView.autoresizingMask = UIViewAutoresizingFlexibleWidth|UIViewAutoresizingFlexibleHeight;
-    
-    // Add the label.
-    UILabel *sharingOptionsLabel = [[UILabel alloc] initWithFrame:CGRectMake(0.0f, 0.0f, CGRectGetWidth(self.sharingOptionsView.frame), 45.0f)];
-    sharingOptionsLabel.autoresizingMask = UIViewAutoresizingFlexibleWidth;
-    sharingOptionsLabel.text = @"Sharing Options";
-    sharingOptionsLabel.textAlignment = NSTextAlignmentCenter;
-    sharingOptionsLabel.textColor = [UIColor whiteColor];
-    sharingOptionsLabel.font = [UIFont fontWithName:@"HelveticaNeue-Regular" size:15.0f];
-    sharingOptionsLabel.backgroundColor = [UIColor colorWithRed:47.0/255.0 green:47.0/255.0 blue:47.0/255.0 alpha:1.0];
-    [self.sharingOptionsView addSubview:sharingOptionsLabel];
-    
-    // Add table view.
-    UITableView *tableView = [[UITableView alloc] initWithFrame:CGRectMake(0.0f, 45.0f, CGRectGetWidth(self.sharingOptionsView.frame), CGRectGetHeight(self.sharingOptionsView.frame) - 45.0f)];
-    tableView.autoresizingMask = UIViewAutoresizingFlexibleWidth|UIViewAutoresizingFlexibleHeight;
-    tableView.delegate = self;
-    tableView.dataSource = self;
-    tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
-    tableView.rowHeight = 60.0f;
-    [self.sharingOptionsView addSubview:tableView];
-    
-    // Add the close button.
-    UIButton *closeButton = [UIButton buttonWithType:UIButtonTypeCustom];
-    closeButton.frame = CGRectMake(CGRectGetWidth(self.sharingOptionsView.frame) - 45.f,0.0f,45.0f,45.0f);
-    closeButton.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin;
-    // Create an image for the button when highlighted.
-    CGRect rect = CGRectMake(0.0f, 0.0f, 45.0f, 45.0f);
-    UIImage *closeButtonImage = [UIImage imageNamed:@"close.png"];
-    UIGraphicsBeginImageContextWithOptions(rect.size, NO, 0.0f);
-    CGContextRef context = UIGraphicsGetCurrentContext();
-    CGContextSetFillColorWithColor(context, [[UIColor colorWithRed:35.0/255.0 green:35.0/255.0 blue:35.0/255.0 alpha:1.0] CGColor]);
-    CGContextFillRect(context, rect);
-    [closeButtonImage drawInRect:CGRectMake(15.0f,15.0f,closeButtonImage.size.width,closeButtonImage.size.height) blendMode:kCGBlendModeNormal alpha:1.0];
-    UIImage *highlightedButtonImage = UIGraphicsGetImageFromCurrentImageContext();
-    UIGraphicsEndImageContext();
-    [closeButton setBackgroundImage:highlightedButtonImage forState:UIControlStateHighlighted];
-    // Create the normal image for the button.
-    UIGraphicsBeginImageContextWithOptions(rect.size, NO, 0.0f);
-    UIGraphicsGetCurrentContext();
-    [closeButtonImage drawInRect:CGRectMake(15.0f,15.0f,closeButtonImage.size.width,closeButtonImage.size.height) blendMode:kCGBlendModeNormal alpha:0.5];
-    UIImage *normalButtonImage = UIGraphicsGetImageFromCurrentImageContext();
-    UIGraphicsEndImageContext();
-    [closeButton setBackgroundImage:normalButtonImage forState:UIControlStateNormal];
-    [closeButton addTarget:self action:@selector(hideMoreOptions) forControlEvents:UIControlEventTouchUpInside];
-    [self.sharingOptionsView addSubview:closeButton];
-    
-    // Add the view.
-    [self addSubview:self.sharingOptionsView];
-}*/
-
-/*- (void)showMoreOptions {
-    self.sharingOptionsIsVisible = YES;
-    [UIView animateWithDuration:0.5
-                     animations:^{
-                         self.sharingOptionsView.frame = self.bounds;
-                     }
-                     completion:nil];
-}
-
-- (void)hideMoreOptions {
-    [UIView animateWithDuration:0.5
-                     animations:^{
-                         CGRect frame = self.sharingOptionsView.frame;
-                         frame.origin.y += CGRectGetHeight(self.bounds);
-                         self.sharingOptionsView.frame = frame;
-                     }
-                     completion:^(BOOL finished){
-                         self.sharingOptionsIsVisible = NO;
-                         self.hidden = YES;
-                     }];
-}*/
-
--  (UIImage *)whiteOverlayedImage:(UIImage *)image {
-    CGRect rect = CGRectMake(0, 0, image.size.width, image.size.height);
-    UIGraphicsBeginImageContextWithOptions(rect.size, NO, 0.0f);
-    CGContextRef context = UIGraphicsGetCurrentContext();
-    CGContextTranslateCTM(context, 0, image.size.height);
-    CGContextScaleCTM(context, 1.0, -1.0);
-    CGContextClipToMask(context, rect, image.CGImage);
-    CGContextSetFillColorWithColor(context, [[UIColor whiteColor] CGColor]);
-    CGContextFillRect(context, rect);
-    UIImage *tempImage = UIGraphicsGetImageFromCurrentImageContext();
-    UIGraphicsEndImageContext();
-    return tempImage;
-}
-
 #pragma mark - Touch methods
 
 - (void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event {
     UITouch *touch = (UITouch *)[[touches allObjects] objectAtIndex:0];
-    self.currentPosition = [touch locationInView:touch.view];
+    self.currentPosition = [touch locationInView:self.shareCircleContainerView];
     
     if([self circleEnclosesPoint:self.currentPosition]) {
         self.dragging = YES;
@@ -511,27 +475,28 @@ static const UIWindowLevel UIWindowLevelCFShareCircle = 1999.0;  // Don't overla
     if(self.isDragging) {
         if(sharerLayer) {
             if([sharerLayer.name isEqualToString:@"More"]) {
-                //[self showMoreOptions];
+                self.currentPosition = CGPointMake(CGRectGetMidX(self.shareCircleContainerView.bounds), CGRectGetMidY(self.shareCircleContainerView.bounds));
+                self.dragging = NO;
+                [self invalidateLayout];
+                [self showMoreSharers];
             }
             else {
-                [_delegate shareCircleView:self didSelectSharer:[self.sharers objectAtIndex:[self.sharerLayers indexOfObject:sharerLayer]]];
-                self.currentPosition = self.origin;
-                self.dragging = NO;
+                [_delegate shareCircleView:self didSelectSharer:[self.sharers objectAtIndex:[self.sharerLayers indexOfObject:sharerLayer] + self.startingIndex]];
+                self.currentPosition = CGPointMake(CGRectGetMidX(self.shareCircleContainerView.bounds), CGRectGetMidY(self.shareCircleContainerView.bounds));
+                [self dismissAnimated:YES];
             }
-            [self dismissAnimated:YES];
         }
         else {
-            // Reset values.
-            self.currentPosition = self.origin;
+            self.currentPosition = CGPointMake(CGRectGetMidX(self.shareCircleContainerView.bounds), CGRectGetMidY(self.shareCircleContainerView.bounds));
             self.dragging = NO;
             [self invalidateLayout];
-        }
+        }        
     }
 }
 
 - (void)touchesCancelled:(NSSet *)touches withEvent:(UIEvent *)event {
     // Reset location.
-    self.currentPosition = self.origin;
+    self.currentPosition = CGPointMake(CGRectGetMidX(self.shareCircleContainerView.bounds), CGRectGetMidY(self.shareCircleContainerView.bounds));
     self.dragging = NO;
 }
 
@@ -585,65 +550,8 @@ static const UIWindowLevel UIWindowLevelCFShareCircle = 1999.0;  // Don't overla
         if(MAX(ABS(sharerLocation.x - point.x),ABS(sharerLocation.y - point.y)) < GRAVITATIONAL_PULL) {
             point = sharerLocation;
         }
-    }
-    
+    }    
     return point;
-}
-
-#pragma mark - Table View Delegate
-
-- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-    //[self hideMoreOptions];
-    [tableView deselectRowAtIndexPath:indexPath animated:YES];
-    [self.delegate shareCircleView:self didSelectSharer:[_sharers objectAtIndex:indexPath.row]];
-}
-
-#pragma mark - Table View Datasource
-
-- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
-    return 1;
-}
-
-#define LABEL_TAG 13
-#define IMAGE_VIEW_TAG 14
-- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-    static NSString *CellIdentifier = @"SharerCell";
-    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"SharerCell"];
-    
-    if (cell == nil) {
-        cell = [[UITableViewCell alloc]initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
-    }
-    
-    cell.selectedBackgroundView = [[UIView alloc] initWithFrame:cell.bounds];
-    cell.selectedBackgroundView.backgroundColor = [UIColor colorWithRed:47.0/255.0 green:47.0/255.0 blue:47.0/255.0 alpha:1.0];
-    
-    CFSharer *sharer = [_sharers objectAtIndex:indexPath.row];
-    // Determine if the label or imageview have already been created.
-    UILabel *nameLabel = (UILabel *)[cell viewWithTag:LABEL_TAG];;
-    UIImageView *imageView = (UIImageView *)[cell viewWithTag:IMAGE_VIEW_TAG];
-    
-    if(nameLabel == nil) {
-        nameLabel = [[UILabel alloc] initWithFrame:CGRectMake(80.0, 10.0, 150.0, 40.0)];
-        nameLabel.font = [UIFont fontWithName:@"HelveticaNeue-Light" size:20.0f];
-        nameLabel.highlightedTextColor = [UIColor whiteColor];
-        nameLabel.tag = LABEL_TAG;
-        [cell.contentView addSubview:nameLabel];
-    }
-    
-    if(imageView == nil)  {
-        imageView = [[UIImageView alloc] initWithFrame:CGRectMake(30.0, 15.0, 30.0, 30.0)];
-        imageView.tag = IMAGE_VIEW_TAG;
-        [cell.contentView addSubview:imageView];
-    }
-    
-    nameLabel.text = sharer.name;
-    imageView.image = sharer.image;
-    imageView.highlightedImage = [self whiteOverlayedImage:sharer.image];
-    return cell;
-}
-
-- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-    return self.sharers.count;
 }
 
 # pragma mark - C Functions
