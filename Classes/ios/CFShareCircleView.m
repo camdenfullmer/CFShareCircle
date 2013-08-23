@@ -112,7 +112,7 @@ static const UIWindowLevel UIWindowLevelCFShareCircle = 1999.0;  // Don't overla
     CGContextRef context = UIGraphicsGetCurrentContext();
     size_t locationsCount = 2;
     CGFloat locations[2] = {0.0f, 1.0f};
-    CGFloat colors[8] = {0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 1.0f};
+    CGFloat colors[8] = {0.0f, 0.0f, 0.0f, 0.7f, 0.0f, 0.0f, 0.0f, 1.0f};
     CGColorSpaceRef colorSpace = CGColorSpaceCreateDeviceRGB();
     CGGradientRef gradient = CGGradientCreateWithColorComponents(colorSpace, colors, locations, locationsCount);
     CGColorSpaceRelease(colorSpace);
@@ -121,6 +121,8 @@ static const UIWindowLevel UIWindowLevelCFShareCircle = 1999.0;  // Don't overla
     CGFloat radius = MIN(self.bounds.size.width, self.bounds.size.height) ;
     CGContextDrawRadialGradient (context, gradient, center, 0, center, radius, kCGGradientDrawsAfterEndLocation);
     CGGradientRelease(gradient);
+    /*[[UIColor colorWithWhite:0.15 alpha:1.0] set];
+    CGContextFillRect(context, self.bounds);*/
 }
 
 @end
