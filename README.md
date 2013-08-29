@@ -13,45 +13,61 @@ Follow the instructions to add CFShareCircle to your project.
 
 1. CFShareCircle can be installed via [Cocoapods](http://cocoapods.org/). Simply add `pod 'CFShareCircle'` to your Podfile. If you don't use Cocoapods you're welcome to use git submodules, or simply [download](https://github.com/camdenfullmer/CFShareCircle/archive/master.zip) the files manually. If you go with the manual route just include the files located in Classes and Resources to your project.
 
-2. Edit your view controller header file to import the CFShareCircle header file, add the delegate, and create an object.
+2. Edit your view controller header file to import the CFShareCircle header file and declare the delegation protocol.
 
     ```
     #import "CFShareCircleView.h"
     
-    @interface ViewController : UIViewController <CFShareCircleViewDelegate> {    
-        CFShareCircleView *shareCircleView;        
-    }
-      ```
-      
-3. In your viewDidLoad method instantiate the CFShareCircle, set up the delegate, and add it to your navigation controller.
-```
-- (void)viewDidLoad {
-        // Do any additional setup after loading the view, typically from a nib.
-        shareCircleView = [[CFShareCircleView alloc] initWithFrame:self.view.frame];
-        shareCircleView.delegate = self;
-        [self.navigationController.view addSubview:shareCircleView];
-        [super viewDidLoad];
-}
-```
+    @interface ViewController : UIViewController <CFShareCircleViewDelegate>
+    
+    @end
+    ```
+    
+3. Declare a property for the CFShareCircle.
 
-3. Implement the delegate method for the view.
-``` 
-    - (void)shareCircleView:(CFShareCircleView *)aShareCircleView didSelectSharer:(CFSharer *)sharer {
+    ```
+    @interface ViewController ()
+
+    @property (nonatomic, strong) CFShareCircleView *shareCircleView;
+
+    @end
+    ```
+
+4. In your viewDidLoad method instantiate the CFShareCircle and set your view controller as the delegate.
+
+    ```
+    - (void)viewDidLoad {
+        [super viewDidLoad];
+        // Do any additional setup after loading the view, typically from a nib.
+        shareCircleView = [[CFShareCircleView alloc] init];
+        shareCircleView.delegate = self;
+    }
+    ```
+
+5. Implement the delegate method for the view.
+
+    ``` 
+    - (void)shareCircleView:(CFShareCircleView *)shareCircleView didSelectSharer:(CFSharer *)sharer {
         NSLog(@"Selected sharer: %@", sharer.name);
     }
-```
+    
+    - (void)shareCircleCanceled:(NSNotification *)notification{ 
+        NSLog(@"Share circle view was canceled.");
+    }
+    ```
 
-4. Finally just show the view whenever you want it pop up for the user.
-```
+6. Finally, just show the view whenever you want it to pop up for the user.
+
+    ```
     [shareCircleView show];
-```
+    ```
 
 ###Customize CFShareCirlce
 
 If you would like to determine what the CFShareCircle view shows, all you have to do is intialize your own array of sharers.
 
 ```
-shareCircleView = [[CFShareCircleView alloc] initWithFrame:self.view.frame sharers:[[NSMutableArray alloc] initWithObjects: [CFSharer twitter], [CFSharer facebook], [CFSharer dropbox], nil]];
+shareCircleView = [[CFShareCircleView alloc] initWithSharers:@[[CFSharer twitter], [CFSharer facebook], [CFSharer dropbox]]];
 ```
 
 Then to extend this you can create your own CFSharer objects, just provide your own name for the sharer and image. Note that icons should be 100px by 100px for retina and 50px by 50px for standard.
@@ -78,6 +94,7 @@ Types of CFSharers included:
     - Following Frameworks: UIKit, CoreGraphics and QuartzCore.
     
 ##Contact
+
 [Twitter](https://twitter.com/camdenfullmer)
 
 [Website](https://camdenfullmer.com)
