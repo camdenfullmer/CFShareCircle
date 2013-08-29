@@ -16,18 +16,18 @@
 
 @implementation ViewController
 
-- (void)viewDidLoad {    
+- (void)viewDidLoad {
+    [super viewDidLoad];
 	// Do any additional setup after loading the view, typically from a nib.
     self.shareCircleView = [[CFShareCircleView alloc] init];
     self.shareCircleView.delegate = self;
-    [super viewDidLoad];
 }
 
-- (void)shareCircleView:(CFShareCircleView *)aShareCircleView didSelectSharer:(CFSharer *)sharer {
+- (void)shareCircleView:(CFShareCircleView *)shareCircleView didSelectSharer:(CFSharer *)sharer {
     NSLog(@"Selected sharer: %@", sharer.name);
 }
 
-- (void)shareCircleCanceled: (NSNotification*)notification{ 
+- (void)shareCircleCanceled:(NSNotification *)notification{
     NSLog(@"Share circle view was canceled.");
 }
 
