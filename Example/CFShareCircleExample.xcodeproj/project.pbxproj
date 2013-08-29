@@ -256,10 +256,10 @@
 			isa = PBXProject;
 			attributes = {
 				LastUpgradeCheck = 0450;
-				ORGANIZATIONNAME = Camden;
+				ORGANIZATIONNAME = camdenfullmer;
 				TargetAttributes = {
 					4103D85C1680DFF4008AFCFC = {
-						DevelopmentTeam = S2A2EKNY58;
+						DevelopmentTeam = 32Z3M5VEV6;
 					};
 				};
 			};

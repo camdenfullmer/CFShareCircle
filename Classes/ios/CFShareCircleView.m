@@ -29,10 +29,8 @@ static const UIWindowLevel UIWindowLevelCFShareCircle = 1999.0;  // Don't overla
 - (void)invalidateLayout;
 - (void)validateLayout;
 - (int)numberOfVisibleSharers;
-- (void)showMoreSharers;
 
 @property CGPoint currentPosition;
-@property NSUInteger startingIndex;
 @property (nonatomic, assign, getter = isDragging) BOOL dragging;
 @property (nonatomic, assign, getter = isLayoutDirty) BOOL layoutDirty;
 @property (nonatomic, strong) CALayer *closeButtonLayer;
@@ -260,6 +258,7 @@ static const UIWindowLevel UIWindowLevelCFShareCircle = 1999.0;  // Don't overla
         self.introTextLayer.opacity = 0.0;
         self.touchLayer.opacity = 1.0;
         
+        // Check to see if a sharer layer is selected.
         CALayer *selectedSharerLayer = nil;
         for(CALayer *layer in self.sharerLayers) {
             if(CGRectContainsPoint(layer.frame, newTouchLocation)) {
@@ -267,25 +266,16 @@ static const UIWindowLevel UIWindowLevelCFShareCircle = 1999.0;  // Don't overla
                 break;
             }
         }
-        for(int i = 0; i < self.sharerLayers.count; i++) {
+        
+        // Update sharer layers.
+        for(int i = 0; i < [self numberOfVisibleSharers]; i++) {
             CALayer *layer = [self.sharerLayers objectAtIndex:i];
             if([layer isEqual:selectedSharerLayer]) {
                 layer.opacity = 1.0;
-                if(i == 5) {
-                    ((CALayer *)[self.sharerLayers objectAtIndex:i+1]).opacity = 0.9f;
-                    ((CALayer *)[self.sharerLayers objectAtIndex:i+2]).opacity = 0.7f;
-                }
                 self.shareTitleLayer.string = selectedSharerLayer.name;
-                break;
             }
             else {
-                if(i == 6) {
-                    layer.opacity = 0.5f;
-                } else if(i == 7) {
-                    layer.opacity = 0.3f;
-                } else {
-                    layer.opacity = 0.6f;
-                }
+                layer.opacity = 0.6f;
             }
         }
 
@@ -298,55 +288,10 @@ static const UIWindowLevel UIWindowLevelCFShareCircle = 1999.0;  // Don't overla
         self.touchLayer.opacity = 0.2;
         self.shareTitleLayer.string = @"";
         
-        for(int i = 0; i < self.sharerLayers.count; i++) {
+        for(int i = 0; i < [self numberOfVisibleSharers]; i++) {
             CALayer *layer = [self.sharerLayers objectAtIndex:i];
-            if(i == 6) {
-                layer.opacity = 0.9f;
-            } else if(i == 7) {
-                layer.opacity = 0.7;
-            } else {
-                layer.opacity = 1.0;
-            }
+            layer.opacity = 1.0;
         }
-    }
-}
-
-- (void)showMoreSharers {
-    // Cleanup everything.
-    for(CALayer *layer in self.sharerLayers) {
-        [layer removeFromSuperlayer];
-    }
-    [self.sharerLayers removeAllObjects];
-    self.startingIndex = 5;
-    
-    // Create the layers for all the sharing service images.
-    for(int i = self.startingIndex; i < self.sharers.count; i++) {
-        CFSharer *sharer = nil;
-        if(i == self.sharers.count) {
-            sharer = [[CFSharer alloc] initWithName:@"More" imageName:@"more.png"];
-        } else {
-            sharer = [self.sharers objectAtIndex:i];
-        }
-        UIImage *image = sharer.image;
-        
-        // Construct the image layer which will contain our image.
-        CALayer *imageLayer = [CALayer layer];
-        imageLayer.bounds = CGRectMake(0, 0, IMAGE_SIZE+30, IMAGE_SIZE+30);
-        imageLayer.frame = CGRectMake(0, 0, IMAGE_SIZE, IMAGE_SIZE);
-        
-        // Calculate the x and y coordinate. Points go around the unit circle starting at pi = 0.
-        float trig = (i-self.startingIndex)/((self.sharers.count - 5)/2.0)*M_PI;
-        float x = CIRCLE_SIZE/2.0 + cosf(trig)*PATH_SIZE/2.0;
-        float y = CIRCLE_SIZE/2.0 - sinf(trig)*PATH_SIZE/2.0;
-        imageLayer.position = CGPointMake(x, y);
-        imageLayer.contents = (id)image.CGImage;
-        imageLayer.shadowColor = [UIColor colorWithRed:213.0/255.0 green:213.0/255.0 blue:213.0/255.0 alpha:1.0].CGColor;
-        imageLayer.shadowOffset = CGSizeMake(1, 1);
-        imageLayer.shadowRadius = 0;
-        imageLayer.shadowOpacity = 1.0;
-        imageLayer.name = sharer.name;
-        [self.sharerLayers addObject:imageLayer];
-        [self.shareCircleContainerView.layer addSublayer:[self.sharerLayers objectAtIndex:(i-self.startingIndex)]];
     }
 }
 
@@ -365,7 +310,6 @@ static const UIWindowLevel UIWindowLevelCFShareCircle = 1999.0;  // Don't overla
     self.shareCircleWindow = nil;
     self.layoutDirty = NO;
     [self.sharerLayers removeAllObjects];
-    self.startingIndex = 0;
     self.dragging = NO;
 }
 
@@ -383,7 +327,6 @@ static const UIWindowLevel UIWindowLevelCFShareCircle = 1999.0;  // Don't overla
 - (void)setupSharers {
     // Set all the defaults for the share circle.
     self.sharerLayers = [[NSMutableArray alloc] init];
-    self.startingIndex = 0;
     
     // Create the CGFont that is to be used on the layers.
     NSString *fontName = @"HelveticaNeue-Light";
@@ -397,47 +340,28 @@ static const UIWindowLevel UIWindowLevelCFShareCircle = 1999.0;  // Don't overla
         UIImage *image = sharer.image;
         
         // Construct the image layer which will contain the sharer image.
-        CALayer *imageLayer = [CALayer layer];
-        imageLayer.frame = CGRectMake(0, 0, IMAGE_SIZE, IMAGE_SIZE);
+        CALayer *sharerLayer = [CALayer layer];
+        sharerLayer.frame = CGRectMake(0, 0, IMAGE_SIZE, IMAGE_SIZE);
         
         // Calculate the x and y coordinate. Points go around the unit circle starting at pi = 0.
         int section = i > 5 ? 5 : i; // If more than 6 sharers, keep the rest in the last position.
         float trig = section/([self numberOfVisibleSharers]/2.0)*M_PI;
         float x = CIRCLE_SIZE/2.0 + cosf(trig)*PATH_SIZE/2.0;
         float y = CIRCLE_SIZE/2.0 - sinf(trig)*PATH_SIZE/2.0;
-        imageLayer.position = CGPointMake(x, y);
-        imageLayer.contents = (id)image.CGImage;
-        imageLayer.shadowColor = [UIColor colorWithWhite:0.0f alpha:1.0f].CGColor;
-        imageLayer.shadowOffset = CGSizeMake(1, 1);
-        imageLayer.shadowRadius = 0;
-        imageLayer.shadowOpacity = 0.3f;
-        imageLayer.name = sharer.name;
+        sharerLayer.position = CGPointMake(x, y);
+        sharerLayer.contents = (id)image.CGImage;
+        sharerLayer.shadowColor = [UIColor colorWithWhite:0.0f alpha:1.0f].CGColor;
+        sharerLayer.shadowOffset = CGSizeMake(1, 1);
+        sharerLayer.shadowRadius = 0;
+        sharerLayer.shadowOpacity = 0.3f;
+        sharerLayer.name = sharer.name;
         
-        // Modify layers over the limit of 6.
-        if(i == 5) {
-            CATransform3D scale = CATransform3DMakeScale(0.9f, 0.9f, 1.0f);
-            CATransform3D translate = CATransform3DMakeTranslation(-10.0f, 10.0f, 0.0f);
-            imageLayer.transform = CATransform3DConcat(scale, translate);
-            imageLayer.name = @"More";
+        if(i > 5) {
+            sharerLayer.opacity = 0.0f;
         }
         
-        if(i == 6) {
-            CATransform3D scale = CATransform3DMakeScale(0.7f, 0.7f, 1.0f);
-            CATransform3D translate = CATransform3DMakeTranslation(4.0f, -4.0f, 0.0f);
-            imageLayer.transform = CATransform3DConcat(scale, translate);
-            imageLayer.opacity = 0.9f;
-        }
-        
-        if(i == 7) {
-            CATransform3D scale = CATransform3DMakeScale(0.55f, 0.55f, 1.0f);
-            CATransform3D translate = CATransform3DMakeTranslation(13.0f, -13.0f, 0.0f);
-            imageLayer.transform = CATransform3DConcat(scale, translate);
-            imageLayer.opacity = 0.7f;
-        }
-        
-        [self.sharerLayers addObject:imageLayer];
+        [self.sharerLayers addObject:sharerLayer];
         [self.shareCircleContainerView.layer addSublayer:[self.sharerLayers objectAtIndex:i]];
-        [self.shareCircleContainerView.layer insertSublayer:[self.sharerLayers objectAtIndex:i] below:[self.sharerLayers objectAtIndex:MAX(i-1,0)]];
     }
     
     // Create the touch layer for the Share Circle.
@@ -512,17 +436,9 @@ static const UIWindowLevel UIWindowLevelCFShareCircle = 1999.0;  // Don't overla
     
     if(self.isDragging) {
         if(sharerLayer) {
-            if([sharerLayer.name isEqualToString:@"More"]) {
-                self.currentPosition = CGPointMake(CGRectGetMidX(self.shareCircleContainerView.bounds), CGRectGetMidY(self.shareCircleContainerView.bounds));
-                self.dragging = NO;
-                [self invalidateLayout];
-                [self showMoreSharers];
-            }
-            else {
-                [_delegate shareCircleView:self didSelectSharer:[self.sharers objectAtIndex:[self.sharerLayers indexOfObject:sharerLayer] + self.startingIndex]];
-                self.currentPosition = CGPointMake(CGRectGetMidX(self.shareCircleContainerView.bounds), CGRectGetMidY(self.shareCircleContainerView.bounds));
-                [self dismissAnimated:YES];
-            }
+            [_delegate shareCircleView:self didSelectSharer:[self.sharers objectAtIndex:[self.sharerLayers indexOfObject:sharerLayer]]];
+            self.currentPosition = CGPointMake(CGRectGetMidX(self.shareCircleContainerView.bounds), CGRectGetMidY(self.shareCircleContainerView.bounds));
+            [self dismissAnimated:YES];
         }
         else {
             self.currentPosition = CGPointMake(CGRectGetMidX(self.shareCircleContainerView.bounds), CGRectGetMidY(self.shareCircleContainerView.bounds));
