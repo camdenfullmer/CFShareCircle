@@ -20,7 +20,7 @@ static const UIWindowLevel UIWindowLevelCFShareCircle = 1999.0;  // Don't overla
 
 - (void)setupShareCircleContainerView;
 - (void)setupSharers;
-- (void)transitionIn;
+- (void)transitionInCompletion:(void(^)(void))completion;
 - (void)transitionOutCompletion:(void(^)(void))completion;
 - (CALayer *)touchedSharerLayer;
 - (CGPoint)touchLocationAtPoint:(CGPoint)point;
@@ -152,7 +152,7 @@ static const UIWindowLevel UIWindowLevelCFShareCircle = 1999.0;  // Don't overla
 
 - (void)show {
     self.oldKeyWindow = [[UIApplication sharedApplication] keyWindow];
-    
+     
     CFShareCircleViewController *viewController = [[CFShareCircleViewController alloc] initWithNibName:nil bundle:nil];
     viewController.shareCircleView = self;
     
@@ -165,7 +165,9 @@ static const UIWindowLevel UIWindowLevelCFShareCircle = 1999.0;  // Don't overla
     
     [self validateLayout];
     
-    [self transitionIn];
+    [self transitionInCompletion:^{
+        
+    }];
 }
 
 - (void)dismissAnimated:(BOOL)animated {
@@ -180,7 +182,7 @@ static const UIWindowLevel UIWindowLevelCFShareCircle = 1999.0;  // Don't overla
 
 # pragma mark - Transitions
 
-- (void)transitionIn {
+- (void)transitionInCompletion:(void(^)(void))completion {
     int keyframeCount = 60;
     CGFloat toValue = CGRectGetMidY(self.bounds);
     CGFloat fromValue = CGRectGetMaxY(self.bounds);
