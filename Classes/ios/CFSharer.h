@@ -28,5 +28,6 @@
 + (CFSharer *)googleDrive;
 + (CFSharer *)pinterest;
 + (CFSharer *)twitter;
++ (CFSharer *)airPrint;
 
 @end
