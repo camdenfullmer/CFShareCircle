@@ -8,6 +8,8 @@
 
 #import "CFShareCircleView.h"
 
+#define IS_OS_7_OR_LATER (floor(NSFoundationVersionNumber) > NSFoundationVersionNumber_iOS_6_1)
+
 #define CIRCLE_SIZE 275
 #define PATH_SIZE 200
 #define IMAGE_SIZE 45
@@ -20,8 +22,6 @@ static const UIWindowLevel UIWindowLevelCFShareCircle = 1999.0;  // Don't overla
 
 - (void)setupShareCircleContainerView;
 - (void)setupSharers;
-- (void)transitionInCompletion:(void(^)(void))completion;
-- (void)transitionOutCompletion:(void(^)(void))completion;
 - (CALayer *)touchedSharerLayer;
 - (CGPoint)touchLocationAtPoint:(CGPoint)point;
 - (BOOL)circleEnclosesPoint:(CGPoint)point;
@@ -42,6 +42,8 @@ static const UIWindowLevel UIWindowLevelCFShareCircle = 1999.0;  // Don't overla
 @property (nonatomic, strong) UIView *shareCircleContainerView;
 @property (nonatomic, strong) UIWindow *oldKeyWindow;
 @property (nonatomic, strong) UIWindow *shareCircleWindow;
+// Used so view is not animated out during animation in.
+@property (nonatomic) BOOL animating;
 
 @end
 
@@ -114,7 +116,12 @@ static const UIWindowLevel UIWindowLevelCFShareCircle = 1999.0;  // Don't overla
 @implementation CFShareCircleView
 
 - (id)init {
-    return [self initWithSharers:@[[CFSharer pinterest], [CFSharer dropbox], [CFSharer mail], [CFSharer cameraRoll], [CFSharer facebook], [CFSharer twitter], [CFSharer googleDrive], [CFSharer evernote]]];
+    self = [super init];
+    if(self) {
+        _sharers = @[[CFSharer pinterest], [CFSharer dropbox], [CFSharer mail], [CFSharer cameraRoll], [CFSharer facebook], [CFSharer twitter], [CFSharer googleDrive], [CFSharer evernote]];
+        self.autoresizingMask = UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleWidth;
+    }
+    return self;
 }
 
 - (id)initWithSharers:(NSArray *)sharers {
@@ -129,19 +136,21 @@ static const UIWindowLevel UIWindowLevelCFShareCircle = 1999.0;  // Don't overla
 - (int)numberOfVisibleSharers {
     if(self.sharers.count > MAX_VISIBLE_SHARERS) {
         return MAX_VISIBLE_SHARERS;
-    } else {
+    }
+    else {
         return self.sharers.count;
     }
 }
 
 #pragma mark - Public methods
 
-- (void)show {
+- (void)showAnimated:(BOOL)animated {
     self.oldKeyWindow = [[UIApplication sharedApplication] keyWindow];
-     
+    
     CFShareCircleViewController *viewController = [[CFShareCircleViewController alloc] initWithNibName:nil bundle:nil];
     viewController.shareCircleView = self;
     
+    // Set up new window to be presented over the application window.
     if (!self.shareCircleWindow) {
         CFShareCircleBackgroundWindow *window = [[CFShareCircleBackgroundWindow alloc] initWithFrame:[UIScreen mainScreen].bounds];
         window.rootViewController = viewController;
@@ -149,60 +158,66 @@ static const UIWindowLevel UIWindowLevelCFShareCircle = 1999.0;  // Don't overla
     }
     [self.shareCircleWindow makeKeyAndVisible];
     
+    // Ensure layout is correct before presenting to user.
     [self validateLayout];
     
-    [self transitionInCompletion:^{
-        
-    }];
+    // Create the starting point.
+    self.shareCircleContainerView.center = CGPointMake(CGRectGetMidX(self.bounds), 0 - CIRCLE_SIZE/2.0f);
+    
+    // Create the block for the animation.
+    void(^animationBlock)(void) = ^{
+        CGPoint center = self.shareCircleContainerView.center;
+        center.y = CGRectGetMidY(self.bounds);
+        self.shareCircleContainerView.center = center;
+    };
+    
+    // Create the completion block for the animaiton.
+    void(^completionBlock)(BOOL) = ^(BOOL finished){
+        self.animating = NO;
+    };
+    
+    if(animated) {
+        self.animating = YES;
+        if(IS_OS_7_OR_LATER) {
+            [UIView animateWithDuration:1.0f delay:0.0f usingSpringWithDamping:0.6f initialSpringVelocity:0.5f options:UIViewAnimationCurveLinear animations:animationBlock completion:completionBlock];
+        }
+        else {
+            [UIView animateWithDuration:0.4f animations:animationBlock completion:completionBlock];
+        }
+    }
+    else {
+        animationBlock();
+    }
 }
 
 - (void)dismissAnimated:(BOOL)animated {
-    void (^dismissComplete)(void) = ^{
+    if(self.animating) {
+        return;
+    }
+    
+    // Create the block for the animation.
+    void(^animationBlock)(void) = ^{
+        CGPoint center = self.shareCircleContainerView.center;
+        center.y = CGRectGetMaxY(self.bounds) + CIRCLE_SIZE/2.0f;
+        self.shareCircleContainerView.center = center;
+    };
+    
+    // Create the completion block for the animaiton.
+    void(^completionBlock)(BOOL) = ^(BOOL finished){
         [self teardown];
     };
     
-    [self transitionOutCompletion:dismissComplete];
+    if(animated) {
+        [UIView animateWithDuration:0.3f delay:0.0f options:UIViewAnimationOptionCurveEaseIn animations:animationBlock completion:completionBlock];
+    }
+    else {
+        animationBlock();
+        completionBlock(YES);
+    }
+        
+    // Replace the original application window.
     [self.oldKeyWindow makeKeyWindow];
     self.oldKeyWindow.hidden = NO;
-}
-
-# pragma mark - Transitions
-
-- (void)transitionInCompletion:(void(^)(void))completion {
-    int keyframeCount = 60;
-    CGFloat toValue = CGRectGetMidY(self.bounds);
-    CGFloat fromValue = CGRectGetMaxY(self.bounds);
-    
-    // Calculate the values for the keyframe animation.
-    NSMutableArray *values = [NSMutableArray arrayWithCapacity:keyframeCount];
-	for(size_t frame = 0; frame < keyframeCount; ++frame) {
-        CGFloat value = EaseOutBack(frame, fromValue, toValue - fromValue, keyframeCount);
-		[values addObject:[NSNumber numberWithFloat:(float)value]];
-	}
-	
-    // Construct the animation.
-	CAKeyframeAnimation *animation = [CAKeyframeAnimation animationWithKeyPath:@"position.y"];
-    animation.values = values;
-    [animation setValue:@"animateIn" forKey:@"id"];
-    animation.duration = 0.5;
-    
-    [self.shareCircleContainerView.layer addAnimation:animation forKey:@"position.y"];
-}
-
-- (void)transitionOutCompletion:(void(^)(void))completion {
-    CGRect rect = self.shareCircleContainerView.frame;
-    rect.origin.y = self.bounds.size.height;
-    [UIView animateWithDuration:0.3
-                          delay:0
-                        options:UIViewAnimationOptionCurveEaseIn
-                     animations:^{
-                         self.shareCircleContainerView.frame = rect;
-                     }
-                     completion:^(BOOL finished) {
-                         if (completion) {
-                             completion();
-                         }
-                     }];
 }
 
 #pragma mark - Layout
@@ -266,7 +281,7 @@ static const UIWindowLevel UIWindowLevelCFShareCircle = 1999.0;  // Don't overla
                 layer.opacity = 0.6f;
             }
         }
-
+        
         if(!selectedSharerLayer) {
             self.shareTitleLayer.string = @"";
         }
@@ -429,7 +444,7 @@ static const UIWindowLevel UIWindowLevelCFShareCircle = 1999.0;  // Don't overla
             self.currentPosition = CGPointMake(CGRectGetMidX(self.shareCircleContainerView.bounds), CGRectGetMidY(self.shareCircleContainerView.bounds));
             self.dragging = NO;
             [self invalidateLayout];
-        }        
+        }
     }
 }
 
@@ -490,38 +505,8 @@ static const UIWindowLevel UIWindowLevelCFShareCircle = 1999.0;  // Don't overla
             point = sharerLocation;
             break;
         }
-    }    
+    }
     return point;
-}
-
-# pragma mark - C Functions
-
-/*
- 
- Open source under the BSD License.
- 
- Copyright © 2001 Robert Penner
- All rights reserved.
- 
- // back easing out - moving towards target, overshooting it slightly, then reversing and coming back to target
- // t: current time, b: beginning value, c: change in value, d: duration, s: overshoot amount (optional)
- // t and d can be in frames or seconds/milliseconds
- // s controls the amount of overshoot: higher s means greater overshoot
- // s has a default value of 1.70158, which produces an overshoot of 10 percent
- // s==0 produces cubic easing with no overshoot
- 
- Math.easeOutBack = function (t, b, c, d, s) {
- if (s == undefined) s = 1.70158;
- return c*((t=t/d-1)*t*((s+1)*t + s) + 1) + b;
- };
- 
- */
-
-#define OVERSHOOT 1.5
-
-float EaseOutBack(float currentTime, float startValue, float changeValue, float duration) {
-    float time = currentTime/duration-1;
-    return changeValue * (pow(time,2)*((OVERSHOOT+1)*time + OVERSHOOT) + 1) + startValue;
 }
 
 @end
