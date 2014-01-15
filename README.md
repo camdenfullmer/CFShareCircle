@@ -59,7 +59,7 @@ Follow the instructions to add CFShareCircle to your project.
 6. Finally, just show the view whenever you want it to pop up for the user.
 
     ```
-    [shareCircleView show];
+    [shareCircleView showAnimated:YES];
     ```
 
 ###Customize CFShareCirlce
@@ -86,6 +86,7 @@ Types of CFSharers included:
     - Dropbox
     - Camera Roll
     - Mail
+    - AirPrint
     
 ##Requirments
 
