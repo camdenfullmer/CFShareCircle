@@ -304,9 +304,6 @@ static const UIWindowLevel UIWindowLevelCFShareCircle = 1999.0;  // Don't overla
 - (void)setupShareCircleContainerView {
     self.shareCircleContainerView = [[UIView alloc] initWithFrame:self.bounds];
     self.shareCircleContainerView.backgroundColor = [UIColor whiteColor];
-    self.shareCircleContainerView.layer.shadowOffset = CGSizeZero;
-    self.shareCircleContainerView.layer.shadowRadius = 1.0f;
-    self.shareCircleContainerView.layer.shadowOpacity = 0.5;
     [self addSubview:self.shareCircleContainerView];
 }
 
