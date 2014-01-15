@@ -42,7 +42,7 @@ static const UIWindowLevel UIWindowLevelCFShareCircle = 1999.0;  // Don't overla
 @property (nonatomic, strong) UIView *shareCircleContainerView;
 @property (nonatomic, strong) UIWindow *oldKeyWindow;
 @property (nonatomic, strong) UIWindow *shareCircleWindow;
-// Used so view is not animated out during animation in.
+// Used so view is not animated out during the animation in.
 @property (nonatomic) BOOL animating;
 
 @end
@@ -350,10 +350,6 @@ static const UIWindowLevel UIWindowLevelCFShareCircle = 1999.0;  // Don't overla
         float y = CIRCLE_SIZE/2.0 - sinf(trig)*PATH_SIZE/2.0;
         sharerLayer.position = CGPointMake(x, y);
         sharerLayer.contents = (id)image.CGImage;
-        sharerLayer.shadowColor = [UIColor colorWithWhite:0.0f alpha:1.0f].CGColor;
-        sharerLayer.shadowOffset = CGSizeMake(1, 1);
-        sharerLayer.shadowRadius = 0;
-        sharerLayer.shadowOpacity = 0.3f;
         sharerLayer.name = sharer.name;
         
         if(i > 5) {
