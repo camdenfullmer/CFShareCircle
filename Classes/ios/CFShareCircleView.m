@@ -179,7 +179,7 @@ static const UIWindowLevel UIWindowLevelCFShareCircle = 1999.0;  // Don't overla
     if(animated) {
         self.animating = YES;
         if(IS_OS_7_OR_LATER) {
-            [UIView animateWithDuration:1.0f delay:0.0f usingSpringWithDamping:0.6f initialSpringVelocity:0.5f options:UIViewAnimationCurveLinear animations:animationBlock completion:completionBlock];
+            [UIView animateWithDuration:1.0f delay:0.0f usingSpringWithDamping:0.6f initialSpringVelocity:0.5f options:UIViewAnimationOptionCurveEaseIn animations:animationBlock completion:completionBlock];
         }
         else {
             [UIView animateWithDuration:0.4f animations:animationBlock completion:completionBlock];
