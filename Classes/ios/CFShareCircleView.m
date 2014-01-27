@@ -179,7 +179,7 @@ static const UIWindowLevel UIWindowLevelCFShareCircle = 1999.0;  // Don't overla
     if(animated) {
         self.animating = YES;
         if(IS_OS_7_OR_LATER) {
-            [UIView animateWithDuration:1.0f delay:0.0f usingSpringWithDamping:0.6f initialSpringVelocity:0.5f options:UIViewAnimationOptionCurveEaseIn animations:animationBlock completion:completionBlock];
+            [UIView animateWithDuration:0.7f delay:0.0f usingSpringWithDamping:0.6f initialSpringVelocity:0.5f options:UIViewAnimationOptionCurveEaseIn animations:animationBlock completion:completionBlock];
         }
         else {
             [UIView animateWithDuration:0.4f animations:animationBlock completion:completionBlock];
@@ -190,11 +190,7 @@ static const UIWindowLevel UIWindowLevelCFShareCircle = 1999.0;  // Don't overla
     }
 }
 
-- (void)dismissAnimated:(BOOL)animated {
-    if(self.animating) {
-        return;
-    }
-    
+- (void)dismissAnimated:(BOOL)animated withSharer:(CFSharer *)sharer {
     // Create the block for the animation.
     void(^animationBlock)(void) = ^{
         CGPoint center = self.shareCircleContainerView.center;
@@ -204,6 +200,9 @@ static const UIWindowLevel UIWindowLevelCFShareCircle = 1999.0;  // Don't overla
     
     // Create the completion block for the animaiton.
     void(^completionBlock)(BOOL) = ^(BOOL finished){
+        if(sharer) {
+            [self.delegate shareCircleView:self didSelectSharer:sharer];
+        }
         [self teardown];
     };
     
@@ -214,10 +213,14 @@ static const UIWindowLevel UIWindowLevelCFShareCircle = 1999.0;  // Don't overla
         animationBlock();
         completionBlock(YES);
     }
-        
+    
     // Replace the original application window.
     [self.oldKeyWindow makeKeyWindow];
     self.oldKeyWindow.hidden = NO;
+}
+
+- (void)dismissAnimated:(BOOL)animated {
+    [self dismissAnimated:YES withSharer:nil];
 }
 
 #pragma mark - Layout
@@ -404,6 +407,10 @@ static const UIWindowLevel UIWindowLevelCFShareCircle = 1999.0;  // Don't overla
 #pragma mark - Touch methods
 
 - (void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event {
+    if(self.animating) {
+        return;
+    }
+    
     UITouch *touch = (UITouch *)[[touches allObjects] objectAtIndex:0];
     self.currentPosition = [touch locationInView:self.shareCircleContainerView];
     
@@ -417,6 +424,10 @@ static const UIWindowLevel UIWindowLevelCFShareCircle = 1999.0;  // Don't overla
 }
 
 - (void)touchesMoved:(NSSet *)touches withEvent:(UIEvent *)event {
+    if(self.animating) {
+        return;
+    }
+    
     UITouch *touch = (UITouch *)[[touches allObjects] objectAtIndex:0];
     self.currentPosition = [touch locationInView:touch.view];
     
@@ -426,15 +437,18 @@ static const UIWindowLevel UIWindowLevelCFShareCircle = 1999.0;  // Don't overla
 }
 
 - (void)touchesEnded:(NSSet *)touches withEvent:(UIEvent *)event {
+    if(self.animating) {
+        return;
+    }
+    
     UITouch *touch = (UITouch *)[[touches allObjects] objectAtIndex:0];
     self.currentPosition = [touch locationInView:touch.view];
     CALayer *sharerLayer = [self touchedSharerLayer];
     
     if(self.isDragging) {
         if(sharerLayer) {
-            [_delegate shareCircleView:self didSelectSharer:[self.sharers objectAtIndex:[self.sharerLayers indexOfObject:sharerLayer]]];
             self.currentPosition = CGPointMake(CGRectGetMidX(self.shareCircleContainerView.bounds), CGRectGetMidY(self.shareCircleContainerView.bounds));
-            [self dismissAnimated:YES];
+            [self dismissAnimated:YES withSharer:[self.sharers objectAtIndex:[self.sharerLayers indexOfObject:sharerLayer]]];
         }
         else {
             self.currentPosition = CGPointMake(CGRectGetMidX(self.shareCircleContainerView.bounds), CGRectGetMidY(self.shareCircleContainerView.bounds));
