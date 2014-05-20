@@ -28,7 +28,7 @@ static const UIWindowLevel UIWindowLevelCFShareCircle = 1999.0;  // Don't overla
 - (void)setup;
 - (void)invalidateLayout;
 - (void)validateLayout;
-- (int)numberOfVisibleSharers;
+- (NSUInteger)numberOfVisibleSharers;
 
 @property CGPoint currentPosition;
 @property (nonatomic, assign, getter = isDragging) BOOL dragging;
@@ -133,7 +133,7 @@ static const UIWindowLevel UIWindowLevelCFShareCircle = 1999.0;  // Don't overla
     return self;
 }
 
-- (int)numberOfVisibleSharers {
+- (NSUInteger)numberOfVisibleSharers {
     if(self.sharers.count > MAX_VISIBLE_SHARERS) {
         return MAX_VISIBLE_SHARERS;
     }
