@@ -118,7 +118,7 @@ static const UIWindowLevel UIWindowLevelCFShareCircle = 1999.0;  // Don't overla
 - (id)init {
     self = [super init];
     if(self) {
-        _sharers = @[[CFSharer dropbox], [CFSharer mail], [CFSharer cameraRoll], [CFSharer twitter], [CFSharer evernote], [CFSharer airPrint]];
+        _sharers = @[[CFSharer dropbox], [CFSharer mail], [CFSharer cameraRoll], [CFSharer twitter], [CFSharer evernote], [CFSharer print]];
         self.autoresizingMask = UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleWidth;
     }
     return self;

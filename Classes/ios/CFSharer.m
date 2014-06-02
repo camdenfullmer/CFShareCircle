@@ -54,8 +54,8 @@
     return [[CFSharer alloc] initWithName:@"Twitter" imageName:@"twitter.png"];
 }
 
-+ (CFSharer *)airPrint {
-    return [[CFSharer alloc] initWithName:@"AirPrint" imageName:@"print.png"];
++ (CFSharer *)print {
+    return [[CFSharer alloc] initWithName:@"Print" imageName:@"print.png"];
 }
 
 @end
