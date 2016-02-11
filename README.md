@@ -11,7 +11,7 @@ Follow the instructions to add CFShareCircle to your project.
 
 ###Installation
 
-1. CFShareCircle can be installed via [Cocoapods](http://cocoapods.org/). Simply add `pod 'CFShareCircle'` to your Podfile. If you don't use Cocoapods you're welcome to use git submodules, or simply [download](https://github.com/camdenfullmer/CFShareCircle/archive/master.zip) the files manually. If you go with the manual route just include the files located in Classes and Resources to your project.
+1. CFShareCircle can be installed via [CocoaPods](http://cocoapods.org/). Simply add `pod 'CFShareCircle'` to your Podfile. If you don't use CocoaPods you're welcome to use git submodules, or simply [download](https://github.com/camdenfullmer/CFShareCircle/archive/master.zip) the files manually. If you go with the manual route just include the files located in Classes and Resources to your project.
 
 2. Edit your view controller header file to import the CFShareCircle header file and declare the delegation protocol.
 
