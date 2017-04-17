@@ -1,15 +1,15 @@
-#CFShareCircle
+# CFShareCircle
 
 CFShareCircle is a better way for app developers to let users share the content to many different services. It is a simple UIView that adds drag and share capabilities to a developers application.
 
-###YouTube Video
+### YouTube Video
 <a href="http://www.youtube.com/watch?feature=player_embedded&v=-yz1qjddIbs" target="_blank"><img src="http://img.youtube.com/vi/-yz1qjddIbs/0.jpg" alt="CFShareCircle Demo" width="480" height="360"/></a>
 
-##How To Use
+## How To Use
 
 Follow the instructions to add CFShareCircle to your project.
 
-###Installation
+### Installation
 
 1. CFShareCircle can be installed via [Cocoapods](http://cocoapods.org/). Simply add `pod 'CFShareCircle'` to your Podfile. If you don't use Cocoapods you're welcome to use git submodules, or simply [download](https://github.com/camdenfullmer/CFShareCircle/archive/master.zip) the files manually. If you go with the manual route just include the files located in Classes and Resources to your project.
 
@@ -62,7 +62,7 @@ Follow the instructions to add CFShareCircle to your project.
     [shareCircleView showAnimated:YES];
     ```
 
-###Customize CFShareCirlce
+### Customize CFShareCirlce
 
 If you would like to determine what the CFShareCircle view shows, all you have to do is intialize your own array of sharers.
 
@@ -88,19 +88,19 @@ Types of CFSharers included:
     - Mail
     - AirPrint
     
-##Requirments
+## Requirments
 
     - ARC
     - iOS 5.0+
     - Following Frameworks: UIKit, CoreGraphics and QuartzCore.
     
-##Contact
+## Contact
 
 [Twitter](https://twitter.com/camdenfullmer)
 
 [Website](https://camdenfullmer.com)
     
-##License
+## License
 The MIT License (MIT)
 Copyright (c) 2013 Camden Fullmer
 
